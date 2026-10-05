@@ -1,0 +1,1642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#fafaf8">
+<title>Curl — Training Notebook</title>
+<style>
+:root{
+  --bg:#f7f7f5; --paper:#ffffff; --ink:#171717; --muted:#85858a;
+  --line:#e5e5e2; --soft:#f0f0ed; --accent:#6f63d9; --accent2:#8277e5;
+  --shadow:0 10px 30px rgba(0,0,0,.07);
+  --radius:22px;
+}
+*{box-sizing:border-box}
+html{background:var(--bg)}
+body{
+  margin:0; min-height:100vh; background:var(--bg); color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Helvetica Neue",Arial,sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+button,input,select{font:inherit}
+button{border:0;color:inherit;cursor:pointer}
+button:active{transform:scale(.985)}
+.app{width:min(100%,560px);margin:auto;min-height:100vh;padding:0 22px calc(105px + env(safe-area-inset-bottom))}
+.top{
+  height:82px;display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;background:rgba(250,250,248,.92);backdrop-filter:blur(18px);z-index:10
+}
+.logo{font-size:28px;font-weight:800;letter-spacing:-1.5px}
+.top-actions{display:flex;gap:9px}
+.circle{
+  width:43px;height:43px;border-radius:50%;background:var(--paper);
+  border:1px solid var(--line);display:grid;place-items:center;font-size:19px;
+}
+.hero{padding:35px 0 27px}
+.kicker{font-size:13px;color:var(--muted);font-weight:600;margin-bottom:7px}
+h1{font-size:54px;line-height:.92;letter-spacing:-4px;margin:0;font-weight:800}
+.search{
+  height:55px;border:1px solid var(--line);background:var(--paper);border-radius:28px;
+  display:flex;align-items:center;padding:0 18px;gap:10px;margin-bottom:31px;
+}
+.search-icon{font-size:25px;color:#777;line-height:1}
+.search input{border:0;outline:0;background:none;width:100%;font-size:17px;color:var(--ink)}
+.search input::placeholder{color:#a0a0a0}
+.section-title{display:flex;align-items:center;justify-content:space-between;margin:0 2px 15px}
+.section-title span{font-size:14px;color:#888;font-weight:650}
+.link-btn{background:none;font-size:14px;font-weight:700;padding:5px 0}
+.folder-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:25px 17px}
+.folder-card{background:none;text-align:left;padding:0;position:relative;min-width:0}
+.folder-art{
+  height:118px;position:relative;overflow:hidden;border-radius:6px 14px 14px 14px;
+  background:#ff9800;
+  box-shadow:0 12px 25px rgba(76,68,160,.16);
+}
+.folder-art:before{
+  content:"";position:absolute;left:0;top:0;width:49%;height:25px;
+  background:#796ee2;border-radius:6px 11px 0 0;
+}
+.folder-art:after{
+  content:"";position:absolute;left:0;right:0;top:24px;height:2px;background:rgba(255,255,255,.22);
+}
+.folder-inner{
+  position:absolute;left:15px;right:15px;bottom:14px;color:#fff;
+  display:flex;justify-content:space-between;align-items:flex-end;z-index:2;
+}
+.folder-count{font-size:12px;font-weight:650;opacity:.9}
+.folder-dots{font-size:18px;letter-spacing:2px;line-height:1;opacity:.9}
+.folder-name{font-size:17px;font-weight:750;letter-spacing:-.45px;margin:10px 3px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.folder-meta{font-size:12px;color:#999;margin:4px 3px 0}
+.folder-card:active .folder-art{transform:translateY(1px)}
+.empty{
+  border:1px dashed #ddd;background:var(--paper);border-radius:20px;padding:28px 18px;
+  text-align:center;color:#999;font-size:14px
+}
+.recent{margin-top:38px}
+.exercise-list{border-top:1px solid var(--line)}
+.exercise-row{
+  width:100%;display:flex;align-items:center;gap:13px;text-align:left;
+  background:none;border-bottom:1px solid var(--line);padding:15px 3px;
+}
+.exercise-symbol{
+  width:40px;height:40px;border-radius:13px;background:#eee;
+  display:grid;place-items:center;font-size:15px;font-weight:800;flex:none
+}
+.exercise-main{min-width:0;flex:1}
+.exercise-name{font-size:16px;font-weight:700;letter-spacing:-.25px}
+.exercise-meta{font-size:12px;color:#999;margin-top:4px}
+.arrow{font-size:24px;color:#aaa;font-weight:300}
+.bottom{
+  position:fixed;z-index:20;left:50%;transform:translateX(-50%);bottom:0;
+  width:min(100%,560px);padding:12px 22px calc(14px + env(safe-area-inset-bottom));
+  background:linear-gradient(transparent,rgba(250,250,248,.98) 28%);
+}
+.add{
+  height:55px;width:100%;border-radius:28px;background:var(--accent);color:#fff;
+  font-size:16px;font-weight:750;box-shadow:0 9px 25px rgba(111,99,217,.22)
+}
+.view{display:none}.view.active{display:block}
+.subtop{height:82px;display:flex;align-items:center;justify-content:space-between}
+.back{background:none;font-size:15px;font-weight:650;padding:8px 0}
+.page-heading{padding:30px 0 27px}
+.page-heading h2{font-size:48px;line-height:.94;letter-spacing:-3.2px;margin:0;font-weight:800}
+.page-heading p{font-size:14px;color:#999;margin:9px 0 0}
+.rows{border-top:1px solid var(--line)}
+.row{
+  width:100%;background:none;border-bottom:1px solid var(--line);padding:17px 2px;
+  display:flex;align-items:center;justify-content:space-between;text-align:left
+}
+.row-left{display:flex;align-items:center;gap:13px;min-width:0}
+.row-symbol{width:39px;height:39px;border-radius:12px;background:#eee;display:grid;place-items:center;font-weight:800;flex:none}
+.row-title{font-size:16px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row-meta{font-size:12px;color:#999;margin-top:3px}
+.exercise-head{
+  padding:27px 0 25px;border-bottom:1px solid var(--line)
+}
+.exercise-head .small{font-size:13px;color:#999;margin-bottom:8px}
+.exercise-head h2{font-size:43px;line-height:.96;letter-spacing:-2.7px;margin:0;font-weight:800}
+.people-strip{display:flex;gap:9px;overflow:auto;padding:19px 0 5px}
+.person-pill{
+  flex:none;background:var(--paper);border:1px solid var(--line);border-radius:18px;
+  padding:9px 12px;min-width:86px;text-align:left
+}
+.person-pill.selected{border-color:#111;background:#111;color:#fff}
+.avatar{width:28px;height:28px;border-radius:50%;background:#e9e9e7;display:grid;place-items:center;font-size:11px;font-weight:800;margin-bottom:6px}
+.person-pill.selected .avatar{background:#333;color:#fff}
+.person-pill span{font-size:12px;font-weight:700;white-space:nowrap}
+.log{
+  margin-top:14px;background:var(--paper);border:1px solid var(--line);border-radius:21px;padding:16px
+}
+.log-top{display:flex;justify-content:space-between;gap:10px}
+.log-date{font-size:14px;font-weight:750}.log-time{font-size:12px;color:#999;margin-top:3px}
+.pr{font-size:12px;color:#888}
+.table{margin-top:13px;display:grid;grid-template-columns:34px 1fr 1fr 1fr;gap:5px}
+.table div{background:#f1f1ef;border-radius:8px;padding:8px 5px;text-align:center;font-size:12px}
+.table .head{background:none;color:#999;font-weight:700}
+.note{font-size:13px;color:#777;line-height:1.45;margin-top:12px}
+.sheet{
+  position:fixed;inset:0;background:rgba(0,0,0,.25);z-index:50;
+  display:none;align-items:flex-end
+}
+.sheet.show{display:flex}
+.sheet-card{
+  width:100%;background:#fafaf8;border-radius:27px 27px 0 0;
+  padding:11px 22px calc(24px + env(safe-area-inset-bottom));max-height:84vh;overflow:auto
+}
+.handle{width:37px;height:4px;border-radius:4px;background:#d4d4d0;margin:0 auto 22px}
+.sheet-title{font-size:29px;letter-spacing:-1.5px;font-weight:800;margin:0 0 18px}
+.field{margin-bottom:13px}
+.field label{display:block;font-size:12px;color:#888;font-weight:700;margin:0 0 7px 3px}
+.field input,.field select{
+  width:100%;height:52px;border:1px solid #ddd;background:#fff;border-radius:17px;
+  outline:none;padding:0 15px
+}
+.actions{display:flex;gap:9px;margin-top:17px}
+.cancel,.save{
+  height:52px;border-radius:26px;font-weight:750;padding:0 20px
+}
+.cancel{background:#ececea}.save{background:var(--accent);color:#fff;flex:1}
+
+.set-editor{margin-top:4px}
+.set-editor-head{display:grid;grid-template-columns:1fr 1fr 42px;gap:8px;padding:0 3px 6px;color:#888;font-size:12px;font-weight:700}
+.set-editor-row{display:grid;grid-template-columns:1fr 1fr 42px;gap:8px;margin-bottom:8px}
+.set-editor-row input{width:100%;height:50px;border:1px solid #ddd;background:#fff;border-radius:15px;outline:none;padding:0 14px;font-size:16px}
+.remove-set{height:50px;border:0;background:#eee;color:#777;border-radius:15px;font-size:20px;cursor:pointer}
+.add-set{height:44px;border:1px dashed #d5d5d1;background:transparent;border-radius:15px;width:100%;font-weight:700;color:#555;margin-top:2px}
+
+.action-list{display:flex;flex-direction:column;gap:7px}
+.action-item{
+  width:100%;min-height:54px;border-radius:16px;background:#fff;
+  border:1px solid var(--line);display:flex;align-items:center;
+  justify-content:space-between;padding:0 16px;text-align:left;font-weight:650;
+}
+.action-item .action-icon{color:#999;font-size:20px}
+.action-item.danger{color:#c0392b}
+.confirm-copy{font-size:14px;line-height:1.45;color:#777;margin:-4px 0 16px}
+.inline-menu{
+  width:34px;height:34px;border-radius:50%;background:#f0f0ed;color:#777;
+  display:grid;place-items:center;font-size:17px;flex:none;
+}
+.log-top .log-actions{display:flex;align-items:center;gap:8px}
+.log-set-row{display:grid;grid-template-columns:34px 1fr 1fr 38px;gap:5px;align-items:center}
+.log-set-row>div{background:#f1f1ef;border-radius:8px;padding:8px 5px;text-align:center;font-size:12px}
+.log-set-row .set-more{background:transparent;color:#888;padding:0}
+
+.toast{
+  position:fixed;z-index:90;left:50%;bottom:92px;transform:translate(-50%,12px);
+  opacity:0;background:#111;color:#fff;padding:12px 16px;border-radius:15px;font-size:13px;
+  pointer-events:none;transition:.2s;white-space:nowrap
+}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+@media(min-width:430px){
+  .folder-grid{grid-template-columns:repeat(3,1fr);gap:28px 16px}
+  .folder-art{height:101px}
+}
+
+/* Final mobile polish */
+.topbar{
+  min-height:92px;
+  height:auto;
+  padding:18px 18px 14px;
+  align-items:center;
+}
+.brand{
+  font-size:34px !important;
+  line-height:1 !important;
+}
+.pageTitle, .heroTitle, .foldersTitle{
+  margin-top:22px !important;
+  line-height:.95 !important;
+}
+.folderGrid{
+  margin-top:18px !important;
+}
+.folderCard{
+  border-radius:24px !important;
+  box-shadow:0 10px 28px rgba(65,58,145,.10) !important;
+}
+.folderCard .folderTop{
+  background:rgba(255,255,255,.20) !important;
+}
+.folderCard .folderBody{
+  background:var(--folder) !important;
+}
+
+
+/* Notes + sessions: one unified activity timeline */
+.records{margin-top:14px}
+.note-compose{
+  position:relative;background:var(--paper);border:1px solid var(--line);
+  border-radius:21px;margin:0 0 12px;overflow:hidden;box-shadow:none;
+  min-height:68px;padding:10px 11px 10px 16px;display:flex;align-items:center;gap:10px
+}
+.note-compose textarea{
+  flex:1;min-height:42px;height:42px;max-height:100px;border:0;outline:0;resize:none;
+  background:transparent;font:inherit;font-size:14px;line-height:1.4;color:var(--ink);padding:9px 0
+}
+.note-compose textarea::placeholder{color:#aaa}
+.note-upload{
+  flex:0 0 42px;width:42px;height:42px;border:0;border-radius:50%;background:#111;color:#fff;
+  display:grid;place-items:center;cursor:pointer;box-shadow:none
+}
+.note-upload svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:2.15;stroke-linecap:round;stroke-linejoin:round}
+.note-item{
+  margin-top:21px;background:var(--paper);border:1px solid var(--line);border-radius:21px;
+  padding:16px;box-shadow:none;position:relative;overflow:hidden
+}
+.note-item.pinned{border-color:var(--line)}
+.note-item.pinned::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--accent);border-radius:21px 0 0 21px}
+.note-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.note-date{font-size:14px;font-weight:750}.note-time{font-size:12px;color:#999;margin-top:3px}
+.note-text{font-size:14px;line-height:1.45;color:var(--ink);padding-top:14px;white-space:normal;word-break:break-word}
+.note-attachment{margin-top:14px;padding:10px 12px;border-radius:14px;background:#f1f1ee;color:#666;font-size:13px;display:flex;align-items:center;gap:8px}
+.note-attachment span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.log{margin-top:14px}
+</style>
+
+<style id="curl-wordmark-style">
+  /* Approved Curl wordmark: bold sans-serif C + italic serif "url", with natural spacing. */
+  .brand{
+    display:inline-flex !important;
+    align-items:baseline !important;
+    white-space:nowrap !important;
+    font-size:40px !important;
+    line-height:1 !important;
+    letter-spacing:-.025em !important;
+    transform:none !important;
+  }
+  .brand .mark-c{
+    font-family:Arial, Helvetica, sans-serif !important;
+    font-weight:900 !important;
+    font-style:normal !important;
+    font-size:1.04em !important;
+    letter-spacing:-.055em !important;
+    line-height:1 !important;
+    position:relative;
+    z-index:2;
+  }
+  .brand .mark-url{
+    font-family:Georgia, "Times New Roman", serif !important;
+    font-weight:700 !important;
+    font-style:italic !important;
+    font-size:.90em !important;
+    letter-spacing:-.055em !important;
+    line-height:1 !important;
+    margin-left:0 !important;
+    position:relative;
+    top:.02em;
+  }
+  .brand .mark-l{
+    display:inline !important;
+    font-size:1em !important;
+    line-height:1 !important;
+    margin-left:0 !important;
+    transform:none !important;
+  }
+
+/* Notes + sessions: one unified activity timeline */
+.records{margin-top:14px}
+.note-compose{
+  position:relative;background:var(--paper);border:1px solid var(--line);
+  border-radius:21px;margin:0 0 12px;overflow:hidden;box-shadow:none;
+  min-height:68px;padding:10px 11px 10px 16px;display:flex;align-items:center;gap:10px
+}
+.note-compose textarea{
+  flex:1;min-height:42px;height:42px;max-height:100px;border:0;outline:0;resize:none;
+  background:transparent;font:inherit;font-size:14px;line-height:1.4;color:var(--ink);padding:9px 0
+}
+.note-compose textarea::placeholder{color:#aaa}
+.note-upload{
+  flex:0 0 42px;width:42px;height:42px;border:0;border-radius:50%;background:#111;color:#fff;
+  display:grid;place-items:center;cursor:pointer;box-shadow:none
+}
+.note-upload svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:2.15;stroke-linecap:round;stroke-linejoin:round}
+.note-item{
+  margin-top:21px;background:var(--paper);border:1px solid var(--line);border-radius:21px;
+  padding:16px;box-shadow:none;position:relative;overflow:hidden
+}
+.note-item.pinned{border-color:var(--line)}
+.note-item.pinned::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--accent);border-radius:21px 0 0 21px}
+.note-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.note-date{font-size:14px;font-weight:750}.note-time{font-size:12px;color:#999;margin-top:3px}
+.note-text{font-size:14px;line-height:1.45;color:var(--ink);padding-top:14px;white-space:normal;word-break:break-word}
+.note-attachment{margin-top:14px;padding:10px 12px;border-radius:14px;background:#f1f1ee;color:#666;font-size:13px;display:flex;align-items:center;gap:8px}
+.note-attachment span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.log{margin-top:14px}
+</style>
+
+
+<style id="curl-activity-spacing-v5">
+/* Unified activity feed: notes and set logs belong to one chronological family. */
+.records{
+  display:flex;
+  flex-direction:column;
+  gap:11px;
+}
+.records .note-compose,
+.records .note-item,
+.records .log{
+  margin-top:0 !important;
+  margin-bottom:0 !important;
+}
+/* The composer is the control, not an activity card. Keep its gap to the first
+   activity entry tighter, while all notes and set logs remain 21px apart. */
+.records .note-compose{
+  margin-bottom:10px !important;
+}
+</style>
+
+
+<style id="activity-spacing-fix">
+/* Keep people/composer spacing intact. Compress only the activity stack. */
+.records > .note-item,
+.records > .log { margin-bottom: 0 !important; }
+.records > .note-item:last-child,
+.records > .log:last-child { margin-bottom: 0 !important; }
+</style>
+
+<style id="group-spacing-v13">
+/* Group hierarchy: people, composer, then compact activity timeline. */
+/* Larger separation between the independent sections. Activity cards remain compact. */
+#peopleStrip { margin-bottom: 24px !important; }
+.records .note-compose { margin-bottom: 24px !important; }
+.records > .note-item,
+.records > .log { margin-bottom: 0 !important; }
+.records > .note-item:last-child,
+.records > .log:last-child { margin-bottom: 0 !important; }
+</style>
+
+
+<style id="exact-spacing-v17">
+/* Exact hierarchy spacing requested:
+   20px above People, 20px below People;
+   composer-to-activity uses the same gap as activity-to-activity. */
+#peopleStrip {
+  padding: 20px 0 0 !important;
+  margin-bottom: 20px !important;
+}
+.records {
+  gap: 11px !important;
+}
+.records .note-compose {
+  margin-bottom: 0 !important;
+}
+</style>
+
+
+<style id="rich-shared-note-v19">
+/* Composer v19: fixed-height, always-open controls inspired by the supplied reference. */
+.note-compose{
+  position:relative;
+  display:grid !important;
+  grid-template-rows:1fr auto;
+  align-items:stretch;
+  gap:10px;
+  min-height:122px !important;
+  height:122px;
+  padding:14px 14px 12px 18px !important;
+  border-radius:22px;
+  overflow:hidden;
+}
+.note-compose-main{
+  width:100%;
+  min-height:0;
+  display:block !important;
+}
+.note-editor{
+  display:block;
+  width:100%;
+  height:100%;
+  min-height:0;
+  max-height:none;
+  overflow:auto;
+  outline:0;
+  border:0;
+  background:transparent;
+  font-size:14px;
+  line-height:1.45;
+  color:var(--ink);
+  padding:4px 0 0;
+  word-break:break-word;
+}
+.note-editor:empty:before{
+  content:attr(data-placeholder);
+  color:#aaa;
+  pointer-events:none;
+}
+.note-tools{
+  width:100%;
+  display:flex !important;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  padding:0;
+}
+.note-format-group{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.note-format-btn{
+  width:38px;
+  height:38px;
+  flex:0 0 38px;
+  border:0;
+  border-radius:50%;
+  background:#f0f0ed;
+  color:#333;
+  font-size:16px;
+  display:grid;
+  place-items:center;
+  padding:0;
+}
+.note-format-btn:active{background:#e8e8e4}
+.note-format-btn.active{
+  background:#e6e6e2;
+  color:#111;
+  box-shadow:inset 0 0 0 1.5px #222;
+}
+.note-format-btn.bold{font-weight:800}
+.note-format-btn.italic{font-style:italic;font-family:Georgia,"Times New Roman",serif}
+.note-format-btn.underline{text-decoration:underline;text-underline-offset:3px}
+.note-audience{
+  height:38px;
+  min-width:108px;
+  border:0;
+  outline:0;
+  border-radius:19px;
+  background:#f0f0ed;
+  color:#555;
+  font-size:13px;
+  font-weight:650;
+  padding:0 30px 0 14px;
+  margin-left:0;
+}
+.note-submit{
+  flex:0 0 42px;
+  width:42px;
+  height:42px;
+  border:0;
+  border-radius:50%;
+  background:#111;
+  color:#fff;
+  display:grid;
+  place-items:center;
+  cursor:pointer;
+  box-shadow:none;
+}
+.note-submit svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:2.15;stroke-linecap:round;stroke-linejoin:round}
+.note-text b,.note-text strong{font-weight:800}
+.note-text i,.note-text em{font-style:italic}
+.note-text u{text-underline-offset:2px}
+</style>
+
+
+<style id="note-composer-final-fix">
+/* Final mobile polish: keep the submit control inside the composer and remove
+   the native audience dropdown chevron. */
+.note-compose,
+.note-compose * { box-sizing: border-box; }
+.note-tools {
+  width: 100%;
+  min-width: 0;
+}
+.note-format-group {
+  min-width: 0;
+  flex: 1 1 auto;
+}
+.note-audience {
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: none !important;
+  min-width: 0;
+  width: 108px;
+  flex: 0 1 108px;
+  padding-right: 14px;
+}
+.note-submit {
+  flex: 0 0 42px;
+  margin: 0;
+}
+@media (max-width: 380px) {
+  .note-format-group { gap: 6px; }
+  .note-format-btn { width: 36px; height: 36px; flex-basis: 36px; }
+  .note-audience { width: 96px; flex-basis: 96px; height: 36px; }
+  .note-submit { width: 40px; height: 40px; flex-basis: 40px; }
+}
+
+/* Audience selector: Curl-style bottom sheet, matching the exercise action sheet. */
+.note-audience-wrap{position:relative;flex:0 1 108px;min-width:0;z-index:40}
+.note-audience-btn{
+  width:100%;height:38px;border:0;border-radius:19px;background:#f0f0ed;color:#555;
+  padding:0 14px;text-align:left;font-size:13px;font-weight:650;cursor:pointer;
+  display:flex;align-items:center;justify-content:flex-start;white-space:nowrap;overflow:hidden;
+}
+.note-audience-btn:active{background:#e7e7e3}
+.note-audience-btn .audience-label{overflow:hidden;text-overflow:ellipsis}
+
+/* Dedicated visibility sheet. It uses the same visual language as Curl's
+   exercise action sheet rather than a browser/native select popup. */
+.audience-sheet{
+  position:fixed;inset:0;background:rgba(0,0,0,.25);z-index:70;
+  display:none;align-items:flex-end;
+}
+.audience-sheet.show{display:flex}
+.audience-sheet-card{
+  width:100%;background:#fafaf8;border-radius:27px 27px 0 0;
+  padding:11px 22px calc(24px + env(safe-area-inset-bottom));
+  max-height:70vh;overflow:auto;
+}
+.audience-sheet-title{
+  font-size:29px;letter-spacing:-1.5px;font-weight:800;margin:0 0 18px;
+}
+.audience-options{display:flex;flex-direction:column;gap:7px}
+.audience-sheet-option{
+  width:100%;min-height:58px;border-radius:17px;background:#fff;
+  border:1px solid var(--line);display:flex;align-items:center;
+  justify-content:space-between;padding:0 17px;text-align:left;
+  font-size:16px;font-weight:650;color:var(--ink);
+}
+.audience-sheet-option:active{transform:scale(.995);background:#f8f8f6}
+.audience-sheet-option .audience-radio{
+  width:23px;height:23px;border-radius:50%;border:1.6px solid #aaa;
+  display:grid;place-items:center;flex:none;
+}
+.audience-sheet-option.selected .audience-radio{border-color:#111;background:#111}
+.audience-sheet-option.selected .audience-radio::after{
+  content:'';width:7px;height:7px;border-radius:50%;background:#fff;
+}
+@media (max-width:380px){
+  .note-audience-wrap{flex-basis:96px}
+}
+
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+<div class="app">
+
+<section id="home" class="view active">
+  <header class="top">
+    <div class="logo brand" aria-label="Curl"><span class="mark-c">C</span><span class="mark-url">ur<span class="mark-l">l</span></span></div>
+    <div class="top-actions">
+      <button class="circle" onclick="openPeople()">●</button>
+      <button class="circle" onclick="openSettings()">•••</button>
+    </div>
+  </header>
+
+  <div class="search">
+    <span class="search-icon">⌕</span>
+    <input id="search" placeholder="Search" oninput="renderHome()">
+  </div>
+
+  <div class="section-title">
+    <span>Folders</span><button class="link-btn" onclick="openFolderSheet()">New folder</button>
+  </div>
+  <div id="folderGrid" class="folder-grid"></div>
+
+  <div class="recent">
+    <div class="section-title">
+      <span>Recent exercises</span><button class="link-btn" onclick="showAllExercises()">See all</button>
+    </div>
+    <div id="recentList" class="exercise-list"></div>
+  </div>
+</section>
+
+<section id="folder" class="view">
+  <div class="subtop">
+    <button class="back" onclick="goHome()">‹&nbsp; Folders</button>
+    <button class="circle" onclick="folderMenu()">•••</button>
+  </div>
+  <div class="page-heading">
+    <h2 id="folderTitle"></h2><p id="folderSub"></p>
+  </div>
+  <div class="section-title">
+    <span>Exercises</span><button class="link-btn" onclick="openExerciseSheet()">New exercise</button>
+  </div>
+  <div id="exerciseRows" class="rows"></div>
+</section>
+
+<section id="exercise" class="view">
+  <div class="subtop">
+    <button class="back" onclick="backToFolder()">‹&nbsp; Back</button>
+    <button class="circle" onclick="exerciseMenu()">•••</button>
+  </div>
+  <div class="exercise-head">
+    <div class="small" id="exerciseFolder"></div>
+    <h2 id="exerciseTitle"></h2>
+  </div>
+  <div id="peopleStrip" class="people-strip"></div>
+  <div id="logs"></div>
+  <div style="height:25px"></div>
+</section>
+
+<section id="people" class="view">
+  <div class="subtop"><button class="back" onclick="goHome()">‹&nbsp; Back</button></div>
+  <div class="page-heading"><h2>People</h2><p>People appear automatically in every exercise.</p></div>
+  <div class="section-title"><span>Your people</span><button class="link-btn" onclick="openPersonSheet()">Add</button></div>
+  <div id="peopleRows" class="rows"></div>
+</section>
+
+<section id="allExercises" class="view">
+  <div class="subtop"><button class="back" onclick="goHome()">‹&nbsp; Back</button></div>
+  <div class="page-heading"><h2>Exercises</h2><p>Every exercise in your notebook.</p></div>
+  <div id="allRows" class="rows"></div>
+</section>
+
+<section id="settings" class="view">
+  <div class="subtop"><button class="back" onclick="goHome()">‹&nbsp; Home</button></div>
+  <div class="page-heading"><h2>Settings</h2><p>Simple, local, personal.</p></div>
+  <div class="rows">
+    <button class="row" onclick="exportData()">
+      <div><div class="row-title">Export data</div><div class="row-meta">Save a backup of your notebook</div></div><span>›</span>
+    </button>
+    <button class="row" onclick="document.getElementById('importFile').click()">
+      <div><div class="row-title">Import data</div><div class="row-meta">Restore a notebook backup</div></div><span>›</span>
+    </button>
+    <button class="row" onclick="resetDemo()">
+      <div><div class="row-title">Restore example data</div><div class="row-meta">Replace the current notebook with examples</div></div><span>›</span>
+    </button>
+    <button class="row" onclick="clearAll()">
+      <div><div class="row-title">Clear notebook</div><div class="row-meta">Delete folders, exercises and logs</div></div><span>›</span>
+    </button>
+    <button class="row" id="cloudSyncRow" onclick="syncEnabled?signOutCloud():createCloudAccount()">
+      <div><div class="row-title" id="cloudTitle">Cloud sync</div><div class="row-meta" id="cloudMeta">Save across devices</div></div><span>›</span>
+    </button>
+  </div>
+  <input id="importFile" type="file" accept=".json,application/json" hidden onchange="importData(this.files[0]);this.value=''">
+</section>
+
+</div>
+
+<div class="bottom">
+  <button class="add" id="globalAdd" onclick="globalAdd()">＋ <span id="addLabel">New folder</span></button>
+</div>
+
+<div id="audienceSheet" class="audience-sheet" onclick="if(event.target===this)closeAudienceSheet()" aria-hidden="true">
+  <div class="audience-sheet-card" role="dialog" aria-modal="true" aria-labelledby="audienceSheetTitle">
+    <div class="handle"></div>
+    <h3 class="audience-sheet-title" id="audienceSheetTitle">Note visibility</h3>
+    <div class="audience-options">
+      <button class="audience-sheet-option" type="button" data-audience="person" onclick="chooseAudience('person', event)">
+        <span id="audiencePersonName">Me</span><span class="audience-radio" aria-hidden="true"></span>
+      </button>
+      <button class="audience-sheet-option" type="button" data-audience="shared" onclick="chooseAudience('shared', event)">
+        <span>Everyone</span><span class="audience-radio" aria-hidden="true"></span>
+      </button>
+    </div>
+  </div>
+</div>
+<div id="sheet" class="sheet" onclick="if(event.target===this)closeSheet()">
+  <div class="sheet-card">
+    <div class="handle"></div>
+    <h3 class="sheet-title" id="sheetTitle">New folder</h3>
+    <div id="sheetBody"></div>
+    <div class="actions">
+      <button class="cancel" onclick="closeSheet()">Cancel</button>
+      <button class="save" onclick="saveSheet()">Save</button>
+    </div>
+  </div>
+</div>
+<div id="toast" class="toast"></div>
+
+<script>
+const KEY='curl-notebook-v4';
+
+const demo={
+  folders:[
+    {id:'push',name:'Push',color:'#ff9b22'},
+    {id:'pull',name:'Pull',color:'#f6a329'},
+    {id:'legs',name:'Legs',color:'#ff8e18'}
+  ],
+  people:[{id:'me',name:'Me'}],
+  exercises:[
+    {id:'incline',folder:'push',name:'Incline Bench Press'},
+    {id:'lat',folder:'pull',name:'Lat Pulldown'},
+    {id:'curl',folder:'pull',name:'Bicep Curl'}
+  ],
+  logs:{
+    incline:{me:[{date:'Today',time:'08:20',sets:[['1','60','8',''],['2','60','8',''],['3','57.5','9','']]}]},
+    lat:{me:[{date:'Yesterday',time:'08:10',sets:[['1','65','9',''],['2','60','10','']]}]},
+    curl:{me:[{date:'28 Sep',time:'08:35',sets:[['1','10','10',''],['2','10','9','']]}]}
+  }
+};
+
+let data=load();
+let sheetPersonId=null;
+let currentFolder=null,currentExercise=null,currentPerson=null,currentSourceView='home';
+let sheetMode=null;
+
+function load(){
+  try{
+    const x=JSON.parse(localStorage.getItem(KEY));
+    if(x&&x.folders&&x.people&&x.exercises){
+      Object.values(x.logs||{}).forEach(byPerson=>Object.values(byPerson||{}).forEach(logs=>{
+        (logs||[]).forEach((l,i)=>{
+          if(!l.createdAt){
+            const parsed=Date.parse(`${l.date||''}T${l.time||'00:00'}`);
+            l.createdAt=Number.isFinite(parsed)?parsed:(Date.now()-i);
+          }
+          if(!l.updatedAt)l.updatedAt=l.createdAt;
+        });
+      }));
+      (x.exercises||[]).forEach(e=>(e.notes||[]).forEach((n,i)=>{
+        if(!n.createdAt)n.createdAt=Date.now()-i;
+        if(!n.date){const d=new Date(n.createdAt);n.date=d.toISOString().slice(0,10)}
+        if(!n.time){const d=new Date(n.createdAt);n.time=d.toTimeString().slice(0,5)}
+      }));
+      return x;
+    }
+  }catch(e){}
+  return JSON.parse(JSON.stringify(demo));
+}
+function persist(){localStorage.setItem(KEY,JSON.stringify(data))}
+function id(){return Math.random().toString(36).slice(2,10)}
+function initials(n){return (n||'?').split(/\s+/).map(x=>x[0]).join('').slice(0,2).toUpperCase()}
+function esc(s){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
+function show(id){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo({top:0,behavior:'instant'});
+  document.getElementById('globalAdd').style.display=(id==='settings'||id==='people'||id==='allExercises')?'none':'block';
+  const labels={home:'New folder',folder:'New exercise',exercise:'Log session'};
+  const label=document.getElementById('addLabel'); if(label) label.textContent=labels[id]||'Add';
+}
+function goHome(){show('home');renderHome()}
+function renderSettings(){
+  const cloudTitle=document.getElementById('cloudTitle');
+  const cloudMeta=document.getElementById('cloudMeta');
+  if(syncEnabled&&user){
+    cloudTitle.textContent='Cloud sync: Active';
+    cloudMeta.textContent=`Synced as ${user.email}`;
+  }else{
+    cloudTitle.textContent='Cloud sync';
+    cloudMeta.textContent='Save across devices';
+  }
+}
+function openPeople(){show('people');renderPeople()}
+function openSettings(){show('settings');renderSettings()}
+function renderHome(){
+  const q=(document.getElementById('search')?.value||'').toLowerCase().trim();
+  const folders=data.folders.filter(f=>!q||f.name.toLowerCase().includes(q)||data.exercises.some(e=>e.folder===f.id&&e.name.toLowerCase().includes(q)));
+  const grid=document.getElementById('folderGrid');
+  grid.innerHTML=folders.length?folders.map(f=>{
+    const count=data.exercises.filter(e=>e.folder===f.id).length;
+    return `<button class="folder-card" onclick="openFolder('${f.id}')">
+      <div class="folder-art">
+        <div class="folder-inner"><span class="folder-count">${count} ${count===1?'exercise':'exercises'}</span><span class="folder-dots">•••</span></div>
+      </div>
+      <div class="folder-name">${esc(f.name)}</div>
+      <div class="folder-meta">${count?count+' exercise'+(count===1?'':'s'):'Empty folder'}</div>
+    </button>`
+  }).join(''):`<div class="empty" style="grid-column:1/-1">No folders yet.</div>`;
+
+  const recent=data.exercises.filter(e=>!q||e.name.toLowerCase().includes(q)||folderName(e.folder).toLowerCase().includes(q)).slice(-6).reverse();
+  document.getElementById('recentList').innerHTML=recent.length?recent.map(exerciseRowHTML).join(''):`<div class="empty">No exercises yet.</div>`;
+}
+function darken(hex){
+  const n=parseInt(hex.replace('#',''),16);
+  const r=Math.max(0,((n>>16)&255)-12),g=Math.max(0,((n>>8)&255)-12),b=Math.max(0,(n&255)-12);
+  return '#'+[r,g,b].map(x=>x.toString(16).padStart(2,'0')).join('');
+}
+function folderName(fid){return data.folders.find(f=>f.id===fid)?.name||'Folder'}
+function exerciseRowHTML(e){
+  const count=Object.values(data.logs[e.id]||{}).reduce((n,a)=>n+a.length,0);
+  return `<button class="exercise-row" onclick="openExercise('${e.id}')">
+    <div class="exercise-symbol">${esc(e.name.slice(0,1).toUpperCase())}</div>
+    <div class="exercise-main"><div class="exercise-name">${esc(e.name)}</div><div class="exercise-meta">${esc(folderName(e.folder))} · ${count} ${count===1?'session':'sessions'}</div></div>
+    <div class="arrow">›</div>
+  </button>`;
+}
+function openFolder(fid){currentSourceView='home';
+  currentFolder=fid;
+  const f=data.folders.find(x=>x.id===fid);
+  document.getElementById('folderTitle').textContent=f.name;
+  const count=data.exercises.filter(e=>e.folder===fid).length;
+  document.getElementById('folderSub').textContent=`${count} ${count===1?'exercise':'exercises'}`;
+  document.getElementById('exerciseRows').innerHTML=data.exercises.filter(e=>e.folder===fid).map(exerciseRowHTML).join('')||'<div class="empty" style="margin-top:15px">This folder is empty.</div>';
+  show('folder');
+}
+function openExercise(eid){
+  const previous=document.querySelector('.view.active')?.id;
+  if(previous==='folder') currentSourceView='folder'; else if(previous==='allExercises') currentSourceView='allExercises'; else currentSourceView='home';
+  currentExercise=eid;
+  currentPerson=currentPerson||data.people[0]?.id;
+  const e=data.exercises.find(x=>x.id===eid);
+  if(!e.notes)e.notes=[];
+  document.getElementById('exerciseFolder').textContent=folderName(e.folder);
+  document.getElementById('exerciseTitle').textContent=e.name;
+  renderPeopleStrip();renderRecords();show('exercise');
+}
+function renderPeopleStrip(){
+  document.getElementById('peopleStrip').innerHTML=data.people.length?data.people.map(p=>`
+    <button class="person-pill ${p.id===currentPerson?'selected':''}" onclick="selectPerson('${p.id}')">
+      <div class="avatar">${initials(p.name)}</div><span>${esc(p.name)}</span>
+    </button>`).join(''):`<div class="empty">Add a person in People first.</div>`;
+}
+function selectPerson(pid){currentPerson=pid;renderPeopleStrip();renderRecords()}
+function formatDisplayTime(value){
+  const raw=String(value||'').trim();
+  if(!raw)return '';
+  // Stored times remain 24-hour HH:mm for reliable sorting/import compatibility.
+  // Only the UI presentation is converted to the requested 12-hour format.
+  const m=raw.match(/^(\d{1,2}):(\d{2})$/);
+  if(!m)return raw;
+  let h=Number(m[1]);
+  const min=m[2];
+  if(!Number.isFinite(h)||h<0||h>23)return raw;
+  const suffix=h>=12?'PM':'AM';
+  h=h%12||12;
+  return `${h}:${min} ${suffix}`;
+}
+
+function recordTime(record){
+  // The feed must follow the date/time the user actually sees on each card.
+  // Do not sort logs by updatedAt because an older session can have a newer
+  // internal update timestamp while still displaying its original session time.
+  const date=String(record?.date||'');
+  const time=String(record?.time||'00:00');
+  const displayed=Date.parse(`${date}T${time}:00`);
+  if(Number.isFinite(displayed)) return displayed;
+  if(record?.createdAt) return Number(record.createdAt)||0;
+  if(record?.updatedAt) return Number(record.updatedAt)||0;
+  return 0;
+}
+
+function renderRecords(){
+  const ex=data.exercises.find(x=>x.id===currentExercise);
+  if(!ex)return;
+  migrateNotesToPeople(ex);
+  if(!ex.sharedNotes) ex.sharedNotes=[];
+
+  const rawLogs=((data.logs[currentExercise]||{})[currentPerson])||[];
+  const logs=rawLogs.map((l,index)=>({type:'session',item:l,index,at:recordTime(l),order:index}));
+  const personNotes=(ex.notesByPerson?.[currentPerson])||[];
+  const notes=personNotes.map((n,index)=>({type:'note',scope:'person',item:n,index,at:Number(n.createdAt)||0,order:index}));
+  const sharedNotes=(ex.sharedNotes||[]).map((n,index)=>({type:'note',scope:'shared',item:n,index,at:Number(n.createdAt)||0,order:index}));
+
+  const timeline=[...logs,...notes,...sharedNotes].sort((a,b)=>{
+    const ap=a.type==='note' && a.item.pinned;
+    const bp=b.type==='note' && b.item.pinned;
+    if(ap!==bp)return bp-ap;
+    if(b.at!==a.at)return b.at-a.at;
+    return b.order-a.order;
+  });
+
+  const timelineHtml=timeline.map(record=>{
+    if(record.type==='note'){
+      const n=record.item;
+      const rich=n.html ? sanitizeNoteHtml(n.html) : esc(n.text||'');
+      return `
+        <div class="note-item ${n.pinned?'pinned':''}">
+          <div class="note-top">
+            <div>
+              <div class="note-date">${esc(n.date||'Today')}</div>
+              <div class="note-time">${esc(formatDisplayTime(n.time))}</div>
+            </div>
+            <button class="inline-menu" onclick="openNoteMenu('${record.scope}',${record.index})" aria-label="Note options">•••</button>
+          </div>
+          <div class="note-text">${rich}</div>
+          ${n.attachment?.name?`<div class="note-attachment"><span>↳</span><span>${esc(n.attachment.name)}</span></div>`:''}
+        </div>`;
+    }
+    const l=record.item, li=record.index;
+    return `
+      <div class="log">
+        <div class="log-top">
+          <div><div class="log-date">${esc(l.date)}</div><div class="log-time">${esc(formatDisplayTime(l.time))}</div></div>
+          <div class="log-actions"><button class="inline-menu" onclick="openSessionMenu(${li})" aria-label="Session options">•••</button></div>
+        </div>
+        <div class="table">
+          <div class="head">Set</div><div class="head">kg</div><div class="head">Reps</div><div class="head"></div>
+          ${l.sets.map((set,si)=>`<div class="log-set-row" style="grid-column:1 / -1"><div>${esc(set[0])}</div><div>${esc(set[1])}</div><div>${esc(set[2])}</div><button class="set-more" onclick="openSetMenu(${li},${si})" aria-label="Set options">•••</button></div>`).join('')}
+        </div>
+      </div>`;
+  }).join('');
+
+  const currentName=data.people.find(p=>p.id===currentPerson)?.name||'Person';
+  if(!window.noteAudienceState)window.noteAudienceState='person';
+  document.getElementById('logs').innerHTML=`
+    <div class="records">
+      <div class="note-compose" id="noteCompose">
+        <div class="note-compose-main">
+          <div id="newNoteInput" class="note-editor" contenteditable="true" role="textbox" aria-multiline="true" data-placeholder="Add a note..."></div>
+        </div>
+        <div class="note-tools">
+          <div class="note-format-group" aria-label="Text formatting">
+            <button class="note-format-btn bold" type="button" onmousedown="event.preventDefault()" onclick="formatNote('bold')" aria-label="Bold">B</button>
+            <button class="note-format-btn italic" type="button" onmousedown="event.preventDefault()" onclick="formatNote('italic')" aria-label="Italic">I</button>
+            <button class="note-format-btn underline" type="button" onmousedown="event.preventDefault()" onclick="formatNote('underline')" aria-label="Underline">U</button>
+            <div class="note-audience-wrap">
+              <button id="noteAudienceBtn" class="note-audience-btn" type="button" aria-haspopup="dialog" aria-expanded="false" onclick="toggleAudienceSheet(event)"><span class="audience-label">${esc(currentName)}</span></button>
+            </div>
+          </div>
+          <button class="note-submit" onclick="addNote()" aria-label="Add note"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 18V6"></path><path d="m7 11 5-5 5 5"></path></svg></button>
+        </div>
+      </div>
+      ${timelineHtml || `<div class="empty" style="margin-top:0">No activity for ${esc(currentName)} yet.</div>`}
+    </div>`;
+
+  const input=document.getElementById('newNoteInput');
+  const compose=document.getElementById('noteCompose');
+  // Enter stays a normal newline inside the rich-text note editor.
+  // Submission is intentionally button-only so Enter never accidentally posts the note.
+  // Keep B / I / U buttons visually synced with the formatting at the caret.
+  if(input){
+    ['keyup','mouseup','input','focus'].forEach(type=>input.addEventListener(type,updateNoteFormatState));
+  }
+  document.addEventListener('selectionchange',window._curlNoteSelectionHandler||(window._curlNoteSelectionHandler=()=>{
+    const editor=document.getElementById('newNoteInput');
+    const sel=window.getSelection();
+    if(editor && sel && sel.rangeCount && editor.contains(sel.anchorNode)) updateNoteFormatState();
+  }));
+  updateNoteFormatState();
+  chooseAudience(window.noteAudienceState||'person');
+
+  document.addEventListener('click',window._curlNoteBlurHandler||(window._curlNoteBlurHandler=(e)=>{
+    const c=document.getElementById('noteCompose');
+    const editor=document.getElementById('newNoteInput');
+    if(c && !c.contains(e.target) && !(editor?.innerText||'').trim()) c.classList.remove('active');
+  }));
+}
+
+function migrateNotesToPeople(ex){
+  if(!ex.notesByPerson) ex.notesByPerson={};
+  // Notes created by older versions had no personId. Preserve them under the
+  // currently selected person once, rather than showing them to everyone.
+  if(Array.isArray(ex.notes) && ex.notes.length){
+    const target=currentPerson || data.people[0]?.id;
+    if(target){
+      if(!ex.notesByPerson[target]) ex.notesByPerson[target]=[];
+      ex.notesByPerson[target].push(...ex.notes.map(n=>({...n,personId:target})));
+    }
+    delete ex.notes;
+    persist();
+  }
+}
+
+function renderLogs(){ renderRecords(); }
+function renderNotes(){ renderRecords(); }
+
+function stampRecord(record){
+  const now=new Date();
+  record.date=now.toISOString().slice(0,10);
+  record.time=now.toTimeString().slice(0,5);
+  record.updatedAt=now.getTime();
+}
+
+function getPersonNotes(){
+  const ex=data.exercises.find(x=>x.id===currentExercise);
+  if(!ex)return null;
+  if(!ex.notesByPerson)ex.notesByPerson={};
+  if(!ex.notesByPerson[currentPerson])ex.notesByPerson[currentPerson]=[];
+  return ex.notesByPerson[currentPerson];
+}
+
+function getSharedNotes(){
+  const ex=data.exercises.find(x=>x.id===currentExercise);
+  if(!ex)return null;
+  if(!ex.sharedNotes)ex.sharedNotes=[];
+  return ex.sharedNotes;
+}
+
+function sanitizeNoteHtml(html){
+  const box=document.createElement('div');
+  box.innerHTML=String(html||'');
+  const allowed=new Set(['B','STRONG','I','EM','U','BR']);
+
+  // Contenteditable uses DIV/P blocks for Enter. Convert those blocks into
+  // explicit BRs so every newline survives when the note is saved.
+  function cleanNode(node){
+    if(node.nodeType===Node.TEXT_NODE) return esc(node.nodeValue);
+    if(node.nodeType!==Node.ELEMENT_NODE) return '';
+    const tag=node.tagName;
+    if(tag==='BR') return '<br>';
+    const inner=[...node.childNodes].map(cleanNode).join('');
+    // Keep block elements as real blocks. This is more reliable than
+    // converting them to <br> because mobile contenteditable implementations
+    // differ in how they serialize the Enter key.
+    if(tag==='DIV' || tag==='P') return `<div>${inner}</div>`;
+    if(!allowed.has(tag)) return inner;
+    return `<${tag.toLowerCase()}>${inner}</${tag.toLowerCase()}>`;
+  }
+
+  return [...box.childNodes].map(cleanNode).join('');
+}
+
+function updateNoteFormatState(){
+  const editor=document.getElementById('newNoteInput');
+  if(!editor)return;
+  const commands={bold:'bold',italic:'italic',underline:'underline'};
+  Object.entries(commands).forEach(([cls,command])=>{
+    const btn=document.querySelector(`.note-format-btn.${cls}`);
+    if(!btn)return;
+    let active=false;
+    try{ active=document.queryCommandState(command); }catch(e){}
+    btn.classList.toggle('active',!!active);
+    btn.setAttribute('aria-pressed',active?'true':'false');
+  });
+}
+
+function formatNote(command){
+  const editor=document.getElementById('newNoteInput');
+  if(!editor)return;
+  editor.focus();
+  document.execCommand(command,false,null);
+  updateNoteFormatState();
+}
+
+window.noteAudienceState='person';
+function toggleAudienceSheet(e){
+  e?.stopPropagation();
+  const sheet=document.getElementById('audienceSheet');
+  const btn=document.getElementById('noteAudienceBtn');
+  if(!sheet)return;
+  const name=data.people.find(p=>p.id===currentPerson)?.name||'Person';
+  const personName=document.getElementById('audiencePersonName');
+  if(personName)personName.textContent=name;
+  sheet.classList.add('show');
+  sheet.setAttribute('aria-hidden','false');
+  btn?.setAttribute('aria-expanded','true');
+  updateAudienceSheetState();
+}
+function closeAudienceSheet(){
+  const sheet=document.getElementById('audienceSheet');
+  const btn=document.getElementById('noteAudienceBtn');
+  sheet?.classList.remove('show');
+  sheet?.setAttribute('aria-hidden','true');
+  btn?.setAttribute('aria-expanded','false');
+}
+function updateAudienceSheetState(){
+  const value=window.noteAudienceState||'person';
+  document.querySelectorAll('.audience-sheet-option').forEach(o=>{
+    o.classList.toggle('selected',o.dataset.audience===value);
+  });
+}
+function chooseAudience(value,e){
+  e?.stopPropagation();
+  window.noteAudienceState=value;
+  const btn=document.getElementById('noteAudienceBtn');
+  const name=data.people.find(p=>p.id===currentPerson)?.name||'Person';
+  if(btn)btn.querySelector('.audience-label').textContent=value==='shared'?'Everyone':name;
+  updateAudienceSheetState();
+  closeAudienceSheet();
+}
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape')closeAudienceSheet();
+});
+
+function addNote(){
+  const input=document.getElementById('newNoteInput');
+  if(!input)return;
+  const html=sanitizeNoteHtml(input.innerHTML);
+  const plain=(input.innerText||'').trim();
+  if(!plain){input.focus();return}
+  const audience=window.noteAudienceState||'person';
+  const notes=audience==='shared'?getSharedNotes():getPersonNotes();
+  if(!notes)return;
+  const now=new Date();
+  notes.push({
+    text:plain,
+    html,
+    pinned:false,
+    createdAt:now.getTime(),
+    date:now.toISOString().slice(0,10),
+    time:now.toTimeString().slice(0,5),
+    personId:audience==='person'?currentPerson:null,
+    audience:audience==='shared'?'everyone':'person'
+  });
+  persist(); renderRecords(); toast(audience==='shared'?'Note added for everyone':'Note added');
+}
+
+function noteCollection(scope){
+  return scope==='shared'?getSharedNotes():getPersonNotes();
+}
+
+function openNoteMenu(scope,noteIndex){
+  const notes=noteCollection(scope);
+  const note=notes?.[noteIndex];
+  if(!note)return;
+  openActionSheet(note.pinned?'Pinned note':(scope==='shared'?'Everyone note':'Note'),[
+    {label:note.pinned?'Unpin note':'Pin note',icon:'●',run:()=>toggleNotePin(scope,noteIndex)},
+    {label:'Edit note',icon:'✎',run:()=>editNote(scope,noteIndex)},
+    {label:'Delete note',icon:'⌫',danger:true,run:()=>deleteNote(scope,noteIndex)}
+  ]);
+}
+
+function editNote(scope,ni){
+  const notes=noteCollection(scope);
+  if(!notes?.[ni])return;
+  const oldHtml=notes[ni].html||esc(notes[ni].text||'');
+  sheetMode='editNote';
+  openSheet('Edit note',`
+    <div class="field"><label>Note</label>
+      <div id="editNoteInput" contenteditable="true" style="width:100%;min-height:120px;border:1px solid #ddd;background:#fff;border-radius:17px;outline:none;padding:14px;font:inherit;line-height:1.45">${oldHtml}</div>
+      <div style="display:flex;gap:5px;margin-top:8px">
+        <button type="button" class="note-format-btn bold" onmousedown="event.preventDefault()" onclick="document.getElementById('editNoteInput').focus();document.execCommand('bold',false,null)">B</button>
+        <button type="button" class="note-format-btn italic" onmousedown="event.preventDefault()" onclick="document.getElementById('editNoteInput').focus();document.execCommand('italic',false,null)">I</button>
+        <button type="button" class="note-format-btn underline" onmousedown="event.preventDefault()" onclick="document.getElementById('editNoteInput').focus();document.execCommand('underline',false,null)">U</button>
+      </div>
+    </div>`);
+  document.querySelector('#sheet .save').onclick=()=>{
+    const el=document.getElementById('editNoteInput');
+    const plain=(el?.innerText||'').trim();
+    if(!plain){toast('Note cannot be empty');return}
+    notes[ni].text=plain;
+    notes[ni].html=sanitizeNoteHtml(el.innerHTML);
+    persist();closeSheet();renderRecords();toast('Note updated');
+  };
+  setTimeout(()=>document.getElementById('editNoteInput')?.focus(),80);
+}
+
+function deleteNote(scope,ni){
+  const notes=noteCollection(scope);
+  if(!notes?.[ni])return;
+  openConfirmSheet('Delete note?','This note will be permanently deleted.',()=>{
+    notes.splice(ni,1);
+    persist();renderRecords();toast('Note deleted');
+  });
+}
+
+function toggleNotePin(scope,ni){
+  const notes=noteCollection(scope);
+  if(!notes?.[ni])return;
+  notes[ni].pinned=!notes[ni].pinned;
+  persist();renderRecords();toast(notes[ni].pinned?'Note pinned':'Note unpinned');
+}
+
+function openSessionMenu(sessionIndex){
+  const session=(data.logs[currentExercise]||{})[currentPerson]?.[sessionIndex];
+  if(!session)return;
+  openActionSheet(session.date,[
+    {label:'Edit session',icon:'✎',run:()=>editSession(sessionIndex)},
+    {label:'Delete session',icon:'⌫',danger:true,run:()=>confirmDeleteSession(sessionIndex)}
+  ]);
+}
+function openSetMenu(sessionIndex,setIndex){
+  const set=(data.logs[currentExercise]||{})[currentPerson]?.[sessionIndex]?.sets?.[setIndex];
+  if(!set)return;
+  openActionSheet(`Set ${set[0]}`,[
+    {label:'Edit set',icon:'✎',run:()=>editSet(sessionIndex,setIndex)},
+    {label:'Delete set',icon:'⌫',danger:true,run:()=>deleteSet(sessionIndex,setIndex)}
+  ]);
+}
+function editSession(sessionIndex){
+  const session=data.logs[currentExercise][currentPerson][sessionIndex];
+  openLogSheet(sessionIndex);
+}
+function editSet(sessionIndex,setIndex){
+  const set=data.logs[currentExercise][currentPerson][sessionIndex].sets[setIndex];
+  sheetMode='editSet';
+  openSheet('Edit set',`
+    <div class="field"><label>Weight (kg)</label><input id="editWeight" type="number" inputmode="decimal" step="0.5" min="0" value="${esc(set[1])}" autofocus></div>
+    <div class="field"><label>Reps</label><input id="editReps" type="number" inputmode="numeric" step="1" min="1" value="${esc(set[2])}"></div>
+  `);
+  document.querySelector('#sheet .save').onclick=()=>{
+    const w=document.getElementById('editWeight').value.trim(),r=document.getElementById('editReps').value.trim();
+    if(!(parseFloat(w)>0&&parseInt(r,10)>0))return;
+    set[1]=w;set[2]=r;persist();closeSheet();renderLogs();toast('Set updated');
+  };
+}
+function confirmDeleteSession(sessionIndex){
+  openConfirmSheet('Delete session?','This session and all of its sets will be permanently deleted.',()=>deleteSession(sessionIndex));
+}
+function deleteSession(sessionIndex){
+  data.logs[currentExercise][currentPerson].splice(sessionIndex,1);
+  persist();renderLogs();toast('Session deleted');
+}
+function deleteSet(sessionIndex,setIndex){
+  const sets=data.logs[currentExercise][currentPerson][sessionIndex].sets;
+  sets.splice(setIndex,1);
+  sets.forEach((x,i)=>x[0]=String(i+1));
+  if(!sets.length)data.logs[currentExercise][currentPerson].splice(sessionIndex,1);
+  persist();renderLogs();toast('Set deleted');
+}
+function backToFolder(){
+  if(currentSourceView==='folder' && currentFolder){ openFolder(currentFolder); }
+  else if(currentSourceView==='allExercises'){ showAllExercises(); }
+  else { goHome(); }
+}
+function showAllExercises(){
+  document.getElementById('allRows').innerHTML=data.exercises.map(exerciseRowHTML).join('')||'<div class="empty" style="margin-top:15px">No exercises yet.</div>';
+  show('allExercises');
+}
+function renderPeople(){
+  document.getElementById('peopleRows').innerHTML=data.people.length?data.people.map(p=>`
+    <div class="row"><div class="row-left"><div class="row-symbol">${initials(p.name)}</div><div><div class="row-title">${esc(p.name)}</div><div class="row-meta">Available in every exercise</div></div></div><button class="more" onclick="openPersonMenu('${p.id}')">›</button></div>`).join(''):'<div class="empty" style="margin-top:15px">No people yet.</div>';
+}
+function globalAdd(){
+  const active=document.querySelector('.view.active')?.id;
+  if(active==='folder') openExerciseSheet();
+  else if(active==='exercise') openLogSheet();
+  else openFolderSheet();
+}
+function openFolderSheet(){sheetMode='folder';openSheet('New folder',`<div class="field"><label>Folder name</label><input id="sheetInput" autofocus placeholder="e.g. Push, Pull, Upper"></div>`)}
+function openExerciseSheet(){sheetMode='exercise';openSheet('New exercise',`
+  <div class="field"><label>Exercise name</label><input id="sheetInput" autofocus placeholder="e.g. Incline Bench Press"></div>
+  <div class="field"><label>Folder</label><select id="sheetSelect">${data.folders.map(f=>`<option value="${f.id}" ${f.id===currentFolder?'selected':''}>${esc(f.name)}</option>`).join('')}</select></div>`)}
+function openLogSheet(editSessionIndex=null){
+  if(!currentExercise || !data.people.length){ toast('Add a person first'); return; }
+  sheetMode=editSessionIndex===null?'log':'editSession';
+  const session=editSessionIndex===null?null:data.logs[currentExercise][currentPerson][editSessionIndex];
+  openSheet(editSessionIndex===null?'Log session':'Edit session',`
+    <div class="field"><label>Person</label><select id="sheetPerson">${data.people.map(p=>`<option value="${p.id}" ${p.id===currentPerson?'selected':''}>${esc(p.name)}</option>`).join('')}</select></div>
+    <div class="field">
+      <label>Sets</label>
+      <div class="set-editor" id="setEditor">
+        <div class="set-editor-head"><span>Weight (kg)</span><span>Reps</span><span></span></div>
+        ${(session?.sets||[['','','','']]).map(set=>`<div class="set-editor-row"><input class="set-weight" type="number" inputmode="decimal" step="0.5" min="0" placeholder="60" value="${esc(set[1]||'')}"><input class="set-reps" type="number" inputmode="numeric" step="1" min="1" placeholder="8" value="${esc(set[2]||'')}"><button class="remove-set" type="button" onclick="removeLogSet(this)" aria-label="Remove set">×</button></div>`).join('')}
+      </div>
+      <button class="add-set" type="button" onclick="addLogSet()">+ Add set</button>
+    </div>
+  `);
+  window._editingSessionIndex=editSessionIndex;
+}
+function addLogSet(){
+  const editor=document.getElementById('setEditor');
+  const row=document.createElement('div'); row.className='set-editor-row';
+  row.innerHTML='<input class="set-weight" type="number" inputmode="decimal" step="0.5" min="0" placeholder="60"><input class="set-reps" type="number" inputmode="numeric" step="1" min="1" placeholder="8"><button class="remove-set" type="button" onclick="removeLogSet(this)" aria-label="Remove set">×</button>';
+  editor.appendChild(row); row.querySelector('.set-weight').focus();
+}
+function removeLogSet(btn){
+  const rows=document.querySelectorAll('#setEditor .set-editor-row');
+  if(rows.length===1){rows[0].querySelector('.set-weight').value='';rows[0].querySelector('.set-reps').value='';return}
+  btn.closest('.set-editor-row').remove();
+}
+function openPersonMenu(pid){
+  openActionSheet('Menu',[
+    {label:'Rename',icon:'✎',run:()=>openRenamePerson(pid)},
+    {label:'Delete',icon:'⌫',danger:true,run:()=>confirmDeletePerson(pid)}
+  ]);
+}
+function confirmDeletePerson(pid){
+  const p=data.people.find(x=>x.id===pid);
+  if(!p)return;
+  if(!confirm('Delete '+p.name+'?'))return;
+  data.people=data.people.filter(x=>x.id!==pid);
+  if(currentPerson===pid)currentPerson=data.people[0]?.id||null;
+  persist();
+  closeSheet();
+  renderPeople();
+  toast('Deleted');
+}
+function openRenamePerson(pid){
+  const p=data.people.find(x=>x.id===pid);
+  if(!p)return;
+  sheetPersonId=pid;
+  sheetMode='renamePerson';
+  openSheet('Rename person',`<div class="field"><label>Name</label><input id="sheetInput" type="text" value="${esc(p.name)}" autofocus></div>`);
+}
+function openPersonSheet(){sheetMode='person';openSheet('Add person',`<div class="field"><label>Name</label><input id="sheetInput" autofocus placeholder="e.g. Me"></div>`)}
+function openSheet(title,body){
+  document.getElementById('sheetTitle').textContent=title;
+  document.getElementById('sheetBody').innerHTML=body;
+  document.querySelector('#sheet .actions').style.display='flex';
+  document.getElementById('sheet').classList.add('show');
+  setTimeout(()=>document.getElementById('sheetInput')?.focus(),80);
+}
+function openActionSheet(title,items){
+  document.getElementById('sheetTitle').textContent=title;
+  document.getElementById('sheetBody').innerHTML=`<div class="action-list">${
+    items.map((item,i)=>`<button class="action-item ${item.danger?'danger':''}" onclick="runAction(${i})">
+      <span>${esc(item.label)}</span><span class="action-icon">${item.icon||'›'}</span>
+    </button>`).join('')
+  }</div>`;
+  document.querySelector('#sheet .actions').style.display='none';
+  window._sheetActions=items;
+  document.getElementById('sheet').classList.add('show');
+}
+function runAction(i){
+  const action=window._sheetActions?.[i];
+  if(action){closeSheet();action.run();}
+}
+function closeSheet(){
+  document.getElementById('sheet').classList.remove('show');
+  document.querySelector('#sheet .actions').style.display='flex';
+  document.querySelector('#sheet .save').textContent='Save';
+  document.querySelector('#sheet .save').style.background='var(--accent)';
+  document.querySelector('#sheet .save').onclick=saveSheet;
+}
+function saveSheet(){
+  if(sheetMode==='renamePerson'){
+    const name=document.getElementById('sheetInput').value.trim();
+    if(!name){toast('Enter a name');return}
+    const p=data.people.find(x=>x.id===sheetPersonId);
+    if(p){p.name=name;persist();renderPeople();closeSheet();toast('Person renamed')}
+    return;
+  }
+  const input=document.getElementById('sheetInput');const name=input?.value.trim();
+  if(sheetMode!=='log' && !name){input?.focus();return}
+  if(sheetMode==='folder'){
+    data.folders.push({id:id(),name,color:palette(data.folders.length)});
+    persist();closeSheet();renderHome();toast('Folder created');
+  }else if(sheetMode==='renameFolder'){
+    const f=data.folders.find(x=>x.id===currentFolder);
+    if(f&&name){f.name=name;persist();closeSheet();openFolder(currentFolder);toast('Folder renamed')}
+  }else if(sheetMode==='exercise'){
+    const fid=document.getElementById('sheetSelect').value;
+    const e={id:id(),folder:fid,name};
+    data.exercises.push(e);data.logs[e.id]={};persist();closeSheet();openFolder(fid);toast('Exercise created');
+  }else if(sheetMode==='renameExercise'){
+    const e=data.exercises.find(x=>x.id===currentExercise);
+    if(e&&name){e.name=name;persist();closeSheet();openExercise(currentExercise);toast('Exercise renamed')}
+  }else if(sheetMode==='moveExercise'){
+    const e=data.exercises.find(x=>x.id===currentExercise);
+    const fid=document.getElementById('sheetSelect').value;
+    if(e&&fid){e.folder=fid;persist();closeSheet();openExercise(currentExercise);toast('Exercise moved')}
+  }else if(sheetMode==='person'){
+    data.people.push({id:id(),name});persist();closeSheet();renderPeople();toast('Person added');
+  }else if(sheetMode==='log' || sheetMode==='editSession'){
+    const pid=document.getElementById('sheetPerson').value;
+    const rows=[...document.querySelectorAll('#setEditor .set-editor-row')];
+    const sets=rows.map((row,i)=>{
+      const weight=row.querySelector('.set-weight').value.trim();
+      const reps=row.querySelector('.set-reps').value.trim();
+      return [String(i+1),weight,reps,''];
+    }).filter(x=>x[1] && x[2]);
+    if(!sets.length){document.querySelector('#setEditor .set-weight')?.focus();return}
+    data.logs[currentExercise]??={};
+    data.logs[currentExercise][pid]??=[];
+    if(sheetMode==='editSession'){
+      const old=data.logs[currentExercise][currentPerson].splice(window._editingSessionIndex,1)[0];
+      old.sets=sets;
+      data.logs[currentExercise][pid].unshift(old);
+    }else{
+      const now=new Date();
+      const date=now.toISOString().slice(0,10);
+      const time=now.toTimeString().slice(0,5);
+      const stamp=now.getTime();
+
+      // A new log on the same calendar day continues today's session.
+      // Do not create a second session card for the same exercise/person/date.
+      const existing=data.logs[currentExercise][pid].find(session=>session.date===date);
+      if(existing){
+        const offset=existing.sets.length;
+        sets.forEach((set,i)=>set[0]=String(offset+i+1));
+        existing.sets.push(...sets);
+        existing.time=time;
+        existing.updatedAt=stamp;
+        existing.createdAt=existing.createdAt||stamp;
+      }else{
+        data.logs[currentExercise][pid].unshift({date,time,sets,createdAt:stamp,updatedAt:stamp});
+      }
+    }
+    currentPerson=pid;
+    persist();closeSheet();renderPeopleStrip();renderLogs();toast(sheetMode==='editSession'?'Session updated':'Session saved');
+  }
+}
+function palette(i){
+  return ['#776bd9','#826fd5','#8a70ce','#926fc7','#8069d7','#9a72c3'][i%6]
+}
+function folderMenu(){
+  const f=data.folders.find(x=>x.id===currentFolder);
+  if(!f)return;
+  openActionSheet(f.name,[
+    {label:'Rename folder',icon:'✎',run:()=>openRenameFolderSheet(f.id)},
+    {label:'Delete folder',icon:'⌫',danger:true,run:()=>confirmDeleteFolder(f.id)}
+  ]);
+}
+function openRenameFolderSheet(fid){
+  const f=data.folders.find(x=>x.id===fid); if(!f)return;
+  sheetMode='renameFolder';
+  openSheet('Rename folder',`<div class="field"><label>Folder name</label><input id="sheetInput" value="${esc(f.name)}" maxlength="50" autofocus></div>`);
+}
+function confirmDeleteFolder(fid){
+  const f=data.folders.find(x=>x.id===fid); if(!f)return;
+  const count=data.exercises.filter(e=>e.folder===fid).length;
+  openConfirmSheet('Delete folder?',`"${f.name}"${count?` and its ${count} ${count===1?'exercise':'exercises'}`:''} will be permanently deleted.`,()=>deleteFolder(fid));
+}
+function deleteFolder(fid){
+  const ids=data.exercises.filter(e=>e.folder===fid).map(e=>e.id);
+  data.folders=data.folders.filter(x=>x.id!==fid);
+  data.exercises=data.exercises.filter(x=>x.folder!==fid);
+  ids.forEach(x=>delete data.logs[x]);
+  persist();goHome();toast('Folder deleted');
+}
+function exerciseMenu(){
+  const e=data.exercises.find(x=>x.id===currentExercise);
+  if(!e)return;
+  openActionSheet(e.name,[
+    {label:'Rename exercise',icon:'✎',run:()=>openRenameExerciseSheet(e.id)},
+    {label:'Move to folder',icon:'↗',run:()=>openMoveExerciseSheet(e.id)},
+    {label:'Delete exercise',icon:'⌫',danger:true,run:()=>confirmDeleteExercise(e.id)}
+  ]);
+}
+function openRenameExerciseSheet(eid){
+  const e=data.exercises.find(x=>x.id===eid);if(!e)return;
+  sheetMode='renameExercise';
+  openSheet('Rename exercise',`<div class="field"><label>Exercise name</label><input id="sheetInput" value="${esc(e.name)}" maxlength="70" autofocus></div>`);
+}
+function openMoveExerciseSheet(eid){
+  const e=data.exercises.find(x=>x.id===eid);if(!e)return;
+  sheetMode='moveExercise';
+  openSheet('Move exercise',`<div class="field"><label>Folder</label><select id="sheetSelect">${data.folders.map(f=>`<option value="${f.id}" ${f.id===e.folder?'selected':''}>${esc(f.name)}</option>`).join('')}</select></div>`);
+}
+function confirmDeleteExercise(eid){
+  const e=data.exercises.find(x=>x.id===eid);if(!e)return;
+  openConfirmSheet('Delete exercise?',`"${e.name}" and all of its saved sessions will be permanently deleted.`,()=>deleteExercise(eid));
+}
+function deleteExercise(eid){
+  data.exercises=data.exercises.filter(x=>x.id!==eid);
+  delete data.logs[eid];
+  persist();goHome();toast('Exercise deleted');
+}
+function openConfirmSheet(title,copy,onConfirm){
+  document.getElementById('sheetTitle').textContent=title;
+  document.getElementById('sheetBody').innerHTML=`<div class="confirm-copy">${esc(copy)}</div>`;
+  document.querySelector('#sheet .actions').style.display='flex';
+  document.querySelector('#sheet .cancel').textContent='Cancel';
+  document.querySelector('#sheet .save').textContent='Delete';
+  document.querySelector('#sheet .save').style.background='#c0392b';
+  document.querySelector('#sheet .save').onclick=()=>{closeSheet();onConfirm()};
+  document.getElementById('sheet').classList.add('show');
+}
+
+
+function exportData(){
+  const backup={
+    app:'Curl',
+    version:1,
+    exportedAt:new Date().toISOString(),
+    data:JSON.parse(JSON.stringify(data))
+  };
+  const blob=new Blob([JSON.stringify(backup,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  const stamp=new Date().toISOString().slice(0,10);
+  a.href=url;
+  a.download=`curl-backup-${stamp}.json`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
+  toast('Backup exported');
+}
+
+function validBackupData(x){
+  // Backups created by Curl are trusted to use the same schema as the
+  // running app. Keep validation intentionally lightweight so a backup
+  // containing newer optional fields (notes, formatting, timestamps, etc.)
+  // is not rejected by an older importer.
+  if(!x || typeof x!=='object') return false;
+  if(!Array.isArray(x.folders) || !Array.isArray(x.people) || !Array.isArray(x.exercises)) return false;
+
+  if(x.folders.some(f=>!f || typeof f!=='object' || typeof f.id!=='string' || typeof f.name!=='string')) return false;
+  if(x.people.some(p=>!p || typeof p!=='object' || typeof p.id!=='string' || typeof p.name!=='string')) return false;
+  if(x.exercises.some(e=>!e || typeof e!=='object' || typeof e.id!=='string' || typeof e.name!=='string')) return false;
+
+  return true;
+}
+
+function normalizeImportedData(incoming){
+  const folders=incoming.folders.map(f=>({...f}));
+  const people=incoming.people.map(p=>({...p}));
+  const folderIds=new Set(folders.map(f=>f.id));
+
+  const exercises=incoming.exercises.map(e=>{
+    const copy={...e};
+    // Keep all current/optional exercise fields, but repair a missing folder
+    // reference rather than making an otherwise valid backup impossible to import.
+    if(!folderIds.has(copy.folder)) copy.folder=folders[0]?.id||'';
+    if(copy.notes && !Array.isArray(copy.notes)) copy.notes=[];
+    return copy;
+  });
+
+  const logs=(incoming.logs && typeof incoming.logs==='object' && !Array.isArray(incoming.logs))
+    ? JSON.parse(JSON.stringify(incoming.logs)) : {};
+
+  // Ensure every exercise has a log bucket. This also makes older backups
+  // created before logs were initialized import cleanly.
+  exercises.forEach(e=>{ if(!logs[e.id] || typeof logs[e.id]!=='object' || Array.isArray(logs[e.id])) logs[e.id]={}; });
+
+  return {folders,people,exercises,logs};
+}
+
+async function importData(file){
+  if(!file) return;
+  try{
+    const text=await file.text();
+    // Some file managers/editors can prepend a UTF-8 BOM. Strip it before parsing.
+    const parsed=JSON.parse(text.replace(/^\uFEFF/,''));
+    const incoming=parsed?.data && typeof parsed.data==='object' ? parsed.data : parsed;
+
+    // Accept both the current {app, version, data} backup wrapper and the
+    // plain data object used by older Curl builds.
+    if(!validBackupData(incoming)){
+      toast('Invalid Curl backup');
+      return;
+    }
+
+    const clean=normalizeImportedData(incoming);
+    const replace=confirm('Import this backup and replace the current notebook?');
+    if(!replace)return;
+
+    data=clean;
+    persist();
+    currentFolder=null;
+    currentExercise=null;
+    currentPerson=data.people[0]?.id||null;
+    goHome();
+    toast('Backup imported');
+  }catch(e){
+    console.error('Curl import failed:',e);
+    toast('Could not import backup');
+  }
+}
+
+function resetDemo(){if(confirm('Restore example data?')){data=JSON.parse(JSON.stringify(demo));persist();goHome();toast('Example data restored')}}
+function clearAll(){if(confirm('Delete the entire notebook?')){data={folders:[],people:[],exercises:[],logs:{}};persist();goHome();toast('Notebook cleared')}}
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1500)}
+
+// SUPABASE CLOUD SYNC
+const SUPABASE_URL='https://xtbkgutqkuaopzbworqy.supabase.co';
+const SUPABASE_KEY='sb_publishable_kfqHWUH2M4sN6vToJTtJSA_WSn8gN-H';
+let sbClient=null;
+let syncEnabled=false;
+let lastSync=0;
+let user=null;
+let syncTimer=null;
+
+async function initSync(){
+  try{
+    sbClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+    const{data:{session}}=await sbClient.auth.getSession();
+    user=session?.user||null;
+    syncEnabled=!!user;
+    if(syncEnabled){
+      await syncNow();
+      setInterval(syncNow,60000);
+      window.addEventListener('online',syncNow);
+      document.addEventListener('visibilitychange',()=>!document.hidden&&syncNow());
+    }
+  }catch(e){console.error('Sync init:',e)}
+}
+
+async function syncNow(){
+  if(!syncEnabled||!user||!sbClient)return;
+  try{
+    const{data:remote}=await sbClient.from('notebook').select('*').eq('user_id',user.id).single();
+    const local=JSON.stringify(data);
+    
+    if(remote){
+      const remoteStr=JSON.stringify(remote.data);
+      if(local!==remoteStr){
+        const remoteTime=new Date(remote.updated_at);
+        const localTime=new Date(lastSync||0);
+        if(remoteTime>localTime){
+          if(confirm('Data updated on another device. Merge or Replace?')){
+            mergeData(remote.data);
+          }else{
+            data=remote.data;
+            persist();
+          }
+        }
+      }
+    }
+    
+    await sbClient.from('notebook').upsert({user_id:user.id,data,updated_at:new Date().toISOString()});
+    lastSync=new Date().toISOString();
+  }catch(e){console.error('Sync failed:',e)}
+}
+
+function mergeData(remote){
+  data.folders=[...new Map([...data.folders,...remote.folders].map(f=>[f.id,f])).values()];
+  data.people=[...new Map([...data.people,...remote.people].map(p=>[p.id,p])).values()];
+  data.exercises=[...new Map([...data.exercises,...remote.exercises].map(e=>[e.id,e])).values()];
+  Object.assign(data.logs,remote.logs);
+  persist();
+  toast('Data merged from cloud');
+}
+
+async function createCloudAccount(){
+  const email=prompt('Enter email for cloud sync:');
+  if(!email)return;
+  try{
+    const{data,error}=await sbClient.auth.signUp({email,password:Math.random().toString(36).slice(2)+Math.random().toString(36).slice(2)});
+    if(error)throw error;
+    toast('Check email to confirm account');
+    setTimeout(initSync,3000);
+  }catch(e){console.error(e);toast('Signup failed: '+e.message)}
+}
+
+async function signOutCloud(){
+  try{
+    await sbClient.auth.signOut();
+    user=null;
+    syncEnabled=false;
+    renderSettings();
+    toast('Signed out from cloud');
+  }catch(e){toast('Sign out failed')}
+}
+
+// Mark dirty for sync
+const origPersist=persist;
+persist=function(){origPersist();clearTimeout(syncTimer);if(syncEnabled)syncTimer=setTimeout(syncNow,1500)};
+
+initSync();
+renderHome();
+</script>
+</body>
+</html>
