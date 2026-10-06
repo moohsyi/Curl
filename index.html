@@ -165,6 +165,44 @@ h1{font-size:54px;line-height:.92;letter-spacing:-4px;margin:0;font-weight:800}
 .remove-set{height:50px;border:0;background:#eee;color:#777;border-radius:15px;font-size:20px;cursor:pointer}
 .add-set{height:44px;border:1px dashed #d5d5d1;background:transparent;border-radius:15px;width:100%;font-weight:700;color:#555;margin-top:2px}
 
+
+/* Sync: deliberately quiet and editorial, matching the notebook settings language. */
+.sync-row{padding:18px 2px;cursor:pointer}
+.sync-row-copy{min-width:0}
+.sync-row-arrow{font-size:25px;color:#aaa;font-weight:300;margin-left:14px}
+.sync-sheet .sheet-card{padding-top:11px}
+.sync-card{padding-bottom:calc(28px + env(safe-area-inset-bottom))}
+.sync-sheet-head{padding:7px 0 25px}
+.sync-eyebrow{font-size:10px;letter-spacing:1.7px;font-weight:750;color:#999;margin-bottom:10px}
+.sync-sheet-title{font-size:31px;line-height:1;letter-spacing:-1.7px;font-weight:800;margin:0}
+.sync-sheet-copy{font-size:14px;line-height:1.45;color:#888;margin:9px 0 0;max-width:390px}
+.sync-status-line{display:flex;align-items:center;gap:8px;font-size:13px;color:#777;margin:0 0 22px}
+.sync-dot{width:7px;height:7px;border-radius:50%;background:#171717;display:inline-block;flex:none}
+.sync-action-list{display:flex;flex-direction:column;gap:9px}
+.sync-action{width:100%;text-align:left;background:#fff;border:1px solid var(--line);border-radius:17px;padding:15px 16px;display:flex;align-items:center;justify-content:space-between}
+.sync-action:active{background:#f5f5f2}
+.sync-action-main{min-width:0;display:block;padding-right:8px}
+.sync-action-title{display:block;font-size:15px;font-weight:750;letter-spacing:-.15px;line-height:1.25}
+.sync-action-meta{display:block;font-size:12px;color:#999;margin-top:5px;line-height:1.4;max-width:290px}
+.sync-action-arrow{font-size:22px;color:#aaa;margin-left:15px}
+.sync-divider{height:1px;background:var(--line);margin:23px 0}
+.sync-secondary{background:none;padding:4px 0;font-size:13px;font-weight:700}
+.sync-code-wrap{padding:20px 0 5px}
+.sync-code-label{font-size:12px;color:#888;font-weight:700;margin-bottom:8px}
+.sync-code{font-size:32px;letter-spacing:5px;font-weight:800;line-height:1.15;font-variant-numeric:tabular-nums}
+.sync-code-hint{font-size:12px;color:#999;margin-top:7px;line-height:1.4}
+.sync-code-actions{display:flex;gap:9px;margin-top:18px}
+.sync-copy-btn,.sync-close-btn{height:48px;border-radius:24px;font-size:14px;font-weight:750;padding:0 18px}
+.sync-copy-btn{background:#171717;color:#fff;flex:1}
+.sync-close-btn{background:#ececea}
+.sync-code-input{width:100%;height:56px;border:1px solid #d7d7d3;background:#fff;border-radius:17px;outline:none;padding:0 16px;text-transform:uppercase;letter-spacing:4px;font-size:20px;font-weight:750;text-align:center}
+.sync-code-input:focus{border-color:#171717}
+.sync-connect-btn{width:100%;height:50px;border-radius:25px;background:#171717;color:#fff;font-size:15px;font-weight:750;margin-top:10px}
+.sync-back{background:none;padding:5px 0;font-size:13px;font-weight:700;color:#777;margin-bottom:4px}
+.sync-disconnect{display:block;width:100%;background:none;text-align:left;padding:14px 0 2px;font-size:13px;font-weight:700;color:#a04a42}
+.sync-error{font-size:11px;line-height:1.4;color:#b42318;margin-top:10px;word-break:break-word}
+.sync-connected-code{margin-top:3px}
+
 .action-list{display:flex;flex-direction:column;gap:7px}
 .action-item{
   width:100%;min-height:54px;border-radius:16px;background:#fff;
@@ -573,7 +611,6 @@ h1{font-size:54px;line-height:.92;letter-spacing:-4px;margin:0;font-weight:800}
 
 </style>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 <div class="app">
@@ -650,6 +687,13 @@ h1{font-size:54px;line-height:.92;letter-spacing:-4px;margin:0;font-weight:800}
   <div class="subtop"><button class="back" onclick="goHome()">‹&nbsp; Home</button></div>
   <div class="page-heading"><h2>Settings</h2><p>Simple, local, personal.</p></div>
   <div class="rows">
+    <button class="row sync-row" onclick="openSyncSheet()">
+      <div class="sync-row-copy">
+        <div class="row-title">Sync</div>
+        <div class="row-meta" id="syncStatus">Set up sync</div>
+      </div>
+      <span class="sync-row-arrow">›</span>
+    </button>
     <button class="row" onclick="exportData()">
       <div><div class="row-title">Export data</div><div class="row-meta">Save a backup of your notebook</div></div><span>›</span>
     </button>
@@ -661,9 +705,6 @@ h1{font-size:54px;line-height:.92;letter-spacing:-4px;margin:0;font-weight:800}
     </button>
     <button class="row" onclick="clearAll()">
       <div><div class="row-title">Clear notebook</div><div class="row-meta">Delete folders, exercises and logs</div></div><span>›</span>
-    </button>
-    <button class="row" id="cloudSyncRow" onclick="syncEnabled?signOutCloud():createCloudAccount()">
-      <div><div class="row-title" id="cloudTitle">Cloud sync</div><div class="row-meta" id="cloudMeta">Save across devices</div></div><span>›</span>
     </button>
   </div>
   <input id="importFile" type="file" accept=".json,application/json" hidden onchange="importData(this.files[0]);this.value=''">
@@ -700,10 +741,54 @@ h1{font-size:54px;line-height:.92;letter-spacing:-4px;margin:0;font-weight:800}
     </div>
   </div>
 </div>
+<div id="syncSheet" class="sheet sync-sheet" onclick="if(event.target===this)closeSyncSheet()">
+  <div class="sheet-card sync-card">
+    <div class="handle"></div>
+    <div class="sync-sheet-head">
+      <div class="sync-eyebrow">NOTEBOOK SYNC</div>
+      <h3 class="sync-sheet-title" id="syncSheetTitle">Sync your notebook</h3>
+      <p class="sync-sheet-copy" id="syncSheetCopy">Keep your workouts in sync across your devices.</p>
+    </div>
+    <div id="syncSheetBody"></div>
+  </div>
+</div>
 <div id="toast" class="toast"></div>
+
+<script type="module">
+// Firebase is optional: the notebook still works locally if Firebase/network is unavailable.
+try {
+  const [{ initializeApp }, { getFirestore, doc, getDoc, setDoc, onSnapshot }] = await Promise.all([
+    import("https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js"),
+    import("https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js")
+  ]);
+  const firebaseConfig = {
+    apiKey: "AIzaSyACtKElub6cibXmJfkvbquDXy_uVsUs6Ug",
+    authDomain: "curl-dafb3.firebaseapp.com",
+    projectId: "curl-dafb3",
+    storageBucket: "curl-dafb3.firebasestorage.app",
+    messagingSenderId: "463787381660",
+    appId: "1:463787381660:web:f38ac030d7e345c40f6e59"
+  };
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  window.curlFirebase = { db, doc, getDoc, setDoc, onSnapshot };
+  window.dispatchEvent(new Event("firebase-ready"));
+} catch (error) {
+  console.warn("Firebase sync unavailable; using local storage only.", error);
+  window.curlFirebaseError = error;
+  window.dispatchEvent(new Event("firebase-error"));
+}
+</script>
 
 <script>
 const KEY='curl-notebook-v4';
+const SYNC_KEY='curl-sync-code-v1';
+const SYNC_COLLECTION='curlSync';
+let syncCode=localStorage.getItem(SYNC_KEY)||'';
+let syncUnsubscribe=null;
+let syncReady=false;
+let lastCloudWrite=0;
+let lastRemoteUpdate=0;
 
 const demo={
   folders:[
@@ -728,6 +813,7 @@ let data=load();
 let sheetPersonId=null;
 let currentFolder=null,currentExercise=null,currentPerson=null,currentSourceView='home';
 let sheetMode=null;
+if(syncCode)setTimeout(()=>setSyncStatus('Connecting…'),0)
 
 function load(){
   try{
@@ -752,7 +838,205 @@ function load(){
   }catch(e){}
   return JSON.parse(JSON.stringify(demo));
 }
-function persist(){localStorage.setItem(KEY,JSON.stringify(data))}
+function persist(){
+  localStorage.setItem(KEY,JSON.stringify(data));
+  if(syncCode && window.curlFirebase){
+    const {db,doc,setDoc}=window.curlFirebase;
+    const now=Date.now();
+    lastCloudWrite=now;
+    setDoc(doc(db,SYNC_COLLECTION,syncCode),{data:JSON.stringify(data),updatedAt:now},{merge:true})
+      .catch(err=>console.warn('Cloud sync save failed:',err));
+  }
+}
+function makeSyncCode(){
+  const chars='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  const bytes=new Uint8Array(8);
+  crypto.getRandomValues(bytes);
+  return Array.from(bytes,b=>chars[b%chars.length]).join('');
+}
+function syncIsConnected(){return !!(syncCode && syncReady)}
+function setSyncStatus(text){
+  const el=document.getElementById('syncStatus');
+  if(el){
+    el.textContent=syncIsConnected() ? 'Synced' : (syncCode ? text : 'Set up sync');
+  }
+  renderSyncSheet();
+}
+function renderSyncSheet(mode){
+  const body=document.getElementById('syncSheetBody');
+  const title=document.getElementById('syncSheetTitle');
+  const copy=document.getElementById('syncSheetCopy');
+  if(!body)return;
+  if(syncIsConnected()){
+    title.textContent='Your notebook is synced';
+    copy.textContent='Changes are shared automatically across your connected devices.';
+    body.innerHTML=`
+      <div class="sync-status-line"><span class="sync-dot"></span><span id="syncSheetStatus">Synced</span></div>
+      <div class="sync-code-wrap sync-connected-code">
+        <div class="sync-code-label">Your connection code</div>
+        <div class="sync-code">${esc(syncCode)}</div>
+        <div class="sync-code-hint">Use this code to connect another device.</div>
+      </div>
+      <div class="sync-code-actions">
+        <button class="sync-copy-btn" onclick="copySyncCode()">Copy code</button>
+        <button class="sync-close-btn" onclick="closeSyncSheet()">Done</button>
+      </div>
+      <div class="sync-divider"></div>
+      <button class="sync-disconnect" onclick="disconnectSync();closeSyncSheet()">Disconnect this device</button>`;
+    return;
+  }
+  if(mode==='enter'){
+    title.textContent='Connect this device';
+    copy.textContent='Enter the code shown on your other device.';
+    body.innerHTML=`
+      <button class="sync-back" onclick="renderSyncSheet('start')">‹ Back</button>
+      <div style="padding-top:8px">
+        <input id="syncCodeInput" class="sync-code-input" maxlength="8" inputmode="text" autocomplete="off" autocapitalize="characters" placeholder="8 characters">
+        <button class="sync-connect-btn" onclick="startSync()">Connect device</button>
+        <div id="syncError" class="sync-error" style="display:none"></div>
+      </div>`;
+    setTimeout(()=>document.getElementById('syncCodeInput')?.focus(),80);
+    return;
+  }
+  title.textContent='Sync your notebook';
+  copy.textContent='Keep your workouts in sync across your devices.';
+  body.innerHTML=`
+    <div class="sync-action-list">
+      <button class="sync-action" onclick="generateSyncFromSheet()">
+        <span class="sync-action-main"><span class="sync-action-title">Generate a code</span><span class="sync-action-meta">Show a code on this device, then enter it on your other device.</span></span>
+        <span class="sync-action-arrow">›</span>
+      </button>
+      <button class="sync-action" onclick="renderSyncSheet('enter')">
+        <span class="sync-action-main"><span class="sync-action-title">I have a code</span><span class="sync-action-meta">Connect this device using a code from your other device.</span></span>
+        <span class="sync-action-arrow">›</span>
+      </button>
+    </div>`;
+}
+function openSyncSheet(){
+  renderSyncSheet('start');
+  document.getElementById('syncSheet')?.classList.add('show');
+}
+function closeSyncSheet(){document.getElementById('syncSheet')?.classList.remove('show')}
+async function generateSyncFromSheet(){
+  const code=makeSyncCode();
+  const ok=await connectSync(code,true);
+  if(ok){openSyncSheet();}
+}
+async function connectSync(code, createIfMissing=false){
+  code=(code||'').trim().toUpperCase().replace(/[^A-Z0-9]/g,'');
+  if(code.length<6){toast('Enter a valid sync code');return false}
+  if(!window.curlFirebase){toast('Firebase is not ready');return false}
+  const {db,doc,getDoc,onSnapshot}=window.curlFirebase;
+  const ref=doc(db,SYNC_COLLECTION,code);
+  try{
+    const snap=await getDoc(ref);
+    if(snap.exists()){
+      const remote=snap.data();
+      if(remote.data&&remote.updatedAt){
+        data=typeof remote.data==='string'?JSON.parse(remote.data):remote.data;
+        localStorage.setItem(KEY,JSON.stringify(data));
+        lastRemoteUpdate=remote.updatedAt;
+      }
+    }else if(createIfMissing){
+      const now=Date.now();
+      lastCloudWrite=now;
+      await window.curlFirebase.setDoc(ref,{data:JSON.stringify(data),updatedAt:now});
+    }else{
+      toast('Sync code not found');
+      return false;
+    }
+    if(syncUnsubscribe)syncUnsubscribe();
+    syncCode=code;
+    localStorage.setItem(SYNC_KEY,syncCode);
+    syncReady=true;
+    syncUnsubscribe=onSnapshot(ref,s=>{
+      if(!s.exists())return;
+      const remote=s.data();
+      const t=Number(remote.updatedAt||0);
+      if(remote.data && t>lastRemoteUpdate && t>lastCloudWrite){
+        data=typeof remote.data==='string'?JSON.parse(remote.data):remote.data;
+        lastRemoteUpdate=t;
+        localStorage.setItem(KEY,JSON.stringify(data));
+        renderHome();
+        if(currentFolder)openFolder(currentFolder);
+        if(currentExercise)openExercise(currentExercise);
+        setSyncStatus('Synced just now');
+      }
+    });
+    setSyncStatus('Syncing');
+    renderHome();
+    if(currentFolder)openFolder(currentFolder);
+    if(currentExercise)openExercise(currentExercise);
+    toast('Sync connected');
+    return true;
+  }catch(err){
+    console.error('Curl Firebase sync error:', err);
+    const code = err?.code || 'unknown';
+    const msg = err?.message || String(err);
+    toast('Firebase error: ' + code);
+    const errorEl=document.getElementById('syncError');
+    if(errorEl){errorEl.textContent=code + ': ' + msg.slice(0, 140);errorEl.style.display='block'}
+    setSyncStatus(code + ': ' + msg.slice(0, 90));
+    return false;
+  }
+}
+async function startSync(){
+  const input=document.getElementById('syncCodeInput');
+  const code=input?.value||'';
+  if(!code){toast('Enter your sync code');return false}
+  return await connectSync(code,false);
+}
+function disconnectSync(){
+  if(syncUnsubscribe)syncUnsubscribe();
+  syncUnsubscribe=null;syncReady=false;syncCode='';
+  localStorage.removeItem(SYNC_KEY);
+  setSyncStatus('Not connected');
+  const input=document.getElementById('syncCodeInput');
+  if(input)input.value='';
+  toast('Sync disconnected');
+}
+async function copySyncCode(){
+  if(!syncCode)return;
+  const code=String(syncCode);
+  let copied=false;
+
+  // Clipboard API is unavailable in some Android WebViews/content:// pages.
+  try{
+    if(navigator.clipboard && window.isSecureContext){
+      await navigator.clipboard.writeText(code);
+      copied=true;
+    }
+  }catch(err){
+    console.warn('Clipboard API failed:',err);
+  }
+
+  // Fallback for local HTML files and older Android WebViews.
+  if(!copied){
+    try{
+      const ta=document.createElement('textarea');
+      ta.value=code;
+      ta.setAttribute('readonly','');
+      ta.style.position='fixed';
+      ta.style.left='-9999px';
+      ta.style.top='0';
+      ta.style.opacity='0';
+      document.body.appendChild(ta);
+      ta.focus();
+      ta.select();
+      ta.setSelectionRange(0,ta.value.length);
+      copied=document.execCommand('copy');
+      ta.remove();
+    }catch(err){
+      console.warn('Clipboard fallback failed:',err);
+    }
+  }
+
+  toast(copied ? 'Code copied' : 'Could not copy code');
+}
+window.addEventListener('firebase-ready',()=>{
+  if(syncCode)connectSync(syncCode,false);
+  else setSyncStatus('Ready');
+});
 function id(){return Math.random().toString(36).slice(2,10)}
 function initials(n){return (n||'?').split(/\s+/).map(x=>x[0]).join('').slice(0,2).toUpperCase()}
 function esc(s){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
@@ -765,19 +1049,8 @@ function show(id){
   const label=document.getElementById('addLabel'); if(label) label.textContent=labels[id]||'Add';
 }
 function goHome(){show('home');renderHome()}
-function renderSettings(){
-  const cloudTitle=document.getElementById('cloudTitle');
-  const cloudMeta=document.getElementById('cloudMeta');
-  if(syncEnabled&&user){
-    cloudTitle.textContent='Cloud sync: Active';
-    cloudMeta.textContent=`Synced as ${user.email}`;
-  }else{
-    cloudTitle.textContent='Cloud sync';
-    cloudMeta.textContent='Save across devices';
-  }
-}
 function openPeople(){show('people');renderPeople()}
-function openSettings(){show('settings');renderSettings()}
+function openSettings(){show('settings')}
 function renderHome(){
   const q=(document.getElementById('search')?.value||'').toLowerCase().trim();
   const folders=data.folders.filter(f=>!q||f.name.toLowerCase().includes(q)||data.exercises.some(e=>e.folder===f.id&&e.name.toLowerCase().includes(q)));
@@ -1549,93 +1822,6 @@ async function importData(file){
 function resetDemo(){if(confirm('Restore example data?')){data=JSON.parse(JSON.stringify(demo));persist();goHome();toast('Example data restored')}}
 function clearAll(){if(confirm('Delete the entire notebook?')){data={folders:[],people:[],exercises:[],logs:{}};persist();goHome();toast('Notebook cleared')}}
 function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1500)}
-
-// SUPABASE CLOUD SYNC
-const SUPABASE_URL='https://xtbkgutqkuaopzbworqy.supabase.co';
-const SUPABASE_KEY='sb_publishable_kfqHWUH2M4sN6vToJTtJSA_WSn8gN-H';
-let sbClient=null;
-let syncEnabled=false;
-let lastSync=0;
-let user=null;
-let syncTimer=null;
-
-async function initSync(){
-  try{
-    sbClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
-    const{data:{session}}=await sbClient.auth.getSession();
-    user=session?.user||null;
-    syncEnabled=!!user;
-    if(syncEnabled){
-      await syncNow();
-      setInterval(syncNow,60000);
-      window.addEventListener('online',syncNow);
-      document.addEventListener('visibilitychange',()=>!document.hidden&&syncNow());
-    }
-  }catch(e){console.error('Sync init:',e)}
-}
-
-async function syncNow(){
-  if(!syncEnabled||!user||!sbClient)return;
-  try{
-    const{data:remote}=await sbClient.from('notebook').select('*').eq('user_id',user.id).single();
-    const local=JSON.stringify(data);
-    
-    if(remote){
-      const remoteStr=JSON.stringify(remote.data);
-      if(local!==remoteStr){
-        const remoteTime=new Date(remote.updated_at);
-        const localTime=new Date(lastSync||0);
-        if(remoteTime>localTime){
-          if(confirm('Data updated on another device. Merge or Replace?')){
-            mergeData(remote.data);
-          }else{
-            data=remote.data;
-            persist();
-          }
-        }
-      }
-    }
-    
-    await sbClient.from('notebook').upsert({user_id:user.id,data,updated_at:new Date().toISOString()});
-    lastSync=new Date().toISOString();
-  }catch(e){console.error('Sync failed:',e)}
-}
-
-function mergeData(remote){
-  data.folders=[...new Map([...data.folders,...remote.folders].map(f=>[f.id,f])).values()];
-  data.people=[...new Map([...data.people,...remote.people].map(p=>[p.id,p])).values()];
-  data.exercises=[...new Map([...data.exercises,...remote.exercises].map(e=>[e.id,e])).values()];
-  Object.assign(data.logs,remote.logs);
-  persist();
-  toast('Data merged from cloud');
-}
-
-async function createCloudAccount(){
-  const email=prompt('Enter email for cloud sync:');
-  if(!email)return;
-  try{
-    const{data,error}=await sbClient.auth.signUp({email,password:Math.random().toString(36).slice(2)+Math.random().toString(36).slice(2)});
-    if(error)throw error;
-    toast('Check email to confirm account');
-    setTimeout(initSync,3000);
-  }catch(e){console.error(e);toast('Signup failed: '+e.message)}
-}
-
-async function signOutCloud(){
-  try{
-    await sbClient.auth.signOut();
-    user=null;
-    syncEnabled=false;
-    renderSettings();
-    toast('Signed out from cloud');
-  }catch(e){toast('Sign out failed')}
-}
-
-// Mark dirty for sync
-const origPersist=persist;
-persist=function(){origPersist();clearTimeout(syncTimer);if(syncEnabled)syncTimer=setTimeout(syncNow,1500)};
-
-initSync();
 renderHome();
 </script>
 </body>
