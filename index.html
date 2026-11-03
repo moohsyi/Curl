@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -78,15 +78,26 @@ h1{font-size:54px;line-height:.92;letter-spacing:-4px;margin:0;font-weight:800}
 .exercise-list{border-top:1px solid var(--line)}
 .exercise-row{
   width:100%;display:flex;align-items:center;gap:13px;text-align:left;
-  background:none;border-bottom:1px solid var(--line);padding:15px 3px;
+  background:none;border-bottom:1px solid var(--line);padding:15px 3px;position:relative;
 }
+.exercise-row.dragging{opacity:.42;background:rgba(111,99,217,.06)}
+.exercise-row.drop-before:before,.exercise-row.drop-after:after{content:"";position:absolute;left:0;right:0;height:3px;background:var(--accent);border-radius:3px;pointer-events:none}
+.exercise-row.drop-before:before{top:-2px}.exercise-row.drop-after:after{bottom:-2px}
+.exercise-grip{width:22px;flex:none;display:grid;place-items:center;color:#b8b5b0;font-size:17px;letter-spacing:-3px;cursor:grab;touch-action:none;user-select:none;padding:8px 3px;margin-left:-4px}
+.exercise-grip:active{color:var(--accent)}
+.exercise-row.reorder-enabled{gap:9px}
 .exercise-symbol{
   width:40px;height:40px;border-radius:13px;background:#eee;
   display:grid;place-items:center;font-size:15px;font-weight:800;flex:none
 }
 .exercise-main{min-width:0;flex:1}
-.exercise-name{font-size:16px;font-weight:700;letter-spacing:-.25px}
-.exercise-meta{font-size:12px;color:#999;margin-top:4px}
+.exercise-copy{min-width:0}
+.exercise-name{font-size:16px;font-weight:700;letter-spacing:-.25px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.exercise-meta{font-size:12px;color:#999;margin-top:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.workout-assignee{display:inline-flex;align-items:center;gap:4px;margin-left:2px;color:var(--assignee-ink,#6f63d9);font-size:12px;font-weight:700;letter-spacing:0;white-space:nowrap}
+.workout-assignee-mark{font-size:15px;line-height:1;font-style:normal;color:var(--assignee-bg,#6f63d9)}
+.workout-assignee-name{overflow:hidden;text-overflow:ellipsis}
+@media(max-width:380px){.exercise-row{gap:10px}.exercise-meta{font-size:11px}.workout-assignee{font-size:11px}}
 .arrow{font-size:24px;color:#aaa;font-weight:300}
 .bottom{
   position:fixed;z-index:20;left:50%;transform:translateX(-50%);bottom:0;
@@ -97,6 +108,7 @@ h1{font-size:54px;line-height:.92;letter-spacing:-4px;margin:0;font-weight:800}
   height:55px;width:100%;border-radius:28px;background:var(--accent);color:#fff;
   font-size:16px;font-weight:750;box-shadow:0 9px 25px rgba(111,99,217,.22)
 }
+.add:disabled{opacity:.48;box-shadow:none;cursor:not-allowed}
 .view{display:none}.view.active{display:block}
 .subtop{height:82px;display:flex;align-items:center;justify-content:space-between}
 .back{background:none;font-size:15px;font-weight:650;padding:8px 0}
@@ -159,12 +171,15 @@ h1{font-size:54px;line-height:.92;letter-spacing:-4px;margin:0;font-weight:800}
 }
 .cancel{background:#ececea}.save{background:var(--accent);color:#fff;flex:1}
 
+
 .set-editor{margin-top:4px}
 .set-editor-head{display:grid;grid-template-columns:1fr 1fr 42px;gap:8px;padding:0 3px 6px;color:#888;font-size:12px;font-weight:700}
 .set-editor-row{display:grid;grid-template-columns:1fr 1fr 42px;gap:8px;margin-bottom:8px}
 .set-editor-row input{width:100%;height:50px;border:1px solid #ddd;background:#fff;border-radius:15px;outline:none;padding:0 14px;font-size:16px}
 .remove-set{height:50px;border:0;background:#eee;color:#777;border-radius:15px;font-size:20px;cursor:pointer}
 .add-set{height:44px;border:1px dashed #d5d5d1;background:transparent;border-radius:15px;width:100%;font-weight:700;color:#555;margin-top:2px}
+
+
 
 
 /* Sync: deliberately quiet and editorial, matching the notebook settings language. */
@@ -204,6 +219,7 @@ h1{font-size:54px;line-height:.92;letter-spacing:-4px;margin:0;font-weight:800}
 .sync-error{font-size:11px;line-height:1.4;color:#b42318;margin-top:10px;word-break:break-word}
 .sync-connected-code{margin-top:3px}
 
+
 .action-list{display:flex;flex-direction:column;gap:7px}
 .action-item{
   width:100%;min-height:54px;border-radius:16px;background:#fff;
@@ -222,6 +238,7 @@ h1{font-size:54px;line-height:.92;letter-spacing:-4px;margin:0;font-weight:800}
 .log-set-row>div{background:#f1f1ef;border-radius:8px;padding:8px 5px;text-align:center;font-size:12px}
 .log-set-row .set-more{background:transparent;color:#888;padding:0}
 
+
 .toast{
   position:fixed;z-index:90;left:50%;bottom:92px;transform:translate(-50%,12px);
   opacity:0;background:#111;color:#fff;padding:12px 16px;border-radius:15px;font-size:13px;
@@ -232,6 +249,7 @@ h1{font-size:54px;line-height:.92;letter-spacing:-4px;margin:0;font-weight:800}
   .folder-grid{grid-template-columns:repeat(3,1fr);gap:28px 16px}
   .folder-art{height:101px}
 }
+
 
 /* Final mobile polish */
 .topbar{
@@ -261,6 +279,8 @@ h1{font-size:54px;line-height:.92;letter-spacing:-4px;margin:0;font-weight:800}
 .folderCard .folderBody{
   background:var(--folder) !important;
 }
+
+
 
 
 /* Notes + sessions: one unified activity timeline */
@@ -293,6 +313,7 @@ h1{font-size:54px;line-height:.92;letter-spacing:-4px;margin:0;font-weight:800}
 .note-attachment span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .log{margin-top:14px}
 </style>
+
 
 <style id="curl-wordmark-style">
   /* Approved Curl wordmark: bold sans-serif C + italic serif "url", with natural spacing. */
@@ -334,6 +355,7 @@ h1{font-size:54px;line-height:.92;letter-spacing:-4px;margin:0;font-weight:800}
     transform:none !important;
   }
 
+
 /* Notes + sessions: one unified activity timeline */
 .records{margin-top:14px}
 .note-compose{
@@ -366,6 +388,8 @@ h1{font-size:54px;line-height:.92;letter-spacing:-4px;margin:0;font-weight:800}
 </style>
 
 
+
+
 <style id="curl-activity-spacing-v5">
 /* Unified activity feed: notes and set logs belong to one chronological family. */
 .records{
@@ -387,6 +411,8 @@ h1{font-size:54px;line-height:.92;letter-spacing:-4px;margin:0;font-weight:800}
 </style>
 
 
+
+
 <style id="activity-spacing-fix">
 /* Keep people/composer spacing intact. Compress only the activity stack. */
 .records > .note-item,
@@ -394,6 +420,7 @@ h1{font-size:54px;line-height:.92;letter-spacing:-4px;margin:0;font-weight:800}
 .records > .note-item:last-child,
 .records > .log:last-child { margin-bottom: 0 !important; }
 </style>
+
 
 <style id="group-spacing-v13">
 /* Group hierarchy: people, composer, then compact activity timeline. */
@@ -405,6 +432,8 @@ h1{font-size:54px;line-height:.92;letter-spacing:-4px;margin:0;font-weight:800}
 .records > .note-item:last-child,
 .records > .log:last-child { margin-bottom: 0 !important; }
 </style>
+
+
 
 
 <style id="exact-spacing-v17">
@@ -422,6 +451,8 @@ h1{font-size:54px;line-height:.92;letter-spacing:-4px;margin:0;font-weight:800}
   margin-bottom: 0 !important;
 }
 </style>
+
+
 
 
 <style id="rich-shared-note-v19">
@@ -532,6 +563,8 @@ h1{font-size:54px;line-height:.92;letter-spacing:-4px;margin:0;font-weight:800}
 </style>
 
 
+
+
 <style id="note-composer-final-fix">
 /* Final mobile polish: keep the submit control inside the composer and remove
    the native audience dropdown chevron. */
@@ -565,6 +598,7 @@ h1{font-size:54px;line-height:.92;letter-spacing:-4px;margin:0;font-weight:800}
   .note-submit { width: 40px; height: 40px; flex-basis: 40px; }
 }
 
+
 /* Audience selector: Curl-style bottom sheet, matching the exercise action sheet. */
 .note-audience-wrap{position:relative;flex:0 1 108px;min-width:0;z-index:40}
 .note-audience-btn{
@@ -574,6 +608,7 @@ h1{font-size:54px;line-height:.92;letter-spacing:-4px;margin:0;font-weight:800}
 }
 .note-audience-btn:active{background:#e7e7e3}
 .note-audience-btn .audience-label{overflow:hidden;text-overflow:ellipsis}
+
 
 /* Dedicated visibility sheet. It uses the same visual language as Curl's
    exercise action sheet rather than a browser/native select popup. */
@@ -610,11 +645,14 @@ h1{font-size:54px;line-height:.92;letter-spacing:-4px;margin:0;font-weight:800}
   .note-audience-wrap{flex-basis:96px}
 }
 
+
 </style>
+
 
 </head>
 <body>
 <div class="app">
+
 
 <section id="home" class="view active">
   <header class="top">
@@ -625,15 +663,18 @@ h1{font-size:54px;line-height:.92;letter-spacing:-4px;margin:0;font-weight:800}
     </div>
   </header>
 
+
   <div class="search">
     <span class="search-icon">⌕</span>
     <input id="search" placeholder="Search" oninput="renderHome()">
   </div>
 
+
   <div class="section-title">
     <span>Folders</span><button class="link-btn" onclick="openFolderSheet()">New folder</button>
   </div>
   <div id="folderGrid" class="folder-grid"></div>
+
 
   <div class="recent">
     <div class="section-title">
@@ -642,6 +683,7 @@ h1{font-size:54px;line-height:.92;letter-spacing:-4px;margin:0;font-weight:800}
     <div id="recentList" class="exercise-list"></div>
   </div>
 </section>
+
 
 <section id="folder" class="view">
   <div class="subtop">
@@ -657,6 +699,7 @@ h1{font-size:54px;line-height:.92;letter-spacing:-4px;margin:0;font-weight:800}
   <div id="exerciseRows" class="rows"></div>
 </section>
 
+
 <section id="exercise" class="view">
   <div class="subtop">
     <button class="back" onclick="backToFolder()">‹&nbsp; Back</button>
@@ -671,6 +714,7 @@ h1{font-size:54px;line-height:.92;letter-spacing:-4px;margin:0;font-weight:800}
   <div style="height:25px"></div>
 </section>
 
+
 <section id="people" class="view">
   <div class="subtop"><button class="back" onclick="goHome()">‹&nbsp; Back</button></div>
   <div class="page-heading"><h2>People</h2><p>People appear automatically in every exercise.</p></div>
@@ -678,11 +722,13 @@ h1{font-size:54px;line-height:.92;letter-spacing:-4px;margin:0;font-weight:800}
   <div id="peopleRows" class="rows"></div>
 </section>
 
+
 <section id="allExercises" class="view">
   <div class="subtop"><button class="back" onclick="goHome()">‹&nbsp; Back</button></div>
   <div class="page-heading"><h2>Exercises</h2><p>Every exercise in your notebook.</p></div>
   <div id="allRows" class="rows"></div>
 </section>
+
 
 <section id="settings" class="view">
   <div class="subtop"><button class="back" onclick="goHome()">‹&nbsp; Home</button></div>
@@ -711,11 +757,14 @@ h1{font-size:54px;line-height:.92;letter-spacing:-4px;margin:0;font-weight:800}
   <input id="importFile" type="file" accept=".json,application/json" hidden onchange="importData(this.files[0]);this.value=''">
 </section>
 
+
 </div>
+
 
 <div class="bottom">
   <button class="add" id="globalAdd" onclick="globalAdd()">＋ <span id="addLabel">New folder</span></button>
 </div>
+
 
 <div id="audienceSheet" class="audience-sheet" onclick="if(event.target===this)closeAudienceSheet()" aria-hidden="true">
   <div class="audience-sheet-card" role="dialog" aria-modal="true" aria-labelledby="audienceSheetTitle">
@@ -755,6 +804,7 @@ h1{font-size:54px;line-height:.92;letter-spacing:-4px;margin:0;font-weight:800}
 </div>
 <div id="toast" class="toast"></div>
 
+
 <script type="module">
 // Firebase is optional: the notebook still works locally if Firebase/network is unavailable.
 try {
@@ -781,6 +831,7 @@ try {
 }
 </script>
 
+
 <script>
 const KEY='curl-notebook-v4';
 const SYNC_KEY='curl-sync-code-v1';
@@ -790,6 +841,7 @@ let syncUnsubscribe=null;
 let syncReady=false;
 let lastCloudWrite=0;
 let lastRemoteUpdate=0;
+
 
 const demo={
   folders:[
@@ -810,11 +862,13 @@ const demo={
   }
 };
 
+
 let data=load();
 let sheetPersonId=null;
 let currentFolder=null,currentExercise=null,currentPerson=null,currentSourceView='home';
 let sheetMode=null;
 if(syncCode)setTimeout(()=>setSyncStatus('Connecting…'),0)
+
 
 function load(){
   try{
@@ -1001,6 +1055,7 @@ async function copySyncCode(){
   const code=String(syncCode);
   let copied=false;
 
+
   // Clipboard API is unavailable in some Android WebViews/content:// pages.
   try{
     if(navigator.clipboard && window.isSecureContext){
@@ -1010,6 +1065,7 @@ async function copySyncCode(){
   }catch(err){
     console.warn('Clipboard API failed:',err);
   }
+
 
   // Fallback for local HTML files and older Android WebViews.
   if(!copied){
@@ -1031,6 +1087,7 @@ async function copySyncCode(){
       console.warn('Clipboard fallback failed:',err);
     }
   }
+
 
   toast(copied ? 'Code copied' : 'Could not copy code');
 }
@@ -1067,8 +1124,9 @@ function renderHome(){
     </button>`
   }).join(''):`<div class="empty" style="grid-column:1/-1">No folders yet.</div>`;
 
+
   const recent=data.exercises.filter(e=>!q||e.name.toLowerCase().includes(q)||folderName(e.folder).toLowerCase().includes(q)).slice(-6).reverse();
-  document.getElementById('recentList').innerHTML=recent.length?recent.map(exerciseRowHTML).join(''):`<div class="empty">No exercises yet.</div>`;
+  document.getElementById('recentList').innerHTML=recent.length?recent.map(e=>exerciseRowHTML(e,false)).join(''):`<div class="empty">No exercises yet.</div>`;
 }
 function darken(hex){
   const n=parseInt(hex.replace('#',''),16);
@@ -1076,11 +1134,21 @@ function darken(hex){
   return '#'+[r,g,b].map(x=>x.toString(16).padStart(2,'0')).join('');
 }
 function folderName(fid){return data.folders.find(f=>f.id===fid)?.name||'Folder'}
-function exerciseRowHTML(e){
+function exerciseRowHTML(e, sortable=false){
   const count=Object.values(data.logs[e.id]||{}).reduce((n,a)=>n+a.length,0);
-  return `<button class="exercise-row" onclick="openExercise('${e.id}')">
+  const assigned=e.assignedPersonId||'';
+  const assignedPerson=data.people.find(p=>p.id===assigned);
+  const assignedName=assignedPerson?.name||'Assigned';
+  const personIndex=Math.max(0,data.people.findIndex(p=>p.id===assigned));
+  // Assignment uses Curl's own two accent colours, alternating consistently
+  // by person order rather than introducing unrelated badge colours.
+  const isViolet=personIndex%2===0;
+  const tagBg=isViolet?'#6F63D9':'#FF9800';
+  const tagInk=isViolet?'#6F63D9':'#A85E00';
+  return `<button class="exercise-row ${sortable?'reorder-enabled':''}" onclick="openExercise('${e.id}')">
+    ${sortable?`<span class="exercise-grip" role="button" aria-label="Reorder ${esc(e.name)}" onpointerdown="startExerciseReorder(event, '${e.id}')" onclick="event.stopPropagation()">⠿</span>`:''}
     <div class="exercise-symbol">${esc(e.name.slice(0,1).toUpperCase())}</div>
-    <div class="exercise-main"><div class="exercise-name">${esc(e.name)}</div><div class="exercise-meta">${esc(folderName(e.folder))} · ${count} ${count===1?'session':'sessions'}</div></div>
+    <div class="exercise-main"><div class="exercise-copy"><div class="exercise-name">${esc(e.name)}</div><div class="exercise-meta">${esc(folderName(e.folder))} · ${count} ${count===1?'session':'sessions'}${assigned?` <span aria-hidden="true">·</span> <span class="workout-assignee" style="--assignee-bg:${tagBg};--assignee-ink:${tagInk}"><span class="workout-assignee-mark" aria-hidden="true">●</span><span class="workout-assignee-name">${esc(assignedName)}</span></span>`:''}</div></div></div>
     <div class="arrow">›</div>
   </button>`;
 }
@@ -1090,27 +1158,76 @@ function openFolder(fid){currentSourceView='home';
   document.getElementById('folderTitle').textContent=f.name;
   const count=data.exercises.filter(e=>e.folder===fid).length;
   document.getElementById('folderSub').textContent=`${count} ${count===1?'exercise':'exercises'}`;
-  document.getElementById('exerciseRows').innerHTML=data.exercises.filter(e=>e.folder===fid).map(exerciseRowHTML).join('')||'<div class="empty" style="margin-top:15px">This folder is empty.</div>';
+  document.getElementById('exerciseRows').innerHTML=data.exercises.filter(e=>e.folder===fid).map(e=>exerciseRowHTML(e,true)).join('')||'<div class="empty" style="margin-top:15px">This folder is empty.</div>';
   show('folder');
 }
+let exerciseReorder=null;
+function startExerciseReorder(event,eid){
+  event.preventDefault();event.stopPropagation();
+  const row=event.currentTarget.closest('.exercise-row');
+  const list=document.getElementById('exerciseRows');
+  if(!row||!list||!currentFolder)return;
+  exerciseReorder={eid,row,list,pointerId:event.pointerId,moved:false};
+  row.classList.add('dragging');
+  try{event.currentTarget.setPointerCapture(event.pointerId)}catch(e){}
+  const move=e=>{
+    if(!exerciseReorder||e.pointerId!==exerciseReorder.pointerId)return;
+    const target=document.elementFromPoint(e.clientX,e.clientY)?.closest('.exercise-row');
+    if(!target||target===row||target.parentElement!==list)return;
+    exerciseReorder.moved=true;
+    list.querySelectorAll('.exercise-row').forEach(x=>x.classList.remove('drop-before','drop-after'));
+    const rect=target.getBoundingClientRect();
+    const after=e.clientY>rect.top+rect.height/2;
+    target.classList.add(after?'drop-after':'drop-before');
+    list.insertBefore(row,after?target.nextSibling:target);
+  };
+  const finish=e=>{
+    if(!exerciseReorder||e.pointerId!==exerciseReorder.pointerId)return;
+    const state=exerciseReorder;exerciseReorder=null;
+    state.row.classList.remove('dragging');
+    list.querySelectorAll('.exercise-row').forEach(x=>x.classList.remove('drop-before','drop-after'));
+    if(state.moved){
+      const ordered=[...list.querySelectorAll('.exercise-row')].map(el=>el.getAttribute('onclick')?.match(/openExercise\('([^']+)'\)/)?.[1]).filter(Boolean);
+      const folderItems=data.exercises.filter(x=>x.folder===currentFolder);
+      const byId=new Map(folderItems.map(x=>[x.id,x]));
+      const reordered=ordered.map(id=>byId.get(id)).filter(Boolean);
+      let i=0;data.exercises=data.exercises.map(x=>x.folder===currentFolder?reordered[i++]:x);
+      persist();toast('Exercise order saved');
+    }
+    window.removeEventListener('pointermove',move);window.removeEventListener('pointerup',finish);window.removeEventListener('pointercancel',finish);
+  };
+  window.addEventListener('pointermove',move,{passive:false});
+  window.addEventListener('pointerup',finish);window.addEventListener('pointercancel',finish);
+}
+
 function openExercise(eid){
   const previous=document.querySelector('.view.active')?.id;
   if(previous==='folder') currentSourceView='folder'; else if(previous==='allExercises') currentSourceView='allExercises'; else currentSourceView='home';
   currentExercise=eid;
-  currentPerson=currentPerson||data.people[0]?.id;
   const e=data.exercises.find(x=>x.id===eid);
+  const assigned=e?.assignedPersonId||'';
+  // An assigned workout is scoped to its owner: don't show other profiles here.
+  if(assigned && data.people.some(p=>p.id===assigned)) currentPerson=assigned;
+  else currentPerson=currentPerson||data.people[0]?.id;
   if(!e.notes)e.notes=[];
   document.getElementById('exerciseFolder').textContent=folderName(e.folder);
   document.getElementById('exerciseTitle').textContent=e.name;
-  renderPeopleStrip();renderRecords();show('exercise');
+  renderPeopleStrip();renderRecords();show('exercise');updateExerciseAddControl();
 }
 function renderPeopleStrip(){
-  document.getElementById('peopleStrip').innerHTML=data.people.length?data.people.map(p=>`
+  const exercise=data.exercises.find(x=>x.id===currentExercise);
+  const assigned=exercise?.assignedPersonId||'';
+  const visiblePeople=assigned?data.people.filter(p=>p.id===assigned):data.people;
+  document.getElementById('peopleStrip').innerHTML=visiblePeople.length?visiblePeople.map(p=>`
     <button class="person-pill ${p.id===currentPerson?'selected':''}" onclick="selectPerson('${p.id}')">
       <div class="avatar">${initials(p.name)}</div><span>${esc(p.name)}</span>
     </button>`).join(''):`<div class="empty">Add a person in People first.</div>`;
 }
-function selectPerson(pid){currentPerson=pid;renderPeopleStrip();renderRecords()}
+function selectPerson(pid){
+  const assigned=data.exercises.find(x=>x.id===currentExercise)?.assignedPersonId||'';
+  if(assigned && pid!==assigned)return;
+  currentPerson=pid;renderPeopleStrip();renderRecords();updateExerciseAddControl();
+}
 function formatDisplayTime(value){
   const raw=String(value||'').trim();
   if(!raw)return '';
@@ -1126,6 +1243,7 @@ function formatDisplayTime(value){
   return `${h}:${min} ${suffix}`;
 }
 
+
 function recordTime(record){
   // The feed must follow the date/time the user actually sees on each card.
   // Do not sort logs by updatedAt because an older session can have a newer
@@ -1139,17 +1257,24 @@ function recordTime(record){
   return 0;
 }
 
+
 function renderRecords(){
   const ex=data.exercises.find(x=>x.id===currentExercise);
   if(!ex)return;
   migrateNotesToPeople(ex);
   if(!ex.sharedNotes) ex.sharedNotes=[];
 
-  const rawLogs=((data.logs[currentExercise]||{})[currentPerson])||[];
-  const logs=rawLogs.map((l,index)=>({type:'session',item:l,index,at:recordTime(l),order:index}));
+
+  // A shared exercise has separate session histories per person.
+  // Show only the selected person's sessions; never mix owners in one timeline.
+  const selectedPersonLogs=((data.logs[currentExercise]||{})[currentPerson])||[];
+  const logs=selectedPersonLogs.map((l,index)=>({
+    type:'session',item:l,index,ownerPid:currentPerson,at:recordTime(l),order:index
+  }));
   const personNotes=(ex.notesByPerson?.[currentPerson])||[];
   const notes=personNotes.map((n,index)=>({type:'note',scope:'person',item:n,index,at:Number(n.createdAt)||0,order:index}));
   const sharedNotes=(ex.sharedNotes||[]).map((n,index)=>({type:'note',scope:'shared',item:n,index,at:Number(n.createdAt)||0,order:index}));
+
 
   const timeline=[...logs,...notes,...sharedNotes].sort((a,b)=>{
     const ap=a.type==='note' && a.item.pinned;
@@ -1158,6 +1283,7 @@ function renderRecords(){
     if(b.at!==a.at)return b.at-a.at;
     return b.order-a.order;
   });
+
 
   const timelineHtml=timeline.map(record=>{
     if(record.type==='note'){
@@ -1176,19 +1302,22 @@ function renderRecords(){
           ${n.attachment?.name?`<div class="note-attachment"><span>↳</span><span>${esc(n.attachment.name)}</span></div>`:''}
         </div>`;
     }
-    const l=record.item, li=record.index;
+    const l=record.item, li=record.index, owner=record.ownerPid;
+    const assigned=ex.assignedPersonId||'';
+    const canEdit=!assigned || assigned===currentPerson;
     return `
       <div class="log">
         <div class="log-top">
           <div><div class="log-date">${esc(l.date)}</div><div class="log-time">${esc(formatDisplayTime(l.time))}</div></div>
-          <div class="log-actions"><button class="inline-menu" onclick="openSessionMenu(${li})" aria-label="Session options">•••</button></div>
+          <div class="log-actions">${canEdit?`<button class="inline-menu" onclick="openSessionMenu('${owner}',${li})" aria-label="Session options">•••</button>`:''}</div>
         </div>
         <div class="table">
           <div class="head">Set</div><div class="head">kg</div><div class="head">Reps</div><div class="head"></div>
-          ${l.sets.map((set,si)=>`<div class="log-set-row" style="grid-column:1 / -1"><div>${esc(set[0])}</div><div>${esc(set[1])}</div><div>${esc(set[2])}</div><button class="set-more" onclick="openSetMenu(${li},${si})" aria-label="Set options">•••</button></div>`).join('')}
+          ${l.sets.map((set,si)=>`<div class="log-set-row" style="grid-column:1 / -1"><div>${esc(set[0])}</div><div>${esc(set[1])}</div><div>${esc(set[2])}</div>${canEdit?`<button class="set-more" onclick="openSetMenu('${owner}',${li},${si})" aria-label="Set options">•••</button>`:'<div></div>'}</div>`).join('')}
         </div>
       </div>`;
   }).join('');
+
 
   const currentName=data.people.find(p=>p.id===currentPerson)?.name||'Person';
   if(!window.noteAudienceState)window.noteAudienceState='person';
@@ -1213,6 +1342,7 @@ function renderRecords(){
       ${timelineHtml || `<div class="empty" style="margin-top:0">No activity for ${esc(currentName)} yet.</div>`}
     </div>`;
 
+
   const input=document.getElementById('newNoteInput');
   const compose=document.getElementById('noteCompose');
   // Enter stays a normal newline inside the rich-text note editor.
@@ -1229,12 +1359,14 @@ function renderRecords(){
   updateNoteFormatState();
   chooseAudience(window.noteAudienceState||'person');
 
+
   document.addEventListener('click',window._curlNoteBlurHandler||(window._curlNoteBlurHandler=(e)=>{
     const c=document.getElementById('noteCompose');
     const editor=document.getElementById('newNoteInput');
     if(c && !c.contains(e.target) && !(editor?.innerText||'').trim()) c.classList.remove('active');
   }));
 }
+
 
 function migrateNotesToPeople(ex){
   if(!ex.notesByPerson) ex.notesByPerson={};
@@ -1251,8 +1383,10 @@ function migrateNotesToPeople(ex){
   }
 }
 
+
 function renderLogs(){ renderRecords(); }
 function renderNotes(){ renderRecords(); }
+
 
 function stampRecord(record){
   const now=new Date();
@@ -1260,6 +1394,7 @@ function stampRecord(record){
   record.time=now.toTimeString().slice(0,5);
   record.updatedAt=now.getTime();
 }
+
 
 function getPersonNotes(){
   const ex=data.exercises.find(x=>x.id===currentExercise);
@@ -1269,6 +1404,7 @@ function getPersonNotes(){
   return ex.notesByPerson[currentPerson];
 }
 
+
 function getSharedNotes(){
   const ex=data.exercises.find(x=>x.id===currentExercise);
   if(!ex)return null;
@@ -1276,10 +1412,12 @@ function getSharedNotes(){
   return ex.sharedNotes;
 }
 
+
 function sanitizeNoteHtml(html){
   const box=document.createElement('div');
   box.innerHTML=String(html||'');
   const allowed=new Set(['B','STRONG','I','EM','U','BR']);
+
 
   // Contenteditable uses DIV/P blocks for Enter. Convert those blocks into
   // explicit BRs so every newline survives when the note is saved.
@@ -1297,8 +1435,10 @@ function sanitizeNoteHtml(html){
     return `<${tag.toLowerCase()}>${inner}</${tag.toLowerCase()}>`;
   }
 
+
   return [...box.childNodes].map(cleanNode).join('');
 }
+
 
 function updateNoteFormatState(){
   const editor=document.getElementById('newNoteInput');
@@ -1314,6 +1454,7 @@ function updateNoteFormatState(){
   });
 }
 
+
 function formatNote(command){
   const editor=document.getElementById('newNoteInput');
   if(!editor)return;
@@ -1321,6 +1462,7 @@ function formatNote(command){
   document.execCommand(command,false,null);
   updateNoteFormatState();
 }
+
 
 window.noteAudienceState='person';
 function toggleAudienceSheet(e){
@@ -1362,6 +1504,7 @@ document.addEventListener('keydown',function(e){
   if(e.key==='Escape')closeAudienceSheet();
 });
 
+
 function addNote(){
   const input=document.getElementById('newNoteInput');
   if(!input)return;
@@ -1385,9 +1528,11 @@ function addNote(){
   persist(); renderRecords(); toast(audience==='shared'?'Note added for everyone':'Note added');
 }
 
+
 function noteCollection(scope){
   return scope==='shared'?getSharedNotes():getPersonNotes();
 }
+
 
 function openNoteMenu(scope,noteIndex){
   const notes=noteCollection(scope);
@@ -1399,6 +1544,7 @@ function openNoteMenu(scope,noteIndex){
     {label:'Delete note',icon:'⌫',danger:true,run:()=>deleteNote(scope,noteIndex)}
   ]);
 }
+
 
 function editNote(scope,ni){
   const notes=noteCollection(scope);
@@ -1425,6 +1571,7 @@ function editNote(scope,ni){
   setTimeout(()=>document.getElementById('editNoteInput')?.focus(),80);
 }
 
+
 function deleteNote(scope,ni){
   const notes=noteCollection(scope);
   if(!notes?.[ni])return;
@@ -1434,6 +1581,7 @@ function deleteNote(scope,ni){
   });
 }
 
+
 function toggleNotePin(scope,ni){
   const notes=noteCollection(scope);
   if(!notes?.[ni])return;
@@ -1441,28 +1589,42 @@ function toggleNotePin(scope,ni){
   persist();renderRecords();toast(notes[ni].pinned?'Note pinned':'Note unpinned');
 }
 
-function openSessionMenu(sessionIndex){
-  const session=(data.logs[currentExercise]||{})[currentPerson]?.[sessionIndex];
+
+function openSessionMenu(ownerPid,sessionIndex){
+  const session=(data.logs[currentExercise]||{})[ownerPid]?.[sessionIndex];
   if(!session)return;
-  openActionSheet(session.date,[
-    {label:'Edit session',icon:'✎',run:()=>editSession(sessionIndex)},
-    {label:'Delete session',icon:'⌫',danger:true,run:()=>confirmDeleteSession(sessionIndex)}
-  ]);
+  const assigned=data.exercises.find(e=>e.id===currentExercise)?.assignedPersonId||'';
+  const canEdit=!assigned || assigned===currentPerson;
+  const items=[];
+  if(canEdit){
+    items.push({label:'Edit session',icon:'✎',run:()=>editSession(ownerPid,sessionIndex)});
+    items.push({label:'Delete session',icon:'⌫',danger:true,run:()=>confirmDeleteSession(ownerPid,sessionIndex)});
+  }
+  if(!items.length){toast('Only the assigned person can edit this workout');return}
+  openActionSheet(session.date,items);
 }
-function openSetMenu(sessionIndex,setIndex){
-  const set=(data.logs[currentExercise]||{})[currentPerson]?.[sessionIndex]?.sets?.[setIndex];
+function openSetMenu(ownerPid,sessionIndex,setIndex){
+  const session=(data.logs[currentExercise]||{})[ownerPid]?.[sessionIndex];
+  const set=session?.sets?.[setIndex];
   if(!set)return;
+  const assigned=data.exercises.find(e=>e.id===currentExercise)?.assignedPersonId||'';
+  if(assigned && assigned!==currentPerson){toast('Only the assigned person can edit this workout');return}
   openActionSheet(`Set ${set[0]}`,[
-    {label:'Edit set',icon:'✎',run:()=>editSet(sessionIndex,setIndex)},
-    {label:'Delete set',icon:'⌫',danger:true,run:()=>deleteSet(sessionIndex,setIndex)}
+    {label:'Edit set',icon:'✎',run:()=>editSet(ownerPid,sessionIndex,setIndex)},
+    {label:'Delete set',icon:'⌫',danger:true,run:()=>deleteSet(ownerPid,sessionIndex,setIndex)}
   ]);
 }
-function editSession(sessionIndex){
-  const session=data.logs[currentExercise][currentPerson][sessionIndex];
-  openLogSheet(sessionIndex);
+function editSession(ownerPid,sessionIndex){
+  const session=data.logs[currentExercise]?.[ownerPid]?.[sessionIndex];
+  if(!session)return;
+  openLogSheet(sessionIndex,ownerPid);
 }
-function editSet(sessionIndex,setIndex){
-  const set=data.logs[currentExercise][currentPerson][sessionIndex].sets[setIndex];
+function editSet(ownerPid,sessionIndex,setIndex){
+  const session=data.logs[currentExercise]?.[ownerPid]?.[sessionIndex];
+  const set=session?.sets?.[setIndex];
+  if(!set)return;
+  const assigned=data.exercises.find(e=>e.id===currentExercise)?.assignedPersonId||'';
+  if(assigned && assigned!==currentPerson){toast('Only the assigned person can edit this workout');return}
   sheetMode='editSet';
   openSheet('Edit set',`
     <div class="field"><label>Weight (kg)</label><input id="editWeight" type="number" inputmode="decimal" step="0.5" min="0" value="${esc(set[1])}" autofocus></div>
@@ -1474,18 +1636,21 @@ function editSet(sessionIndex,setIndex){
     set[1]=w;set[2]=r;persist();closeSheet();renderLogs();toast('Set updated');
   };
 }
-function confirmDeleteSession(sessionIndex){
-  openConfirmSheet('Delete session?','This session and all of its sets will be permanently deleted.',()=>deleteSession(sessionIndex));
+function confirmDeleteSession(ownerPid,sessionIndex){
+  openConfirmSheet('Delete session?','This session and all of its sets will be permanently deleted.',()=>deleteSession(ownerPid,sessionIndex));
 }
-function deleteSession(sessionIndex){
-  data.logs[currentExercise][currentPerson].splice(sessionIndex,1);
+function deleteSession(ownerPid,sessionIndex){
+  data.logs[currentExercise][ownerPid].splice(sessionIndex,1);
   persist();renderLogs();toast('Session deleted');
 }
-function deleteSet(sessionIndex,setIndex){
-  const sets=data.logs[currentExercise][currentPerson][sessionIndex].sets;
+function deleteSet(ownerPid,sessionIndex,setIndex){
+  const session=data.logs[currentExercise][ownerPid][sessionIndex];
+  const assigned=data.exercises.find(e=>e.id===currentExercise)?.assignedPersonId||'';
+  if(assigned && assigned!==currentPerson){toast('Only the assigned person can edit this workout');return}
+  const sets=session.sets;
   sets.splice(setIndex,1);
   sets.forEach((x,i)=>x[0]=String(i+1));
-  if(!sets.length)data.logs[currentExercise][currentPerson].splice(sessionIndex,1);
+  if(!sets.length)data.logs[currentExercise][ownerPid].splice(sessionIndex,1);
   persist();renderLogs();toast('Set deleted');
 }
 function backToFolder(){
@@ -1494,12 +1659,22 @@ function backToFolder(){
   else { goHome(); }
 }
 function showAllExercises(){
-  document.getElementById('allRows').innerHTML=data.exercises.map(exerciseRowHTML).join('')||'<div class="empty" style="margin-top:15px">No exercises yet.</div>';
+  document.getElementById('allRows').innerHTML=data.exercises.map(e=>exerciseRowHTML(e,false)).join('')||'<div class="empty" style="margin-top:15px">No exercises yet.</div>';
   show('allExercises');
 }
 function renderPeople(){
   document.getElementById('peopleRows').innerHTML=data.people.length?data.people.map(p=>`
     <div class="row"><div class="row-left"><div class="row-symbol">${initials(p.name)}</div><div><div class="row-title">${esc(p.name)}</div><div class="row-meta">Available in every exercise</div></div></div><button class="more" onclick="openPersonMenu('${p.id}')">›</button></div>`).join(''):'<div class="empty" style="margin-top:15px">No people yet.</div>';
+}
+function updateExerciseAddControl(){
+  const button=document.getElementById('globalAdd');
+  const label=document.getElementById('addLabel');
+  if(!button||!label)return;
+  const exercise=data.exercises.find(e=>e.id===currentExercise);
+  const assigned=exercise?.assignedPersonId||'';
+  const blocked=!!(assigned && assigned!==currentPerson);
+  button.disabled=blocked;
+  label.textContent=blocked?`View only · ${data.people.find(p=>p.id===assigned)?.name||'assigned person'}`:'Log session';
 }
 function globalAdd(){
   const active=document.querySelector('.view.active')?.id;
@@ -1511,27 +1686,33 @@ function openFolderSheet(){sheetMode='folder';openSheet('New folder',`<div class
 function openExerciseSheet(){sheetMode='exercise';openSheet('New exercise',`
   <div class="field"><label>Exercise name</label><input id="sheetInput" autofocus placeholder="e.g. Incline Bench Press"></div>
   <div class="field"><label>Folder</label><select id="sheetSelect">${data.folders.map(f=>`<option value="${f.id}" ${f.id===currentFolder?'selected':''}>${esc(f.name)}</option>`).join('')}</select></div>`)}
-function openLogSheet(editSessionIndex=null){
+function openLogSheet(editSessionIndex=null,ownerPid=currentPerson){
   if(!currentExercise || !data.people.length){ toast('Add a person first'); return; }
+  const exercise=data.exercises.find(e=>e.id===currentExercise);
+  if(exercise?.assignedPersonId && exercise.assignedPersonId!==currentPerson){toast('Only the assigned person can add or edit sets');return}
   sheetMode=editSessionIndex===null?'log':'editSession';
-  const session=editSessionIndex===null?null:data.logs[currentExercise][currentPerson][editSessionIndex];
+  const session=editSessionIndex===null?null:data.logs[currentExercise]?.[ownerPid]?.[editSessionIndex];
+  if(editSessionIndex!==null && !session)return;
   openSheet(editSessionIndex===null?'Log session':'Edit session',`
-    <div class="field"><label>Person</label><select id="sheetPerson">${data.people.map(p=>`<option value="${p.id}" ${p.id===currentPerson?'selected':''}>${esc(p.name)}</option>`).join('')}</select></div>
     <div class="field">
       <label>Sets</label>
       <div class="set-editor" id="setEditor">
         <div class="set-editor-head"><span>Weight (kg)</span><span>Reps</span><span></span></div>
         ${(session?.sets||[['','','','']]).map(set=>`<div class="set-editor-row"><input class="set-weight" type="number" inputmode="decimal" step="0.5" min="0" placeholder="60" value="${esc(set[1]||'')}"><input class="set-reps" type="number" inputmode="numeric" step="1" min="1" placeholder="8" value="${esc(set[2]||'')}"><button class="remove-set" type="button" onclick="removeLogSet(this)" aria-label="Remove set">×</button></div>`).join('')}
       </div>
-      <button class="add-set" type="button" onclick="addLogSet()">+ Add set</button>
+      <button class="add-set" id="addLogSetButton" type="button">+ Add set</button>
     </div>
   `);
   window._editingSessionIndex=editSessionIndex;
+  window._editingSessionOwner=ownerPid;
+  document.getElementById('addLogSetButton')?.addEventListener('click',addLogSet);
 }
 function addLogSet(){
   const editor=document.getElementById('setEditor');
+  if(!editor)return;
   const row=document.createElement('div'); row.className='set-editor-row';
-  row.innerHTML='<input class="set-weight" type="number" inputmode="decimal" step="0.5" min="0" placeholder="60"><input class="set-reps" type="number" inputmode="numeric" step="1" min="1" placeholder="8"><button class="remove-set" type="button" onclick="removeLogSet(this)" aria-label="Remove set">×</button>';
+  row.innerHTML='<input class="set-weight" type="number" inputmode="decimal" step="0.5" min="0" placeholder="60"><input class="set-reps" type="number" inputmode="numeric" step="1" min="1" placeholder="8"><button class="remove-set" type="button" aria-label="Remove set">×</button>';
+  row.querySelector('.remove-set').addEventListener('click',()=>removeLogSet(row.querySelector('.remove-set')));
   editor.appendChild(row); row.querySelector('.set-weight').focus();
 }
 function removeLogSet(btn){
@@ -1602,7 +1783,8 @@ function saveSheet(){
     return;
   }
   const input=document.getElementById('sheetInput');const name=input?.value.trim();
-  if(sheetMode!=='log' && !name){input?.focus();return}
+  const needsName=['folder','renameFolder','exercise','renameExercise','person'].includes(sheetMode);
+  if(needsName && !name){input?.focus();toast('Enter a name');return}
   if(sheetMode==='folder'){
     data.folders.push({id:id(),name,color:palette(data.folders.length)});
     persist();closeSheet();renderHome();toast('Folder created');
@@ -1619,11 +1801,16 @@ function saveSheet(){
   }else if(sheetMode==='moveExercise'){
     const e=data.exercises.find(x=>x.id===currentExercise);
     const fid=document.getElementById('sheetSelect').value;
-    if(e&&fid){e.folder=fid;persist();closeSheet();openExercise(currentExercise);toast('Exercise moved')}
+    if(e&&fid){e.folder=fid;currentFolder=fid;persist();closeSheet();renderHome();openFolder(fid);toast('Exercise moved')}
   }else if(sheetMode==='person'){
     data.people.push({id:id(),name});persist();closeSheet();renderPeople();toast('Person added');
+  }else if(sheetMode==='assignExercise'){
+    const e=data.exercises.find(x=>x.id===currentExercise);
+    const pid=document.getElementById('exerciseAssignee')?.value||'';
+    if(e){e.assignedPersonId=pid;persist();closeSheet();renderHome();if(currentFolder)openFolder(currentFolder);openExercise(currentExercise);toast(pid?'Workout assignment updated':'Workout is shared')}
   }else if(sheetMode==='log' || sheetMode==='editSession'){
-    const pid=document.getElementById('sheetPerson').value;
+    const exercise=data.exercises.find(e=>e.id===currentExercise);
+    if(exercise?.assignedPersonId && exercise.assignedPersonId!==currentPerson){toast('Only the assigned person can add or edit sets');return}
     const rows=[...document.querySelectorAll('#setEditor .set-editor-row')];
     const sets=rows.map((row,i)=>{
       const weight=row.querySelector('.set-weight').value.trim();
@@ -1632,16 +1819,20 @@ function saveSheet(){
     }).filter(x=>x[1] && x[2]);
     if(!sets.length){document.querySelector('#setEditor .set-weight')?.focus();return}
     data.logs[currentExercise]??={};
-    data.logs[currentExercise][pid]??=[];
     if(sheetMode==='editSession'){
-      const old=data.logs[currentExercise][currentPerson].splice(window._editingSessionIndex,1)[0];
+      const owner=window._editingSessionOwner||currentPerson;
+      const old=data.logs[currentExercise][owner]?.[window._editingSessionIndex];
+      if(!old){toast('Session no longer exists');return}
       old.sets=sets;
-      data.logs[currentExercise][pid].unshift(old);
+      old.updatedAt=Date.now();
     }else{
+      const pid=currentPerson;
+      data.logs[currentExercise][pid]??=[];
       const now=new Date();
       const date=now.toISOString().slice(0,10);
       const time=now.toTimeString().slice(0,5);
       const stamp=now.getTime();
+
 
       // A new log on the same calendar day continues today's session.
       // Do not create a second session card for the same exercise/person/date.
@@ -1657,7 +1848,6 @@ function saveSheet(){
         data.logs[currentExercise][pid].unshift({date,time,sets,createdAt:stamp,updatedAt:stamp});
       }
     }
-    currentPerson=pid;
     persist();closeSheet();renderPeopleStrip();renderLogs();toast(sheetMode==='editSession'?'Session updated':'Session saved');
   }
 }
@@ -1689,10 +1879,28 @@ function deleteFolder(fid){
   ids.forEach(x=>delete data.logs[x]);
   persist();goHome();toast('Folder deleted');
 }
+function openExerciseAssignmentSheet(eid){
+  const e=data.exercises.find(x=>x.id===eid);if(!e)return;
+  sheetMode='assignExercise';
+  openSheet('Assign workout',`<div class="field"><label>Who can add and edit sets?</label><select id="exerciseAssignee"><option value="">Shared · everyone</option>${data.people.map(p=>`<option value="${p.id}" ${p.id===(e.assignedPersonId||'')?'selected':''}>${esc(p.name)} only</option>`).join('')}</select></div><p class="row-meta" style="line-height:1.5">Everyone can still view the workout and its full history. You can change this assignment anytime.</p>`);
+}
+function setExerciseAssignment(eid,pid){
+  const e=data.exercises.find(x=>x.id===eid);if(!e)return;
+  e.assignedPersonId=pid||'';
+  persist();
+  renderHome();
+  if(currentFolder)openFolder(currentFolder);
+  if(currentExercise===eid){openExercise(eid)}
+  toast(pid?'Workout assignment updated':'Workout is shared');
+}
 function exerciseMenu(){
   const e=data.exercises.find(x=>x.id===currentExercise);
   if(!e)return;
+  const assigned=e.assignedPersonId||'';
+  const personName=assigned?(data.people.find(p=>p.id===assigned)?.name||'Assigned'):'Shared';
   openActionSheet(e.name,[
+    {label:assigned?`Assigned to ${personName}`:'Assign to person',icon:'●',run:()=>openExerciseAssignmentSheet(e.id)},
+    ...(assigned?[{label:'Make shared',icon:'↗',run:()=>setExerciseAssignment(e.id,'')}]:[]),
     {label:'Rename exercise',icon:'✎',run:()=>openRenameExerciseSheet(e.id)},
     {label:'Move to folder',icon:'↗',run:()=>openMoveExerciseSheet(e.id)},
     {label:'Delete exercise',icon:'⌫',danger:true,run:()=>confirmDeleteExercise(e.id)}
@@ -1729,6 +1937,8 @@ function openConfirmSheet(title,copy,onConfirm){
 }
 
 
+
+
 function exportData(){
   const backup={
     app:'Curl',
@@ -1749,6 +1959,7 @@ function exportData(){
   toast('Backup exported');
 }
 
+
 function validBackupData(x){
   // Backups created by Curl are trusted to use the same schema as the
   // running app. Keep validation intentionally lightweight so a backup
@@ -1757,17 +1968,21 @@ function validBackupData(x){
   if(!x || typeof x!=='object') return false;
   if(!Array.isArray(x.folders) || !Array.isArray(x.people) || !Array.isArray(x.exercises)) return false;
 
+
   if(x.folders.some(f=>!f || typeof f!=='object' || typeof f.id!=='string' || typeof f.name!=='string')) return false;
   if(x.people.some(p=>!p || typeof p!=='object' || typeof p.id!=='string' || typeof p.name!=='string')) return false;
   if(x.exercises.some(e=>!e || typeof e!=='object' || typeof e.id!=='string' || typeof e.name!=='string')) return false;
 
+
   return true;
 }
+
 
 function normalizeImportedData(incoming){
   const folders=incoming.folders.map(f=>({...f}));
   const people=incoming.people.map(p=>({...p}));
   const folderIds=new Set(folders.map(f=>f.id));
+
 
   const exercises=incoming.exercises.map(e=>{
     const copy={...e};
@@ -1778,15 +1993,19 @@ function normalizeImportedData(incoming){
     return copy;
   });
 
+
   const logs=(incoming.logs && typeof incoming.logs==='object' && !Array.isArray(incoming.logs))
     ? JSON.parse(JSON.stringify(incoming.logs)) : {};
+
 
   // Ensure every exercise has a log bucket. This also makes older backups
   // created before logs were initialized import cleanly.
   exercises.forEach(e=>{ if(!logs[e.id] || typeof logs[e.id]!=='object' || Array.isArray(logs[e.id])) logs[e.id]={}; });
 
+
   return {folders,people,exercises,logs};
 }
+
 
 async function importData(file){
   if(!file) return;
@@ -1796,6 +2015,7 @@ async function importData(file){
     const parsed=JSON.parse(text.replace(/^\uFEFF/,''));
     const incoming=parsed?.data && typeof parsed.data==='object' ? parsed.data : parsed;
 
+
     // Accept both the current {app, version, data} backup wrapper and the
     // plain data object used by older Curl builds.
     if(!validBackupData(incoming)){
@@ -1803,9 +2023,11 @@ async function importData(file){
       return;
     }
 
+
     const clean=normalizeImportedData(incoming);
     const replace=confirm('Import this backup and replace the current notebook?');
     if(!replace)return;
+
 
     data=clean;
     persist();
@@ -1819,6 +2041,7 @@ async function importData(file){
     toast('Could not import backup');
   }
 }
+
 
 function resetDemo(){if(confirm('Restore example data?')){data=JSON.parse(JSON.stringify(demo));persist();goHome();toast('Example data restored')}}
 function clearAll(){if(confirm('Delete the entire notebook?')){data={folders:[],people:[],exercises:[],logs:{}};persist();goHome();toast('Notebook cleared')}}
