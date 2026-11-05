@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -112,6 +112,27 @@ h1{font-size:54px;line-height:.92;letter-spacing:-4px;margin:0;font-weight:800}
 .view{display:none}.view.active{display:block}
 .subtop{height:82px;display:flex;align-items:center;justify-content:space-between}
 .back{background:none;font-size:15px;font-weight:650;padding:8px 0}
+.exercise-top-actions{display:flex;align-items:center;gap:10px}
+.warmup-trigger{width:43px;height:43px;flex:none;border-radius:50%;background:var(--paper);border:1px solid var(--line);display:grid;place-items:center;color:var(--ink)}
+.warmup-trigger svg{width:29px;height:18px;display:block;overflow:visible}
+.warmup-trigger:active{transform:scale(.96)}
+.warmup-people{display:flex;gap:9px;overflow-x:auto;padding:1px 0 17px;margin-top:-2px;scrollbar-width:none}
+.warmup-people::-webkit-scrollbar{display:none}
+.warmup-people .person-pill{min-width:0;padding:8px 12px;border-radius:16px;display:flex;align-items:center;gap:8px}
+.warmup-people .avatar{width:25px;height:25px;margin:0;font-size:10px}
+.warmup-people .person-pill span{font-size:12px}
+.warmup-source{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 0 16px;border-top:1px solid var(--line);color:#888;font-size:12px}
+.warmup-source-value{color:var(--ink);font-size:15px;font-weight:750;font-variant-numeric:tabular-nums;white-space:nowrap}
+.warmup-results{display:grid;grid-template-columns:1fr 1fr;margin-top:2px;padding:7px 0 4px}
+.warmup-result{min-width:0;padding:8px 12px 10px 0}
+.warmup-result+ .warmup-result{border-left:1px solid var(--line);padding-left:20px;padding-right:0}
+.warmup-result-kicker{font-size:11px;color:#92928e;font-weight:700;letter-spacing:.45px;text-transform:uppercase}
+.warmup-result-weight{font-size:38px;line-height:1;font-weight:800;letter-spacing:-2px;margin:12px 0 7px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.warmup-result-weight span{font-size:14px;font-weight:650;letter-spacing:0;margin-left:2px}
+.warmup-result-detail{font-size:13px;color:#888}
+.warmup-footnote{font-size:11px;color:#999;line-height:1.5;margin-top:17px}
+.warmup-empty{padding:5px 0 2px;color:#888;font-size:13px;line-height:1.55}
+.warmup-no-source{padding:14px 0;border-top:1px solid var(--line);color:#888;font-size:13px;line-height:1.5}
 .page-heading{padding:30px 0 27px}
 .page-heading h2{font-size:48px;line-height:.94;letter-spacing:-3.2px;margin:0;font-weight:800}
 .page-heading p{font-size:14px;color:#999;margin:9px 0 0}
@@ -238,6 +259,35 @@ h1{font-size:54px;line-height:.92;letter-spacing:-4px;margin:0;font-weight:800}
 .log-set-row>div{background:#f1f1ef;border-radius:8px;padding:8px 5px;text-align:center;font-size:12px}
 .log-set-row .set-more{background:transparent;color:#888;padding:0}
 
+
+
+/* Personal record achievement */
+.log-set-row .set-value{display:flex;align-items:center;justify-content:center;gap:5px}
+.set-pr-mark{display:inline-flex;align-items:center;gap:3px;color:#222;vertical-align:middle;white-space:nowrap}
+.set-pr-mark svg{width:13px;height:13px;display:block;flex:none}
+.set-pr-mark .pr-tag{display:inline-flex;align-items:center;justify-content:center;padding:3px 5px;border-radius:4px;background:#e6e6e2;font-size:9px;line-height:1;font-weight:750;letter-spacing:.35px;color:#777}
+.pr-achievement{position:fixed;inset:0;z-index:99999;display:none;align-items:flex-end;justify-content:center;background:rgba(0,0,0,.28);padding:14px 14px calc(14px + env(safe-area-inset-bottom))}
+.pr-achievement.show{display:flex;animation:prFade .18s ease-out}
+.pr-achievement-card{width:100%;max-width:440px;background:#fafaf8;border:1px solid rgba(0,0,0,.06);border-radius:28px;padding:13px 24px 27px;text-align:center;box-shadow:0 18px 55px rgba(0,0,0,.12);animation:prRise .28s cubic-bezier(.2,.8,.2,1)}
+.pr-achievement-handle{width:38px;height:4px;border-radius:4px;background:#d5d5d1;margin:0 auto 22px}
+.pr-art{width:132px;height:108px;margin:0 auto 13px;display:grid;place-items:center;position:relative}
+.pr-art svg{width:100%;height:100%;overflow:visible}
+.pr-art .pr-dumbbell{transform-box:fill-box;transform-origin:50% 55%;animation:prDumbbellLift 1.15s cubic-bezier(.2,.75,.25,1) both}
+.pr-art .pr-star{transform-box:fill-box;transform-origin:50% 50%;animation:prStarPop .72s .18s cubic-bezier(.2,.8,.2,1) both}
+.pr-art .pr-star-glint{animation:prGlint 1.4s .55s ease-out both}
+.pr-eyebrow{font-size:11px;font-weight:800;letter-spacing:1.3px;color:#888;text-transform:uppercase}
+.pr-title{font-size:31px;line-height:1.05;letter-spacing:-1.4px;font-weight:850;margin:8px 0 8px;color:#171717}
+.pr-exercise{font-size:14px;color:#888;margin-bottom:20px}
+.pr-stats{display:flex;align-items:center;justify-content:center;gap:22px;padding:16px 8px;background:#f0f0ed;border-radius:17px}
+.pr-stat strong{display:block;font-size:25px;line-height:1;font-weight:850;letter-spacing:-.8px;font-variant-numeric:tabular-nums}
+.pr-stat span{display:block;font-size:11px;color:#888;margin-top:6px}
+.pr-dismiss{font-size:12px;color:#aaa;margin-top:17px}
+@keyframes prFade{from{opacity:0}to{opacity:1}}
+@keyframes prRise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+@keyframes prStarPop{0%{opacity:0;transform:scale(.15) rotate(-35deg)}65%{opacity:1;transform:scale(1.16) rotate(8deg)}100%{opacity:1;transform:scale(1) rotate(0)}}
+@keyframes prDumbbellLift{0%{opacity:0;transform:translateY(12px) rotate(-5deg)}55%{opacity:1;transform:translateY(-3px) rotate(2deg)}78%{transform:translateY(1px) rotate(-1deg)}100%{opacity:1;transform:translateY(0) rotate(0)}}
+@keyframes prGlint{0%,100%{opacity:0}35%{opacity:1}65%{opacity:.25}}
+@media(prefers-reduced-motion:reduce){.pr-achievement.show,.pr-achievement-card,.pr-art .pr-star{animation:none}}
 
 .toast{
   position:fixed;z-index:90;left:50%;bottom:92px;transform:translate(-50%,12px);
@@ -703,7 +753,13 @@ h1{font-size:54px;line-height:.92;letter-spacing:-4px;margin:0;font-weight:800}
 <section id="exercise" class="view">
   <div class="subtop">
     <button class="back" onclick="backToFolder()">‹&nbsp; Back</button>
-    <button class="circle" onclick="exerciseMenu()">•••</button>
+    <div class="exercise-top-actions">
+      <button class="warmup-trigger" type="button" onclick="openWarmupCalculator()" aria-label="Warmup sets"><svg viewBox="0 0 64 38" role="img" aria-hidden="true">
+        <text x="1" y="31" font-family="Arial, Helvetica, sans-serif" font-size="35" font-weight="900" letter-spacing="-3" fill="currentColor">W</text>
+        <text x="31" y="30" font-family="Georgia, 'Times New Roman', serif" font-size="35" font-style="italic" font-weight="700" fill="currentColor">Σ</text>
+      </svg></button>
+      <button class="circle" onclick="exerciseMenu()">•••</button>
+    </div>
   </div>
   <div class="exercise-head">
     <div class="small" id="exerciseFolder"></div>
@@ -789,6 +845,51 @@ h1{font-size:54px;line-height:.92;letter-spacing:-4px;margin:0;font-weight:800}
       <button class="cancel" onclick="closeSheet()">Cancel</button>
       <button class="save" onclick="saveSheet()">Save</button>
     </div>
+  </div>
+</div>
+<div id="prAchievement" class="pr-achievement" onclick="if(event.target===this)closePRAchievement()" role="dialog" aria-modal="true" aria-labelledby="prAchievementTitle">
+  <div class="pr-achievement-card">
+    <div class="pr-achievement-handle"></div>
+    <div class="pr-art" aria-hidden="true">
+      <svg viewBox="0 0 144 112" fill="none">
+        <defs>
+          <linearGradient id="barTop" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#777A7A"/><stop offset="1" stop-color="#424545"/></linearGradient>
+          <linearGradient id="plateFace" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#55595A"/><stop offset="1" stop-color="#252829"/></linearGradient>
+          <linearGradient id="plateSide" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#202323"/><stop offset="1" stop-color="#111414"/></linearGradient>
+        </defs>
+        <g class="pr-dumbbell">
+          <!-- Continuous bar: it runs underneath both weight blocks so the connection reads clearly. -->
+          <path d="M30 51 36 46 108 46 114 51 108 56 36 56Z" fill="#929696"/>
+          <path d="M30 51 36 56H108L114 51V63L108 68H36L30 63Z" fill="url(#barTop)"/>
+          <path d="M36 56H108V68H36Z" fill="#343939"/>
+          <path d="M36 56H108V59H36Z" fill="#A0A5A5" opacity=".35"/>
+          <!-- Left block: front face, side face and top facet. -->
+          <path d="M18 31 28 23 44 31 34 39 34 87 28 92 18 84Z" fill="#171A1A"/>
+          <path d="M18 31 34 39V87L18 79Z" fill="url(#plateFace)"/>
+          <path d="M34 39 44 31V83L34 87Z" fill="url(#plateSide)"/>
+          <path d="M18 31 28 23 44 31 34 39Z" fill="#858A8A"/>
+          <path d="M22 35 29 39V79L22 75Z" fill="#A0A4A4" opacity=".22"/>
+          <!-- Right block mirrors the left block and overlaps the bar end cleanly. -->
+          <path d="M100 31 110 23 126 31 116 39 116 87 110 92 100 84Z" fill="#171A1A"/>
+          <path d="M100 31 116 39V87L100 79Z" fill="url(#plateFace)"/>
+          <path d="M116 39 126 31V83L116 87Z" fill="url(#plateSide)"/>
+          <path d="M100 31 110 23 126 31 116 39Z" fill="#858A8A"/>
+          <path d="M104 35 111 39V79L104 75Z" fill="#A0A4A4" opacity=".22"/>
+        </g>
+        <!-- gold star with a darker extruded side for a dimensional vector look -->
+        <g class="pr-star">
+          <path d="m105 3 6 12 13 2-9.5 9.3 2.2 13.2L105 33.3 93.3 39.5l2.2-13.2L86 17l13-2z" fill="#A66B13" transform="translate(2 3)"/>
+          <path d="m105 3 6 12 13 2-9.5 9.3 2.2 13.2L105 33.3 93.3 39.5l2.2-13.2L86 17l13-2z" fill="#E4AD37"/>
+          <path d="m105 3 6 12-6 3z" fill="#F6D77D"/>
+          <path class="pr-star-glint" d="m105 8 2.1 6.4 6.1 1.4-6.1 1.5-2.1 6.2-2.1-6.2-6.1-1.5 6.1-1.4z" fill="#FFF0B8" opacity="0"/>
+        </g>
+      </svg>
+    </div>
+    <div class="pr-eyebrow">PERSONAL RECORD</div>
+    <h2 class="pr-title" id="prAchievementTitle">New best</h2>
+    <div class="pr-exercise" id="prExerciseName"></div>
+    <div class="pr-stats"><div class="pr-stat"><strong id="prWeight">0 kg</strong><span>WEIGHT</span></div><div class="pr-stat"><strong id="prReps">0</strong><span>REPS</span></div></div>
+    <div class="pr-dismiss">Tap outside to close</div>
   </div>
 </div>
 <div id="syncSheet" class="sheet sync-sheet" onclick="if(event.target===this)closeSyncSheet()">
@@ -1125,8 +1226,13 @@ function renderHome(){
   }).join(''):`<div class="empty" style="grid-column:1/-1">No folders yet.</div>`;
 
 
-  const recent=data.exercises.filter(e=>!q||e.name.toLowerCase().includes(q)||folderName(e.folder).toLowerCase().includes(q)).slice(-6).reverse();
-  document.getElementById('recentList').innerHTML=recent.length?recent.map(e=>exerciseRowHTML(e,false)).join(''):`<div class="empty">No exercises yet.</div>`;
+  const recent=data.exercises.map(e=>{
+    const sessions=Object.values(data.logs[e.id]||{}).flat();
+    const lastUsedAt=sessions.reduce((latest,session)=>Math.max(latest,recordTime(session)),0);
+    return {exercise:e,lastUsedAt};
+  }).filter(x=>x.lastUsedAt>0&&(!q||x.exercise.name.toLowerCase().includes(q)||folderName(x.exercise.folder).toLowerCase().includes(q)))
+    .sort((a,b)=>b.lastUsedAt-a.lastUsedAt).slice(0,6).map(x=>x.exercise);
+  document.getElementById('recentList').innerHTML=recent.length?recent.map(e=>exerciseRowHTML(e,false)).join(''):`<div class="empty">No recent workouts yet.</div>`;
 }
 function darken(hex){
   const n=parseInt(hex.replace('#',''),16);
@@ -1228,6 +1334,51 @@ function selectPerson(pid){
   if(assigned && pid!==assigned)return;
   currentPerson=pid;renderPeopleStrip();renderRecords();updateExerciseAddControl();
 }
+function getWarmupSource(pid){
+  const sessions=((data.logs[currentExercise]||{})[pid]||[]).slice().sort((a,b)=>recordTime(b)-recordTime(a));
+  const latest=sessions[0];
+  if(!latest)return null;
+  const weights=(latest.sets||[]).map(set=>Number(set?.[1])).filter(n=>Number.isFinite(n)&&n>0);
+  if(!weights.length)return {session:latest,weight:null};
+  return {session:latest,weight:Math.max(...weights)};
+}
+function renderWarmupCalculator(pid){
+  const source=getWarmupSource(pid);
+  const body=document.getElementById('warmupCalcBody');
+  if(!body)return;
+  if(!source){body.innerHTML='<div class="warmup-no-source">No session recorded for this person yet. Log a working set to see suggested warm-up weights.</div>';return}
+  if(!source.weight){body.innerHTML='<div class="warmup-no-source">There is no valid weight in this person’s latest session.</div>';return}
+  const format=n=>Number.isInteger(n)?String(n):n.toFixed(2).replace(/0+$/,'').replace(/\.$/,'');
+  const stamp=source.session.date?new Date(`${source.session.date}T${source.session.time||'00:00'}:00`):null;
+  const dateLabel=stamp&&!Number.isNaN(stamp.getTime())?stamp.toLocaleDateString(undefined,{day:'numeric',month:'short',year:'numeric'}):'Latest session';
+  const base=source.weight;
+  body.innerHTML=`
+    <div class="warmup-source"><span>Latest session · ${esc(dateLabel)}</span><span class="warmup-source-value">${format(base)} kg</span></div>
+    <div class="warmup-results">
+      <div class="warmup-result"><div class="warmup-result-kicker">First set <span style="color:#b0a8f4">50%</span></div><div class="warmup-result-weight">${format(base*.5)}<span>kg</span></div><div class="warmup-result-detail">1–4 reps</div></div>
+      <div class="warmup-result"><div class="warmup-result-kicker">Second set <span style="color:#b0a8f4">80%</span></div><div class="warmup-result-weight">${format(base*.8)}<span>kg</span></div><div class="warmup-result-detail">1–2 reps</div></div>
+    </div>
+    <div class="warmup-footnote">Based on the heaviest set from this person's latest session. Exact percentage weights, not adjusted to plate availability.</div>`;
+}
+function openWarmupCalculator(){
+  const exercise=data.exercises.find(e=>e.id===currentExercise);
+  if(!exercise)return;
+  const assigned=exercise.assignedPersonId||'';
+  const people=assigned?data.people.filter(p=>p.id===assigned):data.people;
+  const selected=people.some(p=>p.id===currentPerson)?currentPerson:(people[0]?.id||'');
+  document.getElementById('sheetTitle').textContent='Warmup sets';
+  document.getElementById('sheetBody').innerHTML=`
+    <div class="warmup-people">${people.map(p=>`<button type="button" class="person-pill ${p.id===selected?'selected':''}" onclick="selectWarmupPerson('${p.id}')"><span class="avatar">${initials(p.name)}</span><span>${esc(p.name)}</span></button>`).join('')}</div>
+    <div id="warmupCalcBody"></div>`;
+  document.querySelector('#sheet .actions').style.display='none';
+  document.getElementById('sheet').classList.add('show');
+  renderWarmupCalculator(selected);
+}
+function selectWarmupPerson(pid){
+  document.querySelectorAll('.warmup-people .person-pill').forEach(el=>el.classList.toggle('selected',el.getAttribute('onclick')===`selectWarmupPerson('${pid}')`));
+  renderWarmupCalculator(pid);
+}
+
 function formatDisplayTime(value){
   const raw=String(value||'').trim();
   if(!raw)return '';
@@ -1313,7 +1464,7 @@ function renderRecords(){
         </div>
         <div class="table">
           <div class="head">Set</div><div class="head">kg</div><div class="head">Reps</div><div class="head"></div>
-          ${l.sets.map((set,si)=>`<div class="log-set-row" style="grid-column:1 / -1"><div>${esc(set[0])}</div><div>${esc(set[1])}</div><div>${esc(set[2])}</div>${canEdit?`<button class="set-more" onclick="openSetMenu('${owner}',${li},${si})" aria-label="Set options">•••</button>`:'<div></div>'}</div>`).join('')}
+          ${l.sets.map((set,si)=>`<div class="log-set-row" style="grid-column:1 / -1"><div>${esc(set[0])}</div><div>${esc(set[1])}</div><div class="set-value">${esc(set[2])}${set[4]==='pr'?`<span class="set-pr-mark" title="Personal record" aria-label="Personal record"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.6 14.35 8.7 21 9.05 15.85 13.3 17.55 19.7 12 16.1 6.45 19.7 8.15 13.3 3 9.05 9.65 8.7 12 2.6Z"/></svg><span class="pr-tag">PR</span></span>`:''}</div>${canEdit?`<button class="set-more" onclick="openSetMenu('${owner}',${li},${si})" aria-label="Set options">•••</button>`:'<div></div>'}</div>`).join('')}
         </div>
       </div>`;
   }).join('');
@@ -1774,6 +1925,81 @@ function closeSheet(){
   document.querySelector('#sheet .save').style.background='var(--accent)';
   document.querySelector('#sheet .save').onclick=saveSheet;
 }
+let prAchievementTimer=null;
+function prCompare(a,b){
+  if(!b)return 1;
+  if(a.weight!==b.weight)return a.weight>b.weight?1:-1;
+  if(a.reps!==b.reps)return a.reps>b.reps?1:-1;
+  return 0;
+}
+function getPersonExerciseBest(exerciseId,pid){
+  let best=null;
+  const sessions=data.logs?.[exerciseId]?.[pid]||[];
+  sessions.forEach(session=>(session.sets||[]).forEach(set=>{
+    const weight=Number(set[1]),reps=Number(set[2]);
+    if(!Number.isFinite(weight)||!Number.isFinite(reps)||weight<=0||reps<=0)return;
+    const candidate={weight,reps};
+    if(prCompare(candidate,best)>0)best=candidate;
+  }));
+  return best;
+}
+function closePRAchievement(){
+  const modal=document.getElementById('prAchievement');
+  if(!modal)return;
+  modal.classList.remove('show');
+  modal.style.display='none';
+  if(prAchievementTimer){clearTimeout(prAchievementTimer);prAchievementTimer=null;}
+}
+function showPRAchievement(record){
+  const modal=document.getElementById('prAchievement');
+  if(!modal||!record)return;
+  const targetWeight=Number(record.weight);
+  const targetReps=Number(record.reps);
+  const weightLabel=Number.isInteger(targetWeight)?String(targetWeight):targetWeight.toFixed(2).replace(/0+$/,'').replace(/\.$/,'');
+  // Keep the achievement overlay at the document root so no transformed view
+  // or sheet stacking context can hide it behind another interface layer.
+  if(modal.parentElement!==document.body)document.body.appendChild(modal);
+  const exerciseName=data.exercises.find(e=>e.id===(record.exerciseId||currentExercise))?.name||'Exercise';
+  document.getElementById('prExerciseName').textContent=exerciseName;
+  const weightEl=document.getElementById('prWeight');
+  const repsEl=document.getElementById('prReps');
+  weightEl.textContent='0 kg';
+  repsEl.textContent='0';
+  modal.style.display='flex';
+  modal.style.position='fixed';
+  modal.style.zIndex='2147483000';
+  modal.classList.remove('show');
+  // Restart the illustration and number animations on every new achievement.
+  const art=modal.querySelector('.pr-art');
+  if(art){
+    art.querySelectorAll('.pr-dumbbell,.pr-star').forEach(el=>{el.style.animation='none';void el.getBoundingClientRect();el.style.animation='';});
+  }
+  void modal.offsetWidth;
+  modal.classList.add('show');
+  const reduceMotion=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduceMotion){
+    weightEl.textContent=`${weightLabel} kg`;
+    repsEl.textContent=String(targetReps);
+  }else{
+    const duration=1050;
+    const startTime=performance.now();
+    const tick=(now)=>{
+      if(!modal.classList.contains('show'))return;
+      const progress=Math.min(1,(now-startTime)/duration);
+      const eased=1-Math.pow(1-progress,3);
+      const weightValue=targetWeight*eased;
+      const repValue=Math.round(targetReps*eased);
+      const shownWeight=Number.isInteger(targetWeight)?String(Math.round(weightValue)):weightValue.toFixed(2).replace(/0+$/,'').replace(/\.$/,'');
+      weightEl.textContent=`${progress===1?weightLabel:shownWeight} kg`;
+      repsEl.textContent=String(progress===1?targetReps:repValue);
+      if(progress<1)requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  }
+  if(prAchievementTimer)clearTimeout(prAchievementTimer);
+  prAchievementTimer=setTimeout(closePRAchievement,7000);
+}
+
 function saveSheet(){
   if(sheetMode==='renamePerson'){
     const name=document.getElementById('sheetInput').value.trim();
@@ -1809,6 +2035,7 @@ function saveSheet(){
     const pid=document.getElementById('exerciseAssignee')?.value||'';
     if(e){e.assignedPersonId=pid;persist();closeSheet();renderHome();if(currentFolder)openFolder(currentFolder);openExercise(currentExercise);toast(pid?'Workout assignment updated':'Workout is shared')}
   }else if(sheetMode==='log' || sheetMode==='editSession'){
+    let newPR=null;
     const exercise=data.exercises.find(e=>e.id===currentExercise);
     if(exercise?.assignedPersonId && exercise.assignedPersonId!==currentPerson){toast('Only the assigned person can add or edit sets');return}
     const rows=[...document.querySelectorAll('#setEditor .set-editor-row')];
@@ -1823,11 +2050,23 @@ function saveSheet(){
       const owner=window._editingSessionOwner||currentPerson;
       const old=data.logs[currentExercise][owner]?.[window._editingSessionIndex];
       if(!old){toast('Session no longer exists');return}
+      const previousSets=old.sets||[];
+      sets.forEach((set,index)=>{
+        const previous=previousSets[index];
+        if(previous?.[4]==='pr' && Number(previous[1])===Number(set[1]) && Number(previous[2])===Number(set[2]))set[4]='pr';
+      });
       old.sets=sets;
       old.updatedAt=Date.now();
     }else{
       const pid=currentPerson;
       data.logs[currentExercise][pid]??=[];
+      let best=getPersonExerciseBest(currentExercise,pid);
+      sets.forEach(set=>{
+        const candidate={weight:Number(set[1]),reps:Number(set[2])};
+        if(Number.isFinite(candidate.weight)&&Number.isFinite(candidate.reps)&&candidate.weight>0&&candidate.reps>0&&prCompare(candidate,best)>0){
+          set[4]='pr';best=candidate;newPR=candidate;
+        }
+      });
       const now=new Date();
       const date=now.toISOString().slice(0,10);
       const time=now.toTimeString().slice(0,5);
@@ -1848,7 +2087,19 @@ function saveSheet(){
         data.logs[currentExercise][pid].unshift({date,time,sets,createdAt:stamp,updatedAt:stamp});
       }
     }
-    persist();closeSheet();renderPeopleStrip();renderLogs();toast(sheetMode==='editSession'?'Session updated':'Session saved');
+    persist();
+    closeSheet();
+    // Schedule the achievement independently of history rendering. A rendering
+    // exception must never prevent a valid PR celebration from appearing.
+    if(newPR){
+      const achievement={...newPR, exerciseId:currentExercise};
+      setTimeout(()=>showPRAchievement(achievement),180);
+    }else if(sheetMode==='editSession'){
+      toast('Session updated');
+    }else{
+      toast('Session saved');
+    }
+    try{renderPeopleStrip();renderLogs();}catch(renderError){console.error('Curl history refresh failed:',renderError)}
   }
 }
 function palette(i){
