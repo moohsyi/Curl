@@ -116,6 +116,68 @@ h1{font-size:54px;line-height:.92;letter-spacing:-4px;margin:0;font-weight:800}
 .warmup-trigger{width:43px;height:43px;flex:none;border-radius:50%;background:var(--paper);border:1px solid var(--line);display:grid;place-items:center;color:var(--ink)}
 .warmup-trigger svg{width:29px;height:18px;display:block;overflow:visible}
 .warmup-trigger:active{transform:scale(.96)}
+.summary-trigger{width:43px;height:43px;flex:none;border-radius:50%;background:var(--paper);border:1px solid var(--line);display:grid;place-items:center;color:var(--ink)}
+.summary-trigger svg{width:21px;height:21px;display:block}
+.summary-trigger:active{transform:scale(.96)}
+/* Exercise summary: compact performance view with interactive trend and scan-first history */
+.summary-view{padding-bottom:calc(35px + env(safe-area-inset-bottom))}
+.summary-nav{height:70px;display:flex;align-items:center}
+.summary-back{background:none;padding:8px 0;font-size:15px;font-weight:650}
+.summary-intro{padding:20px 0 18px;border-bottom:1px solid var(--line)}
+.summary-eyebrow{font-size:11px;letter-spacing:.045em;color:var(--muted);font-weight:700;margin-bottom:9px}
+.summary-title{font-size:40px;line-height:1.02;letter-spacing:-2.4px;font-weight:800;margin:0}
+.summary-people{display:flex;gap:9px;overflow-x:auto;padding:13px 0 0;scrollbar-width:none}
+.summary-people::-webkit-scrollbar{display:none}
+.summary-people .person-pill{min-width:0;padding:7px 11px;border-radius:15px;display:flex;align-items:center;gap:8px}
+.summary-people .avatar{width:25px;height:25px;margin:0;font-size:10px}
+/* Personal best: compact utility card using the app's established type scale. */
+.summary-best{display:flex;align-items:center;gap:10px;margin:14px 0 14px;padding:10px 12px;background:#fff;border:1px solid var(--line);border-radius:15px;min-height:56px}
+.summary-best-icon{width:32px;height:32px;flex:none;display:grid;place-items:center;border-radius:10px;background:#f1f1ee;color:#555}
+.summary-best-icon svg{width:17px;height:17px;display:block}
+.summary-best-copy{display:flex;flex-direction:column;gap:2px;min-width:0}
+.summary-best-label{font-size:12px;letter-spacing:0;font-weight:700;color:#777}
+.summary-best-hint{font-size:10px;color:#999;line-height:1.2}
+.summary-best-value{margin-left:auto;font-size:16px;line-height:1.2;letter-spacing:-.35px;font-weight:750;font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--ink)}
+.summary-best-value small{font:inherit;letter-spacing:inherit;color:inherit}
+.summary-trend-label{display:flex;align-items:center;gap:7px}
+.summary-trend-label svg{width:17px;height:17px;flex:none;color:#777}
+.summary-trend{padding:15px 14px 12px;margin:0 0 18px;background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:0 1px 2px rgba(0,0,0,.025)}
+.summary-trend-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:16px}
+.summary-trend-label{font-size:16px;font-weight:750;letter-spacing:-.35px}
+.summary-range{display:flex;align-items:center;gap:2px;background:#f1f1ee;border-radius:999px;padding:3px}
+.summary-range button{min-width:34px;height:27px;border:0;border-radius:999px;background:transparent;color:#858580;font-size:10px;font-weight:700;padding:0 7px}
+.summary-range button.active{background:#fff;color:#171717;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.summary-trend-readout{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 10px;min-height:54px}
+.summary-trend-selected{display:flex;flex-direction:column;gap:4px;min-width:0}
+.summary-trend-date{font-size:11px;color:#858580;white-space:nowrap;letter-spacing:.015em}
+.summary-trend-value{font-size:32px;line-height:1;font-weight:800;letter-spacing:-1.4px;font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--ink)}
+.summary-trend-change{font-size:11px;color:#777;white-space:nowrap;text-align:right;font-weight:650;background:#f2f2ef;border-radius:999px;padding:6px 9px}
+.summary-chart{width:100%;height:120px;display:block;margin-top:5px;overflow:visible;touch-action:pan-y}
+.summary-chart .chart-hit{fill:transparent;stroke:transparent;stroke-width:12;cursor:pointer;pointer-events:all}
+.summary-chart .chart-point{pointer-events:none}
+.summary-chart .chart-point.selected{stroke:#fff;stroke-width:2.5}
+.summary-chart-dates{display:flex;justify-content:space-between;color:#999;font-size:10px;margin-top:0}
+.summary-chart-dates span{font-variant-numeric:tabular-nums}
+.summary-history-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 13px 12px;background:transparent;border:0;border-bottom:1px solid #e9e9e6;border-radius:0;margin:0 0 2px}
+.summary-history-title{font-size:15px;font-weight:750;letter-spacing:-.2px;color:var(--ink)}
+.summary-show-all{background:#f1f1ee;border:0;border-radius:999px;color:#555;font-size:11px;font-weight:700;padding:7px 12px;white-space:nowrap;box-shadow:none}
+.summary-history-sheet{background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.summary-table-scroll{overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:none}
+.summary-table-scroll::-webkit-scrollbar{display:none}
+.summary-table{width:100%;min-width:100%;border-collapse:collapse;table-layout:fixed;font-variant-numeric:tabular-nums}
+.summary-table.has-many-sets{min-width:520px}
+.summary-table th{height:36px;padding:0 7px;border-bottom:1px solid #e9e9e6;color:#92928e;font-size:10px;letter-spacing:.055em;font-weight:700;text-align:center;white-space:nowrap}
+.summary-table th:first-child,.summary-table td:first-child{text-align:left;padding-left:12px;width:104px}
+.summary-table th:last-child,.summary-table td:last-child{text-align:right;padding-right:12px;width:48px;font-weight:500;color:#333}
+.summary-table td{height:44px;padding:0 6px;border-bottom:1px dotted #e4e4e0;text-align:center;font-size:13px;white-space:nowrap;color:#333}
+.summary-table tbody tr:last-child td{border-bottom:0}
+.summary-table .summary-date{font-size:11.5px;color:#858580;text-align:left}
+.summary-cell-value{display:inline-flex;align-items:center;gap:3px;justify-content:center}
+.summary-cell-value.pr{color:#169eaa;font-weight:750}
+.summary-cell-empty{color:#b7b7b2}
+.summary-cell-pr{font-size:8px;line-height:1;font-weight:800;letter-spacing:.02em;color:#169eaa}
+.summary-empty{padding:18px 0;color:#888;font-size:13px;line-height:1.5}
+@media(max-width:380px){.summary-title{font-size:36px}.summary-chart{height:104px}.summary-table th:first-child,.summary-table td:first-child{width:92px}.summary-table th,.summary-table td{padding-left:5px;padding-right:5px}}
 .warmup-people{display:flex;gap:9px;overflow-x:auto;padding:1px 0 17px;margin-top:-2px;scrollbar-width:none}
 .warmup-people::-webkit-scrollbar{display:none}
 .warmup-people .person-pill{min-width:0;padding:8px 12px;border-radius:16px;display:flex;align-items:center;gap:8px}
@@ -179,7 +241,7 @@ h1{font-size:54px;line-height:.92;letter-spacing:-4px;margin:0;font-weight:800}
   padding:11px 22px calc(24px + env(safe-area-inset-bottom));max-height:84vh;overflow:auto
 }
 .handle{width:37px;height:4px;border-radius:4px;background:#d4d4d0;margin:0 auto 22px}
-.sheet-title{font-size:29px;letter-spacing:-1.5px;font-weight:800;margin:0 0 18px}
+.sheet-title{font-size:29px;letter-spacing:-1.5px;font-weight:800;margin:0 0 18px}.sheet-title.log-sheet-title{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:32px}.sheet-title.log-sheet-title .log-style-options{flex:none}.sheet-title.log-sheet-title .log-style-options button{font-size:12px;padding:7px 11px}
 .field{margin-bottom:13px}
 .field label{display:block;font-size:12px;color:#888;font-weight:700;margin:0 0 7px 3px}
 .field input,.field select{
@@ -193,16 +255,88 @@ h1{font-size:54px;line-height:.92;letter-spacing:-4px;margin:0;font-weight:800}
 .cancel{background:#ececea}.save{background:var(--accent);color:#fff;flex:1}
 
 
+/* Destructive notebook actions: deliberate, code-gated confirmation. */
+.purge-sheet{position:fixed;inset:0;z-index:80;display:none;align-items:flex-end;background:rgba(0,0,0,.34)}
+.purge-sheet.show{display:flex}
+.purge-card{width:100%;max-height:88vh;overflow:auto;background:#fafaf8;border-radius:27px 27px 0 0;padding:11px 22px calc(24px + env(safe-area-inset-bottom));}
+.purge-card .handle{margin-bottom:24px}
+.purge-kicker{font-size:11px;letter-spacing:1.3px;font-weight:800;color:#9a7771;margin-bottom:9px}
+.purge-title{font-size:29px;line-height:1.05;letter-spacing:-1.5px;font-weight:800;margin:0 0 10px;color:#171717}
+.purge-description{font-size:14px;line-height:1.5;color:#777;margin:0 0 19px;max-width:440px}
+.purge-notice{display:flex;gap:10px;align-items:flex-start;background:#f0f0ed;border-radius:15px;padding:13px 14px;margin-bottom:21px;color:#555;font-size:13px;line-height:1.45}
+.purge-notice-mark{flex:none;width:20px;height:20px;border:1.5px solid #999;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:800;color:#666}
+.purge-code-label{font-size:12px;color:#888;font-weight:700;margin:0 0 8px 2px}
+.purge-code{display:inline-flex;align-items:center;justify-content:center;min-width:112px;height:39px;padding:0 15px;border-radius:11px;background:#ecece8;color:#171717;font-size:16px;font-weight:850;letter-spacing:2.5px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:13px}
+.purge-input{width:100%;height:54px;border:1.5px solid #d8d8d3;background:#fff;border-radius:15px;padding:0 16px;outline:none;font-size:18px;font-weight:750;letter-spacing:2px;text-transform:uppercase;color:#171717;box-sizing:border-box}
+.purge-input:focus{border-color:#777;box-shadow:0 0 0 3px rgba(0,0,0,.045)}
+.purge-input::placeholder{font-size:14px;letter-spacing:0;font-weight:500;color:#b1b1ac;text-transform:none}
+.purge-actions{display:flex;gap:9px;margin-top:18px}
+.purge-cancel,.purge-confirm{height:52px;border:0;border-radius:26px;padding:0 18px;font-size:14px;font-weight:750}
+.purge-cancel{background:#ececea;color:#222}
+.purge-confirm{flex:1;background:#171717;color:#fff;opacity:.35;cursor:not-allowed}
+.purge-confirm:enabled{opacity:1;cursor:pointer}
+.purge-confirm.danger{background:#a63832}
+@media(min-width:600px){.purge-sheet{align-items:center;justify-content:center;padding:20px}.purge-card{width:min(100%,460px);border-radius:24px;padding:18px 24px 24px}}
+
+
 .set-editor{margin-top:4px}
 .set-editor-head{display:grid;grid-template-columns:1fr 1fr 42px;gap:8px;padding:0 3px 6px;color:#888;font-size:12px;font-weight:700}
-.set-editor-row{display:grid;grid-template-columns:1fr 1fr 42px;gap:8px;margin-bottom:8px}
-.set-editor-row input{width:100%;height:50px;border:1px solid #ddd;background:#fff;border-radius:15px;outline:none;padding:0 14px;font-size:16px}
+.set-editor-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) 42px;gap:8px;margin-bottom:8px;align-items:center}
+.set-stepper{height:50px;min-width:0;display:grid;grid-template-columns:30px minmax(0,1fr) 30px;align-items:center;gap:3px;background:#f1f1ee;border-radius:15px;padding:0 5px}
+.set-stepper button{width:30px;height:30px;border:0;border-radius:50%;background:#e6e6e2;color:#555;display:grid;place-items:center;font-size:18px;line-height:1;font-weight:600;cursor:pointer;touch-action:manipulation}
+.set-stepper button:active{background:#dcdcd7;transform:scale(.94)}
+.set-stepper input{width:100%;min-width:0;height:44px;border:0;background:transparent;border-radius:8px;outline:none;padding:0 1px;text-align:center;font-size:17px;font-weight:650;font-variant-numeric:tabular-nums;color:#171717}
+.set-stepper input:focus{background:#fff;box-shadow:inset 0 0 0 1.5px #8b7cf0}
+.set-stepper input::placeholder{color:#b9b9b4;opacity:1;font-weight:500}
+.set-stepper input.remembered-value{color:#171717;opacity:1;font-weight:650}
+.set-stepper input:not(.remembered-value){opacity:1}
 .remove-set{height:50px;border:0;background:#eee;color:#777;border-radius:15px;font-size:20px;cursor:pointer}
+.weight-step-setting{padding:17px 2px;border-bottom:1px solid var(--line);display:flex;flex-direction:column;align-items:stretch;gap:12px}
+.weight-step-options{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;padding:4px;border-radius:16px;background:#f0f0ed;width:100%;box-sizing:border-box}
+.weight-step-options button{width:100%;min-width:0;height:38px;padding:0 4px;border:0;border-radius:12px;background:transparent;color:#888;font-size:13px;font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
+.weight-step-options button.active{background:#fff;color:#171717;box-shadow:0 1px 4px #00000012}
+.rest-edit-setting{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.rest-edit-setting .row-meta{max-width:260px}
 .add-set{height:44px;border:1px dashed #d5d5d1;background:transparent;border-radius:15px;width:100%;font-weight:700;color:#555;margin-top:2px}
 
+.log-style-switch{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 14px;padding:0 1px}
+.log-style-switch label{font-size:13px;color:#888;font-weight:650}
+.log-style-options{display:flex;gap:3px;padding:3px;border-radius:99px;background:#f0f0ed}
+.log-style-options button{border:0;background:transparent;color:#888;border-radius:99px;padding:7px 12px;font-size:12px;font-weight:700}
+.log-style-options button.active{background:#fff;color:#171717;box-shadow:0 1px 4px #00000012}
+.classic-set-row{display:grid;grid-template-columns:30px minmax(0,1fr) minmax(0,1fr) 34px;gap:7px;align-items:center;margin-bottom:8px}
+.classic-set-row .classic-set-no{color:#999;text-align:center;font-size:13px;font-weight:650}
+.classic-set-row input{width:100%;min-width:0;height:50px;border:1px solid #dededb;background:#fff;border-radius:14px;padding:0 10px;text-align:center;font-size:16px;font-weight:600;color:#171717}
+.classic-set-row input::placeholder{color:#c5c5bf;opacity:1;font-weight:500}
+.classic-set-row .remove-set{height:46px}
 
 
 
+
+/* Rest timer: compact floating card, using Curl's neutral surfaces and typography. */
+.rest-settings{padding:18px 0 20px;border-bottom:1px solid var(--line);margin-bottom:4px}
+.rest-settings-head{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.rest-settings-duration{display:block;margin-top:18px;color:#777;font-size:14px}
+.rest-duration-value{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.rest-duration-value strong{color:#171717;font-size:16px;font-weight:750;font-variant-numeric:tabular-nums}
+.rest-duration-slider{display:block;width:100%;height:5px;margin:0;appearance:none;-webkit-appearance:none;border-radius:99px;background:linear-gradient(to right,#171717 0%,#171717 var(--range-progress,26.3%),#e7e7e3 var(--range-progress,26.3%),#e7e7e3 100%);outline:none;cursor:pointer}
+.rest-duration-slider::-webkit-slider-thumb{appearance:none;-webkit-appearance:none;width:21px;height:21px;border-radius:50%;background:#171717;border:4px solid #fff;box-shadow:0 0 0 1px #d7d7d2,0 2px 5px #0002}
+.rest-duration-slider::-moz-range-thumb{width:14px;height:14px;border-radius:50%;background:#171717;border:4px solid #fff;box-shadow:0 0 0 1px #d7d7d2,0 2px 5px #0002}
+.rest-duration-scale{display:flex;justify-content:space-between;margin-top:9px;color:#999;font-size:11px;font-variant-numeric:tabular-nums}
+.rest-toggle{width:49px;height:29px;padding:3px;border:0;border-radius:20px;background:#d8d8d4;display:flex;align-items:center;transition:background .18s}
+.rest-toggle span{width:23px;height:23px;border-radius:50%;background:#fff;box-shadow:0 1px 3px #0002;transition:transform .18s}
+.rest-toggle[aria-pressed="true"]{background:#171717}.rest-toggle[aria-pressed="true"] span{transform:translateX(20px)}
+.rest-timer{position:fixed;z-index:99990;left:16px;right:16px;bottom:calc(16px + env(safe-area-inset-bottom));background:#171717;color:#fff;border-radius:24px;padding:17px 19px 16px;box-shadow:0 14px 40px #0003;animation:restTimerIn .24s cubic-bezier(.2,.8,.2,1);}
+.rest-timer[hidden]{display:none}
+@keyframes restTimerIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.rest-timer-top{display:flex;align-items:center;justify-content:space-between}
+.rest-timer-kicker{display:flex;align-items:center;gap:8px;color:#aaa;font-size:10px;letter-spacing:1.5px;font-weight:800}
+.rest-timer-kicker i{width:7px;height:7px;border-radius:50%;background:#8b7cf0;box-shadow:0 0 0 4px #8b7cf022}
+.rest-timer-skip{border:0;background:#303030;color:#fff;border-radius:20px;padding:9px 17px;font-size:12px;font-weight:700}
+.rest-timer-main{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;padding:8px 0 13px}
+.rest-timer-time{font-size:43px;line-height:1;font-weight:750;letter-spacing:-2px;font-variant-numeric:tabular-nums}
+.rest-timer-caption{max-width:48%;padding-bottom:4px;color:#aaa;font-size:12px;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rest-timer-track{height:3px;border-radius:5px;background:#393939;overflow:hidden}.rest-timer-track span{display:block;width:100%;height:100%;background:#8b7cf0;transform-origin:left;transition:transform .3s linear}
 /* Sync: deliberately quiet and editorial, matching the notebook settings language. */
 .sync-row{padding:18px 2px;cursor:pointer}
 .sync-row-copy{min-width:0}
@@ -758,6 +892,7 @@ h1{font-size:54px;line-height:.92;letter-spacing:-4px;margin:0;font-weight:800}
         <text x="1" y="31" font-family="Arial, Helvetica, sans-serif" font-size="35" font-weight="900" letter-spacing="-3" fill="currentColor">W</text>
         <text x="31" y="30" font-family="Georgia, 'Times New Roman', serif" font-size="35" font-style="italic" font-weight="700" fill="currentColor">Σ</text>
       </svg></button>
+      <button class="summary-trigger" type="button" onclick="openExerciseSummary()" aria-label="Exercise summary" title="Exercise summary"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="5" cy="6.5" r="1.25" fill="currentColor" stroke="none"/><circle cx="5" cy="12" r="1.25" fill="currentColor" stroke="none"/><circle cx="5" cy="17.5" r="1.25" fill="currentColor" stroke="none"/><path d="M9 6.5h10M9 12h8M9 17.5h6"/></svg></button>
       <button class="circle" onclick="exerciseMenu()">•••</button>
     </div>
   </div>
@@ -768,6 +903,19 @@ h1{font-size:54px;line-height:.92;letter-spacing:-4px;margin:0;font-weight:800}
   <div id="peopleStrip" class="people-strip"></div>
   <div id="logs"></div>
   <div style="height:25px"></div>
+</section>
+
+
+<section id="exerciseSummary" class="view summary-view">
+  <div class="summary-nav">
+    <button class="summary-back" onclick="closeExerciseSummary()">‹&nbsp; Back</button>
+  </div>
+  <div class="summary-intro">
+    <div class="summary-eyebrow">EXERCISE SUMMARY</div>
+    <h2 class="summary-title" id="summaryExerciseTitle">Exercise</h2>
+    <div class="summary-people" id="summaryPeople"></div>
+  </div>
+  <div id="exerciseSummaryBody"></div>
 </section>
 
 
@@ -797,16 +945,22 @@ h1{font-size:54px;line-height:.92;letter-spacing:-4px;margin:0;font-weight:800}
       </div>
       <span class="sync-row-arrow">›</span>
     </button>
+    <div class="rest-settings">
+      <div class="rest-settings-head"><div><div class="row-title">Rest timer</div><div class="row-meta">Start a countdown after logging sets</div></div><button type="button" id="restTimerToggle" class="rest-toggle" onclick="toggleRestTimer()" aria-pressed="true"><span></span></button></div>
+      <div class="rest-settings-duration"><div class="rest-duration-value"><label for="defaultRestDuration">Default duration</label><strong id="defaultRestDurationValue">3 min</strong></div><input id="defaultRestDuration" class="rest-duration-slider" type="range" min="30" max="600" step="30" value="180" oninput="previewRestDuration(this,'defaultRestDurationValue')" onchange="setDefaultRestDuration(this.value)"><div class="rest-duration-scale"><span>30 sec</span><span>10 min</span></div></div>
+      <div class="rest-edit-setting"><div><div class="row-title">Rest after editing</div><div class="row-meta">Also start the timer when you edit a session or set</div></div><button type="button" id="restEditToggle" class="rest-toggle" onclick="toggleRestAfterEdit()" aria-pressed="true"><span></span></button></div>
+    </div>
+    <div class="weight-step-setting"><div><div class="row-title">Weight increment</div><div class="row-meta">Change applied by each tap</div></div><div class="weight-step-options" id="weightIncrementOptions" role="group" aria-label="Weight increment"><button type="button" data-step="2.5" onclick="setWeightIncrement(2.5)">2.5</button><button type="button" data-step="5" onclick="setWeightIncrement(5)">5</button><button type="button" data-step="7.5" onclick="setWeightIncrement(7.5)">7.5</button><button type="button" data-step="10" onclick="setWeightIncrement(10)">10</button></div></div>
     <button class="row" onclick="exportData()">
       <div><div class="row-title">Export data</div><div class="row-meta">Save a backup of your notebook</div></div><span>›</span>
     </button>
     <button class="row" onclick="document.getElementById('importFile').click()">
       <div><div class="row-title">Import data</div><div class="row-meta">Restore a notebook backup</div></div><span>›</span>
     </button>
-    <button class="row" onclick="resetDemo()">
+    <button class="row" onclick="openPurgeConfirmation('restore')">
       <div><div class="row-title">Restore example data</div><div class="row-meta">Replace the current notebook with examples</div></div><span>›</span>
     </button>
-    <button class="row" onclick="clearAll()">
+    <button class="row" onclick="openPurgeConfirmation('clear')">
       <div><div class="row-title">Clear notebook</div><div class="row-meta">Delete folders, exercises and logs</div></div><span>›</span>
     </button>
   </div>
@@ -844,6 +998,22 @@ h1{font-size:54px;line-height:.92;letter-spacing:-4px;margin:0;font-weight:800}
     <div class="actions">
       <button class="cancel" onclick="closeSheet()">Cancel</button>
       <button class="save" onclick="saveSheet()">Save</button>
+    </div>
+  </div>
+</div>
+<div id="purgeSheet" class="purge-sheet" onclick="if(event.target===this)closePurgeConfirmation()" aria-hidden="true">
+  <div class="purge-card" role="dialog" aria-modal="true" aria-labelledby="purgeTitle">
+    <div class="handle"></div>
+    <div class="purge-kicker" id="purgeKicker">DESTRUCTIVE ACTION</div>
+    <h3 class="purge-title" id="purgeTitle">Restore example data?</h3>
+    <p class="purge-description" id="purgeDescription">Your current notebook will be replaced with Curl's example notebook.</p>
+    <div class="purge-notice"><span class="purge-notice-mark" aria-hidden="true">!</span><span id="purgeNoticeText">Your existing folders, exercises and workout logs will be overwritten. This cannot be undone.</span></div>
+    <div class="purge-code-label">Enter this confirmation code</div>
+    <div class="purge-code" aria-label="Confirmation code PURGE">PURGE</div>
+    <input id="purgeCodeInput" class="purge-input" type="text" inputmode="text" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="5" placeholder="Type PURGE" aria-label="Confirmation code" oninput="updatePurgeConfirmation(this)">
+    <div class="purge-actions">
+      <button class="purge-cancel" type="button" onclick="closePurgeConfirmation()">Cancel</button>
+      <button class="purge-confirm" id="purgeConfirmButton" type="button" disabled onclick="confirmPurgeAction()">Restore examples</button>
     </div>
   </div>
 </div>
@@ -902,6 +1072,11 @@ h1{font-size:54px;line-height:.92;letter-spacing:-4px;margin:0;font-weight:800}
     </div>
     <div id="syncSheetBody"></div>
   </div>
+</div>
+<div id="restTimer" class="rest-timer" aria-live="polite" aria-label="Rest timer" hidden>
+  <div class="rest-timer-top"><span class="rest-timer-kicker"><i></i> REST</span><button class="rest-timer-skip" type="button" onclick="skipRestTimer()">Skip</button></div>
+  <div class="rest-timer-main"><div class="rest-timer-time" id="restTimerTime">03:00</div><div class="rest-timer-caption" id="restTimerExercise">Lat Pulldown</div></div>
+  <div class="rest-timer-track"><span id="restTimerProgress"></span></div>
 </div>
 <div id="toast" class="toast"></div>
 
@@ -965,6 +1140,10 @@ const demo={
 
 
 let data=load();
+ensureSettings();
+const REST_EDIT_KEY='curlRestAfterEdit';
+function getRestAfterEdit(){return localStorage.getItem(REST_EDIT_KEY)!=='false';}
+let restTimerInterval=null,restTimerEndsAt=0,restTimerTotal=180,pendingRestTimer=null;
 let sheetPersonId=null;
 let currentFolder=null,currentExercise=null,currentPerson=null,currentSourceView='home';
 let sheetMode=null;
@@ -994,7 +1173,20 @@ function load(){
   }catch(e){}
   return JSON.parse(JSON.stringify(demo));
 }
+function ensureSettings(){
+  if(!data || typeof data!=='object' || Array.isArray(data)) data={folders:[],people:[],exercises:[],logs:{}};
+  if(!data.settings || typeof data.settings!=='object' || Array.isArray(data.settings)) data.settings={};
+  if(typeof data.settings.restTimerEnabled!=='boolean') data.settings.restTimerEnabled=true;
+
+  const duration=Number(data.settings.restDuration);
+  data.settings.restDuration=Number.isFinite(duration)&&duration>=30&&duration<=600
+    ? Math.round(duration/30)*30 : 180;
+
+  const increment=Number(data.settings.weightIncrement);
+  data.settings.weightIncrement=[2.5,5,7.5,10].includes(increment)?increment:2.5;
+}
 function persist(){
+  ensureSettings();
   localStorage.setItem(KEY,JSON.stringify(data));
   if(syncCode && window.curlFirebase){
     const {db,doc,setDoc}=window.curlFirebase;
@@ -1090,6 +1282,7 @@ async function connectSync(code, createIfMissing=false){
       const remote=snap.data();
       if(remote.data&&remote.updatedAt){
         data=typeof remote.data==='string'?JSON.parse(remote.data):remote.data;
+        ensureSettings();
         localStorage.setItem(KEY,JSON.stringify(data));
         lastRemoteUpdate=remote.updatedAt;
       }
@@ -1111,6 +1304,7 @@ async function connectSync(code, createIfMissing=false){
       const t=Number(remote.updatedAt||0);
       if(remote.data && t>lastRemoteUpdate && t>lastCloudWrite){
         data=typeof remote.data==='string'?JSON.parse(remote.data):remote.data;
+        ensureSettings();
         lastRemoteUpdate=t;
         localStorage.setItem(KEY,JSON.stringify(data));
         renderHome();
@@ -1203,13 +1397,59 @@ function show(id){
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   window.scrollTo({top:0,behavior:'instant'});
-  document.getElementById('globalAdd').style.display=(id==='settings'||id==='people'||id==='allExercises')?'none':'block';
+  document.getElementById('globalAdd').style.display=(id==='settings'||id==='people'||id==='allExercises'||id==='exerciseSummary')?'none':'block';
+  document.querySelector('.app').style.paddingBottom=id==='exerciseSummary'?'calc(25px + env(safe-area-inset-bottom))':'';
   const labels={home:'New folder',folder:'New exercise',exercise:'Log session'};
   const label=document.getElementById('addLabel'); if(label) label.textContent=labels[id]||'Add';
 }
 function goHome(){show('home');renderHome()}
 function openPeople(){show('people');renderPeople()}
-function openSettings(){show('settings')}
+function restDurationOptions(){return Array.from({length:20},(_,i)=>(i+1)*30)}
+function formatRestTime(seconds){const n=Math.max(0,Math.ceil(seconds));return `${String(Math.floor(n/60)).padStart(2,'0')}:${String(n%60).padStart(2,'0')}`}
+function formatRestDuration(seconds){const n=Number(seconds)||180;return n%60===0?(n/60)+' min':Math.floor(n/60)+' min '+(n%60)+' sec'}
+function previewRestDuration(input,labelId){const n=Number(input.value);input.style.setProperty('--range-progress',`${((n-30)/570)*100}%`);const label=document.getElementById(labelId);if(label)label.textContent=formatRestDuration(n)}
+function renderRestSettings(){
+  ensureSettings();
+  const toggle=document.getElementById('restTimerToggle'),slider=document.getElementById('defaultRestDuration');
+  if(!toggle||!slider)return;
+  toggle.setAttribute('aria-pressed',String(data.settings.restTimerEnabled));
+  const editToggle=document.getElementById('restEditToggle');
+  if(editToggle)editToggle.setAttribute('aria-pressed',String(getRestAfterEdit()));
+  slider.value=String(Math.max(30,Math.min(600,Number(data.settings.restDuration)||180)));
+  previewRestDuration(slider,'defaultRestDurationValue');
+  const selected=Number(data.settings.weightIncrement)||2.5;
+  document.querySelectorAll('#weightIncrementOptions [data-step]').forEach(button=>button.classList.toggle('active',Number(button.dataset.step)===selected));
+}
+function setWeightIncrement(value){ensureSettings();const n=Number(value);if(![2.5,5,7.5,10].includes(n))return;data.settings.weightIncrement=n;persist();renderRestSettings()}
+function toggleRestAfterEdit(){localStorage.setItem(REST_EDIT_KEY,String(!getRestAfterEdit()));renderRestSettings()}
+function toggleRestTimer(){ensureSettings();data.settings.restTimerEnabled=!data.settings.restTimerEnabled;persist();renderRestSettings();if(!data.settings.restTimerEnabled)skipRestTimer()}
+function setDefaultRestDuration(value){ensureSettings();const n=Math.max(30,Math.min(600,Number(value)||180));data.settings.restDuration=n;persist();renderRestSettings()}
+function getExerciseRestDuration(e){ensureSettings();return Number.isFinite(Number(e?.restDuration))?Number(e.restDuration):Number(data.settings.restDuration)||180}
+function startRestTimer(exerciseId,duration){
+  ensureSettings();
+  if(!data.settings.restTimerEnabled)return;
+  const e=data.exercises.find(x=>x.id===exerciseId);if(!e)return;
+  clearInterval(restTimerInterval);
+  restTimerTotal=Math.max(30,Math.min(600,Number(duration)||getExerciseRestDuration(e)));
+  restTimerEndsAt=Date.now()+restTimerTotal*1000;
+  const box=document.getElementById('restTimer');box.hidden=false;
+  document.getElementById('restTimerExercise').textContent=e.name;
+  const tick=()=>{
+    const left=Math.max(0,(restTimerEndsAt-Date.now())/1000);
+    document.getElementById('restTimerTime').textContent=formatRestTime(left);
+    document.getElementById('restTimerProgress').style.transform=`scaleX(${1-left/restTimerTotal})`;
+    if(left<=0){clearInterval(restTimerInterval);restTimerInterval=null;box.hidden=true;toast('Rest complete')}
+  };
+  tick();restTimerInterval=setInterval(tick,250);
+}
+function skipRestTimer(){clearInterval(restTimerInterval);restTimerInterval=null;const box=document.getElementById('restTimer');if(box)box.hidden=true;pendingRestTimer=null}
+function openExerciseRestSheet(eid){
+  const e=data.exercises.find(x=>x.id===eid);if(!e)return;
+  sheetMode='exerciseRest';
+  const selected=getExerciseRestDuration(e);
+  openSheet('Rest duration',`<div class="rest-settings-duration" style="margin-top:4px"><div class="rest-duration-value"><label for="exerciseRestDuration">Rest after each log</label><strong id="exerciseRestDurationValue">${formatRestDuration(selected)}</strong></div><input id="exerciseRestDuration" class="rest-duration-slider" type="range" min="30" max="600" step="30" value="${selected}" oninput="previewRestDuration(this,'exerciseRestDurationValue')"><div class="rest-duration-scale"><span>30 sec</span><span>10 min</span></div></div><p class="row-meta" style="line-height:1.5;margin-top:18px">This overrides the default duration for this exercise. The global timer switch in Settings still controls whether the timer runs.</p>`);
+}
+function openSettings(){show('settings');renderRestSettings()}
 function renderHome(){
   const q=(document.getElementById('search')?.value||'').toLowerCase().trim();
   const folders=data.folders.filter(f=>!q||f.name.toLowerCase().includes(q)||data.exercises.some(e=>e.folder===f.id&&e.name.toLowerCase().includes(q)));
@@ -1379,6 +1619,117 @@ function selectWarmupPerson(pid){
   renderWarmupCalculator(pid);
 }
 
+
+function summarySessions(){
+  return (((data.logs||{})[currentExercise]||{})[currentPerson]||[]).slice().sort((a,b)=>recordTime(b)-recordTime(a));
+}
+function summaryMetrics(session){
+  const sets=(session.sets||[]).map(set=>({weight:Number(set?.[1]),reps:Number(set?.[2]),pr:set?.[4]==='pr'})).filter(x=>Number.isFinite(x.weight)&&x.weight>0&&Number.isFinite(x.reps)&&x.reps>0);
+  return {sets, reps:sets.reduce((n,x)=>n+x.reps,0), volume:sets.reduce((n,x)=>n+x.weight*x.reps,0), bestWeight:sets.length?Math.max(...sets.map(x=>x.weight)):0, bestSet:sets.slice().sort((a,b)=>b.weight-a.weight||b.reps-a.reps)[0]||null};
+}
+function summaryDateLabel(session,withWeekday=false){
+  const raw=String(session.date||'');
+  const parsed=Date.parse(`${raw}T00:00:00`);
+  return Number.isFinite(parsed)?new Date(parsed).toLocaleDateString(undefined,withWeekday?{weekday:'short',month:'short',day:'numeric'}:{day:'numeric',month:'short'}):raw||'—';
+}
+let summaryShowAll=false;
+let summaryRange="ALL";
+let summarySelectedPoint=-1;
+function openExerciseSummary(){
+  const exercise=data.exercises.find(e=>e.id===currentExercise);
+  if(!exercise)return;
+  summaryShowAll=false;summarySelectedPoint=-1;
+  document.getElementById('summaryExerciseTitle').textContent=exercise.name;
+  renderSummaryPeople();
+  renderExerciseSummary();
+  show('exerciseSummary');
+}
+function renderSummaryPeople(){
+  const exercise=data.exercises.find(e=>e.id===currentExercise);
+  const assigned=exercise?.assignedPersonId||'';
+  const people=assigned?data.people.filter(p=>p.id===assigned):data.people;
+  const host=document.getElementById('summaryPeople');if(!host)return;
+  host.innerHTML=people.map(p=>`<button type="button" class="person-pill ${p.id===currentPerson?'selected':''}" onclick="selectSummaryPerson('${p.id}')"><span class="avatar">${initials(p.name)}</span><span>${esc(p.name)}</span></button>`).join('');
+}
+function selectSummaryPerson(pid){
+  currentPerson=pid;summaryShowAll=false;summarySelectedPoint=-1;summaryRange="ALL";
+  renderSummaryPeople();renderExerciseSummary();
+}
+function closeExerciseSummary(){renderPeopleStrip();renderRecords();show('exercise');}
+function toggleSummaryHistory(){summaryShowAll=!summaryShowAll;renderExerciseSummary()}
+function setSummaryRange(range){summaryRange=range;summarySelectedPoint=-1;renderExerciseSummary()}
+function selectSummaryPoint(index){
+  summarySelectedPoint=index;
+  const values=window.__curlSummaryChartValues||[];
+  const v=values[index];if(!v)return;
+  const previous=index>0?values[index-1]:null;
+  const delta=previous?v.weight-previous.weight:null;
+  const format=n=>Number.isInteger(n)?String(n):n.toFixed(1).replace(/\.0$/,'');
+  const change=delta===null?'First recorded session':delta>0?`↑ ${format(delta)} kg vs previous`:delta<0?`↓ ${format(Math.abs(delta))} kg vs previous`:'No change vs previous';
+  const date=document.getElementById('summarySelectedDate');
+  const weight=document.getElementById('summarySelectedWeight');
+  const changeEl=document.getElementById('summarySelectedChange');
+  if(date)date.textContent=v.date;
+  if(weight)weight.textContent=format(v.weight)+' kg';
+  if(changeEl)changeEl.textContent=change;
+  document.querySelectorAll('.summary-chart .chart-point').forEach((el,i)=>el.classList.toggle('selected',i===index));
+}
+function renderExerciseSummary(){
+  const body=document.getElementById('exerciseSummaryBody');if(!body)return;
+  const sessions=summarySessions();
+  if(!sessions.length){body.innerHTML='<div class="summary-empty">No training history yet. Log a session to start tracking this exercise.</div>';window.__curlSummaryChartValues=[];return}
+  const metrics=sessions.map(summaryMetrics);
+  const allSets=metrics.flatMap(x=>x.sets);
+  const best=allSets.slice().sort((a,b)=>b.weight-a.weight||b.reps-a.reps)[0]||null;
+  const format=n=>Number.isInteger(n)?String(n):n.toFixed(1).replace(/\.0$/,'');
+  let chartSessions=sessions.slice().reverse().filter(session=>summaryMetrics(session).bestWeight>0);
+  if(summaryRange!=='ALL'){
+    const days=summaryRange==='2W'?14:summaryRange==='1M'?30:90;
+    const latest=chartSessions.length?Date.parse(String(chartSessions[chartSessions.length-1].date||'')+'T00:00:00'):NaN;
+    if(Number.isFinite(latest))chartSessions=chartSessions.filter(session=>{const t=Date.parse(String(session.date||'')+'T00:00:00');return Number.isFinite(t)&&t>=latest-days*86400000});
+  }
+  const chartValues=chartSessions.map(session=>({date:summaryDateLabel(session),weight:summaryMetrics(session).bestWeight}));
+  window.__curlSummaryChartValues=chartValues;
+  if(summarySelectedPoint<0||summarySelectedPoint>=chartValues.length)summarySelectedPoint=chartValues.length-1;
+  const selected=chartValues[summarySelectedPoint];
+  const prev=summarySelectedPoint>0?chartValues[summarySelectedPoint-1]:null;
+  const delta=prev?selected.weight-prev.weight:null;
+  const selectedChange=delta===null?'First recorded session':delta>0?`↑ ${format(delta)} kg vs previous`:delta<0?`↓ ${format(Math.abs(delta))} kg vs previous`:'No change vs previous';
+  let chart='';
+  if(chartValues.length===1){chart=`<line x1="12" y1="66" x2="308" y2="66" stroke="currentColor" opacity=".12" stroke-dasharray="3 4"/><circle class="chart-point selected" cx="160" cy="66" r="4" fill="#171717"/><circle class="chart-hit" cx="160" cy="66" r="10" onclick="selectSummaryPoint(0)" role="button" tabindex="0" aria-label="${esc(selected.date)}, ${format(selected.weight)} kilograms" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectSummaryPoint(0)}"/>`}
+  else if(chartValues.length>1){
+    const values=chartValues.map(x=>x.weight),min=Math.min(...values),max=Math.max(...values),range=max-min||1;
+    const pts=values.map((v,i)=>[12+i*(296/(values.length-1)),104-((v-min)/range)*78]);
+    const path=pts.map((pt,i)=>(i?'L':'M')+pt[0].toFixed(1)+' '+pt[1].toFixed(1)).join(' ');
+    const area=path+` L ${pts[pts.length-1][0].toFixed(1)} 108 L ${pts[0][0].toFixed(1)} 108 Z`;
+    chart=`<defs><linearGradient id="summaryArea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#171717" stop-opacity=".07"/><stop offset="1" stop-color="#171717" stop-opacity="0"/></linearGradient></defs><path d="${area}" fill="url(#summaryArea)"/><line x1="8" y1="26" x2="312" y2="26" stroke="currentColor" opacity=".065" stroke-dasharray="3 5"/><line x1="8" y1="65" x2="312" y2="65" stroke="currentColor" opacity=".065" stroke-dasharray="3 5"/><line x1="8" y1="104" x2="312" y2="104" stroke="currentColor" opacity=".065" stroke-dasharray="3 5"/><path d="${path}" fill="none" stroke="#171717" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>${pts.map((pt,i)=>`<circle class="chart-point ${i===summarySelectedPoint?'selected':''}" cx="${pt[0]}" cy="${pt[1]}" r="${i===summarySelectedPoint?4.2:2.5}" fill="${i===summarySelectedPoint?'#171717':'#a4a4a0'}"/><circle class="chart-hit" cx="${pt[0]}" cy="${pt[1]}" r="10" onclick="selectSummaryPoint(${i})" role="button" tabindex="0" aria-label="${esc(chartValues[i].date)}, ${format(chartValues[i].weight)} kilograms" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectSummaryPoint(${i})}"/>`).join('')}`;
+  }
+  const shown=sessions.slice(0,summaryShowAll?sessions.length:10);
+  const maxSets=Math.max(1,...shown.map(session=>summaryMetrics(session).sets.length));
+  const headers=Array.from({length:maxSets},(_,i)=>`<th scope="col">SET ${i+1}</th>`).join('');
+  const rows=shown.map(session=>{
+    const m=summaryMetrics(session);
+    const cells=Array.from({length:maxSets},(_,i)=>{const set=m.sets[i];if(!set)return '<td><span class="summary-cell-empty">—</span></td>';return `<td><span class="summary-cell-value ${set.pr?'pr':''}">${format(set.weight)}×${format(set.reps)}${set.pr?'<span class="summary-cell-pr">PR</span>':''}</span></td>`}).join('');
+    return `<tr><td class="summary-date">${esc(summaryDateLabel(session,true))}</td>${cells}<td>${m.reps}</td></tr>`;
+  }).join('');
+  const gridCols=`104px repeat(${maxSets}, minmax(52px, 1fr)) 48px`;
+  body.innerHTML=`
+    <div class="summary-best">
+      <span class="summary-best-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4h8v3.2c0 3.1-1.7 5.3-4 5.3s-4-2.2-4-5.3V4Z"/><path d="M8 6H5.7v1.7c0 2.1 1.2 3.5 3.4 3.8M16 6h2.3v1.7c0 2.1-1.2 3.5-3.4 3.8M12 12.5V17m-3.5 3h7M10 17h4l1.5 3h-7L10 17Z"/></svg></span>
+      <span class="summary-best-copy"><span class="summary-best-label">Personal best</span><span class="summary-best-hint">Heaviest working set</span></span>
+      <strong class="summary-best-value">${best?`${format(best.weight)} kg × ${format(best.reps)}`:'—'}</strong>
+    </div>
+    <div class="summary-trend">
+      <div class="summary-trend-head"><div class="summary-trend-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 17.5 8.2 12l4 3 8.3-9"/><path d="M15.5 6H20.5V11"/></svg>Weight progression</div><div class="summary-range" role="group" aria-label="Chart time range">${[['2W','2W'],['1M','1M'],['3M','3M'],['ALL','ALL']].map(([v,label])=>`<button type="button" class="${summaryRange===v?'active':''}" onclick="setSummaryRange('${v}')" aria-pressed="${summaryRange===v}">${label}</button>`).join('')}</div></div>
+      <div class="summary-trend-readout">
+        <div class="summary-trend-selected"><span class="summary-trend-date" id="summarySelectedDate">${esc(selected?.date||'')}</span><strong class="summary-trend-value" id="summarySelectedWeight">${selected?format(selected.weight)+' kg':'—'}</strong></div>
+        <span class="summary-trend-change" id="summarySelectedChange">${selectedChange}</span>
+      </div>
+      <svg class="summary-chart" viewBox="0 0 320 116" preserveAspectRatio="none" role="group" aria-label="Tap a point to inspect a training session">${chart}</svg>
+      <div class="summary-chart-dates"><span>${esc(chartValues[0]?.date||'')}</span><span>${esc(chartValues.at(-1)?.date||'')}</span></div>
+    </div>
+    <div class="summary-history-sheet"><div class="summary-history-head"><div class="summary-history-title">Training history</div>${sessions.length>10?`<button class="summary-show-all" onclick="toggleSummaryHistory()">${summaryShowAll?'Show less':'Show all'}</button>`:''}</div><div class="summary-table-scroll"><table class="summary-table ${maxSets>2?'has-many-sets':''}" aria-label="Training history"><thead><tr><th scope="col">DATE</th>${headers}<th scope="col">TOTAL</th></tr></thead><tbody>${rows}</tbody></table></div></div>`;
+}
 function formatDisplayTime(value){
   const raw=String(value||'').trim();
   if(!raw)return '';
@@ -1768,7 +2119,7 @@ function openSetMenu(ownerPid,sessionIndex,setIndex){
 function editSession(ownerPid,sessionIndex){
   const session=data.logs[currentExercise]?.[ownerPid]?.[sessionIndex];
   if(!session)return;
-  openLogSheet(sessionIndex,ownerPid);
+  openLogSheet(sessionIndex,ownerPid,true);
 }
 function editSet(ownerPid,sessionIndex,setIndex){
   const session=data.logs[currentExercise]?.[ownerPid]?.[sessionIndex];
@@ -1784,7 +2135,17 @@ function editSet(ownerPid,sessionIndex,setIndex){
   document.querySelector('#sheet .save').onclick=()=>{
     const w=document.getElementById('editWeight').value.trim(),r=document.getElementById('editReps').value.trim();
     if(!(parseFloat(w)>0&&parseInt(r,10)>0))return;
-    set[1]=w;set[2]=r;persist();closeSheet();renderLogs();toast('Set updated');
+    const changed=Number(set[1])!==Number(w)||Number(set[2])!==Number(r);
+    set[1]=w;set[2]=r;
+    const newPR=recalculateExercisePRs(currentExercise,ownerPid,changed?[set]:[]);
+    const exerciseId=currentExercise;
+    const exercise=data.exercises.find(e=>e.id===exerciseId);
+    const shouldRest=changed&&data.settings.restTimerEnabled&&getRestAfterEdit();
+    const duration=getExerciseRestDuration(exercise);
+    persist();closeSheet();renderLogs();
+    if(newPR){if(shouldRest)pendingRestTimer={exerciseId,duration};const achievement={...newPR,exerciseId};setTimeout(()=>showPRAchievement(achievement),160)}
+    else if(shouldRest)setTimeout(()=>startRestTimer(exerciseId,duration),120);
+    else toast('Set updated');
   };
 }
 function confirmDeleteSession(ownerPid,sessionIndex){
@@ -1792,6 +2153,7 @@ function confirmDeleteSession(ownerPid,sessionIndex){
 }
 function deleteSession(ownerPid,sessionIndex){
   data.logs[currentExercise][ownerPid].splice(sessionIndex,1);
+  recalculateExercisePRs(currentExercise,ownerPid,[]);
   persist();renderLogs();toast('Session deleted');
 }
 function deleteSet(ownerPid,sessionIndex,setIndex){
@@ -1802,6 +2164,7 @@ function deleteSet(ownerPid,sessionIndex,setIndex){
   sets.splice(setIndex,1);
   sets.forEach((x,i)=>x[0]=String(i+1));
   if(!sets.length)data.logs[currentExercise][ownerPid].splice(sessionIndex,1);
+  recalculateExercisePRs(currentExercise,ownerPid,[]);
   persist();renderLogs();toast('Set deleted');
 }
 function backToFolder(){
@@ -1837,39 +2200,85 @@ function openFolderSheet(){sheetMode='folder';openSheet('New folder',`<div class
 function openExerciseSheet(){sheetMode='exercise';openSheet('New exercise',`
   <div class="field"><label>Exercise name</label><input id="sheetInput" autofocus placeholder="e.g. Incline Bench Press"></div>
   <div class="field"><label>Folder</label><select id="sheetSelect">${data.folders.map(f=>`<option value="${f.id}" ${f.id===currentFolder?'selected':''}>${esc(f.name)}</option>`).join('')}</select></div>`)}
-function openLogSheet(editSessionIndex=null,ownerPid=currentPerson){
+function logSetRowHTML(set,index){
+  const remembered=!!set?.[6];
+  const weight=esc(set?.[1]??'');
+  const reps=esc(set?.[2]??'');
+  const rememberedClass=remembered?' remembered-value':'';
+  return `<div class="set-editor-row"><div class="set-stepper"><button type="button" aria-label="Decrease weight" onclick="adjustLogValue(this,-1)">−</button><input class="set-weight${rememberedClass}" type="number" inputmode="decimal" step="any" min="0" value="${weight}" aria-label="Set ${index+1} weight"><button type="button" aria-label="Increase weight" onclick="adjustLogValue(this,1)">+</button></div><div class="set-stepper"><button type="button" aria-label="Decrease reps" onclick="adjustLogValue(this,-1)">−</button><input class="set-reps${rememberedClass}" type="number" inputmode="numeric" step="1" min="0" value="${reps}" aria-label="Set ${index+1} reps"><button type="button" aria-label="Increase reps" onclick="adjustLogValue(this,1)">+</button></div><button class="remove-set" type="button" onclick="removeLogSet(this)" aria-label="Remove set">×</button></div>`;
+}
+function openLogSheet(editSessionIndex=null,ownerPid=currentPerson,manualEdit=false){
   if(!currentExercise || !data.people.length){ toast('Add a person first'); return; }
   const exercise=data.exercises.find(e=>e.id===currentExercise);
   if(exercise?.assignedPersonId && exercise.assignedPersonId!==currentPerson){toast('Only the assigned person can add or edit sets');return}
+  const sessions=data.logs[currentExercise]?.[ownerPid]||[];
+  // If this exercise already has a session today, reopen that session in edit mode.
+  // Otherwise its remembered sets would be prefilled and then appended as duplicates.
+  if(editSessionIndex===null){
+    const today=new Date().toISOString().slice(0,10);
+    const todayIndex=sessions.findIndex(item=>item.date===today);
+    if(todayIndex>=0)editSessionIndex=todayIndex;
+  }
   sheetMode=editSessionIndex===null?'log':'editSession';
-  const session=editSessionIndex===null?null:data.logs[currentExercise]?.[ownerPid]?.[editSessionIndex];
+  const session=editSessionIndex===null?null:sessions[editSessionIndex];
   if(editSessionIndex!==null && !session)return;
+  const previous=editSessionIndex===null?sessions[0]:null;
+  let initialSets;
+  if(session?.sets)initialSets=session.sets;
+  else if(previous?.sets?.length)initialSets=previous.sets.map((set,i)=>[String(i+1),set[1]||'',set[2]||'','']);
+  else initialSets=[['1','','','']];
+  const inputStyle=getLogInputStyle();
+  const isRemembered=editSessionIndex===null && !!previous?.sets?.length;
+  const displaySets=isRemembered
+    ? initialSets.map(set=>['',set[1]||'',set[2]||'','','','',true])
+    : initialSets;
+  const rowRenderer=inputStyle==='classic'?classicLogSetRowHTML:logSetRowHTML;
   openSheet(editSessionIndex===null?'Log session':'Edit session',`
-    <div class="field">
-      <label>Sets</label>
-      <div class="set-editor" id="setEditor">
-        <div class="set-editor-head"><span>Weight (kg)</span><span>Reps</span><span></span></div>
-        ${(session?.sets||[['','','','']]).map(set=>`<div class="set-editor-row"><input class="set-weight" type="number" inputmode="decimal" step="0.5" min="0" placeholder="60" value="${esc(set[1]||'')}"><input class="set-reps" type="number" inputmode="numeric" step="1" min="1" placeholder="8" value="${esc(set[2]||'')}"><button class="remove-set" type="button" onclick="removeLogSet(this)" aria-label="Remove set">×</button></div>`).join('')}
-      </div>
-      <button class="add-set" id="addLogSetButton" type="button">+ Add set</button>
+    <div class="set-editor" id="setEditor">
+      ${inputStyle==='classic'?'<div class="set-editor-head" style="grid-template-columns:30px 1fr 1fr 34px"><span>SET</span><span>WEIGHT (KG)</span><span>REPS</span><span></span></div>':'<div class="set-editor-head"><span>Weight (kg)</span><span>Reps</span><span></span></div>'}
+      ${displaySets.map((set,i)=>rowRenderer(set,i)).join('')}
     </div>
+    <button class="add-set" id="addLogSetButton" type="button">+ Add set</button>
   `);
+  const title=document.getElementById('sheetTitle');
+  title.classList.add('log-sheet-title');
+  title.insertAdjacentHTML('beforeend',`<span class="log-style-options" aria-label="Input style"><button type="button" class="${inputStyle==='stepper'?'active':''}" onclick="setLogInputStyle('stepper')">Simple</button><button type="button" class="${inputStyle==='classic'?'active':''}" onclick="setLogInputStyle('classic')">Classic</button></span>`);
   window._editingSessionIndex=editSessionIndex;
   window._editingSessionOwner=ownerPid;
+  // Any existing session opened for editing, including the automatic same-day
+  // reopen from the main Log session button, must obey the Rest after editing setting.
+  window._editingSessionIsManual=!!manualEdit || editSessionIndex!==null;
   document.getElementById('addLogSetButton')?.addEventListener('click',addLogSet);
+  document.getElementById('setEditor')?.addEventListener('focusin',event=>{if(event.target.matches('input'))event.target.select()});
+  document.getElementById('setEditor')?.addEventListener('input',event=>{if(event.target.matches('.set-stepper input.remembered-value'))event.target.classList.remove('remembered-value')});
+}
+function adjustLogValue(button,direction){
+  const input=button.parentElement.querySelector('input');if(!input)return;
+  input.classList.remove('remembered-value');
+  const isWeight=input.classList.contains('set-weight');
+  const step=isWeight?(Number(data.settings.weightIncrement)||2.5):1;
+  const current=input.value.trim()===''?(isWeight?0:1):Number(input.value);
+  let next=current+direction*step;
+  next=Math.max(isWeight?0:1,next);
+  const decimals=(String(step).split('.')[1]||'').length;
+  next=Number(next.toFixed(Math.max(2,decimals)));
+  input.value=String(next);
+  input.dispatchEvent(new Event('input',{bubbles:true}));
 }
 function addLogSet(){
-  const editor=document.getElementById('setEditor');
-  if(!editor)return;
-  const row=document.createElement('div'); row.className='set-editor-row';
-  row.innerHTML='<input class="set-weight" type="number" inputmode="decimal" step="0.5" min="0" placeholder="60"><input class="set-reps" type="number" inputmode="numeric" step="1" min="1" placeholder="8"><button class="remove-set" type="button" aria-label="Remove set">×</button>';
-  row.querySelector('.remove-set').addEventListener('click',()=>removeLogSet(row.querySelector('.remove-set')));
-  editor.appendChild(row); row.querySelector('.set-weight').focus();
+  const editor=document.getElementById('setEditor');if(!editor)return;
+  const last=editor.querySelector('.set-editor-row:last-child,.classic-set-row:last-child');
+  const weightInput=last?.querySelector('.set-weight');
+  const previousWeight=weightInput?.value.trim()||weightInput?.placeholder||'';
+  const index=editor.querySelectorAll('.set-editor-row,.classic-set-row').length;
+  // Carry the load forward, but never carry reps into a fresh set.
+  const row=document.createElement('div');row.innerHTML=(getLogInputStyle()==='classic'?classicLogSetRowHTML:logSetRowHTML)(['',previousWeight,'0',''],index);editor.appendChild(row.firstElementChild);
 }
 function removeLogSet(btn){
-  const rows=document.querySelectorAll('#setEditor .set-editor-row');
+  const rows=document.querySelectorAll('#setEditor .set-editor-row,#setEditor .classic-set-row');
   if(rows.length===1){rows[0].querySelector('.set-weight').value='';rows[0].querySelector('.set-reps').value='';return}
-  btn.closest('.set-editor-row').remove();
+  btn.closest('.set-editor-row,.classic-set-row').remove();
+  document.querySelectorAll('#setEditor .classic-set-row .classic-set-no').forEach((el,i)=>el.textContent=String(i+1));
 }
 function openPersonMenu(pid){
   openActionSheet('Menu',[
@@ -1897,6 +2306,7 @@ function openRenamePerson(pid){
 }
 function openPersonSheet(){sheetMode='person';openSheet('Add person',`<div class="field"><label>Name</label><input id="sheetInput" autofocus placeholder="e.g. Me"></div>`)}
 function openSheet(title,body){
+  document.getElementById('sheetTitle').classList.remove('log-sheet-title');
   document.getElementById('sheetTitle').textContent=title;
   document.getElementById('sheetBody').innerHTML=body;
   document.querySelector('#sheet .actions').style.display='flex';
@@ -1904,6 +2314,7 @@ function openSheet(title,body){
   setTimeout(()=>document.getElementById('sheetInput')?.focus(),80);
 }
 function openActionSheet(title,items){
+  document.getElementById('sheetTitle').classList.remove('log-sheet-title');
   document.getElementById('sheetTitle').textContent=title;
   document.getElementById('sheetBody').innerHTML=`<div class="action-list">${
     items.map((item,i)=>`<button class="action-item ${item.danger?'danger':''}" onclick="runAction(${i})">
@@ -1943,12 +2354,74 @@ function getPersonExerciseBest(exerciseId,pid){
   }));
   return best;
 }
+function recalculateExercisePRs(exerciseId,pid,candidateSets=[]){
+  const sessions=data.logs?.[exerciseId]?.[pid]||[];
+  const candidateSetRefs=new Set(candidateSets);
+  const ordered=sessions.map((session,index)=>({session,index})).sort((a,b)=>{
+    const da=String(a.session.date||'');const db=String(b.session.date||'');
+    if(da!==db)return da.localeCompare(db);
+    const ta=Number(a.session.createdAt||a.index||0);
+    const tb=Number(b.session.createdAt||b.index||0);
+    return ta-tb || a.index-b.index;
+  });
+  // A celebration is only earned when a changed/new set beats every other
+  // set in this person's history. Equal weight + reps is a tie, not a PR.
+  let bestOutsideCandidates=null,bestCandidate=null;
+  sessions.forEach(session=>(session.sets||[]).forEach(set=>{
+    const weight=Number(set[1]),reps=Number(set[2]);
+    if(!Number.isFinite(weight)||!Number.isFinite(reps)||weight<=0||reps<=0)return;
+    const candidate={weight,reps};
+    if(candidateSetRefs.has(set)){
+      if(prCompare(candidate,bestCandidate)>0)bestCandidate=candidate;
+    }else if(prCompare(candidate,bestOutsideCandidates)>0)bestOutsideCandidates=candidate;
+  }));
+  const newPR=bestCandidate&&prCompare(bestCandidate,bestOutsideCandidates)>0?bestCandidate:null;
+  // Rebuild historical PR markers deterministically, in chronological order.
+  let runningBest=null;
+  ordered.forEach(({session})=>(session.sets||[]).forEach(set=>{
+    delete set[4];
+    const weight=Number(set[1]),reps=Number(set[2]);
+    if(!Number.isFinite(weight)||!Number.isFinite(reps)||weight<=0||reps<=0)return;
+    const candidate={weight,reps};
+    if(prCompare(candidate,runningBest)>0){set[4]='pr';runningBest=candidate;}
+  }));
+  return newPR;
+}
+function getLogInputStyle(){return localStorage.getItem('curlLogInputStyle')==='classic'?'classic':'stepper'}
+function setLogInputStyle(style){
+  const next=style==='classic'?'classic':'stepper';
+  localStorage.setItem('curlLogInputStyle',next);
+  renderLogEditor();
+  document.querySelectorAll('.log-style-options button').forEach(button=>button.classList.toggle('active',button.textContent.trim()===(next==='classic'?'Classic':'Simple')));
+}
+function classicLogSetRowHTML(set,index){
+  const weightValue=set?.[6]?'':(set?.[1]??'');
+  const repsValue=set?.[6]?'':(set?.[2]??'');
+  const weightPlaceholder=set?.[6]?(set?.[1]||'kg'):'kg';
+  const repsPlaceholder=set?.[6]?(set?.[2]||'Reps'):'Reps';
+  return `<div class="classic-set-row"><span class="classic-set-no">${index+1}</span><input class="set-weight" type="number" inputmode="decimal" step="any" min="0" value="${esc(weightValue)}" placeholder="${esc(weightPlaceholder)}" aria-label="Set ${index+1} weight"><input class="set-reps" type="number" inputmode="numeric" step="1" min="1" value="${esc(repsValue)}" placeholder="${esc(repsPlaceholder)}" aria-label="Set ${index+1} reps"><button class="remove-set" type="button" onclick="removeLogSet(this)" aria-label="Remove set">×</button></div>`;
+}
+function renderLogEditor(){
+  const editor=document.getElementById('setEditor');if(!editor)return;
+  const sets=[...editor.querySelectorAll('.set-editor-row,.classic-set-row')].map(row=>{
+    const w=row.querySelector('.set-weight'),r=row.querySelector('.set-reps');
+    const remembered=!!(w?.classList.contains('remembered-value')||(!w?.value&&w?.placeholder));
+    const weight=w?.value||w?.placeholder||'';
+    const reps=r?.value||r?.placeholder||'';
+    return ['',weight,reps,'','','',remembered];
+  });
+  const style=getLogInputStyle();
+  editor.innerHTML=style==='classic'
+    ? `<div class="set-editor-head" style="grid-template-columns:30px 1fr 1fr 34px"><span>SET</span><span>WEIGHT (KG)</span><span>REPS</span><span></span></div>${sets.map(classicLogSetRowHTML).join('')}`
+    : `<div class="set-editor-head"><span>Weight (kg)</span><span>Reps</span><span></span></div>${sets.map(logSetRowHTML).join('')}`;
+}
 function closePRAchievement(){
   const modal=document.getElementById('prAchievement');
   if(!modal)return;
   modal.classList.remove('show');
   modal.style.display='none';
   if(prAchievementTimer){clearTimeout(prAchievementTimer);prAchievementTimer=null;}
+  if(pendingRestTimer){const next=pendingRestTimer;pendingRestTimer=null;setTimeout(()=>startRestTimer(next.exerciseId,next.duration),120)}
 }
 function showPRAchievement(record){
   const modal=document.getElementById('prAchievement');
@@ -2001,6 +2474,13 @@ function showPRAchievement(record){
 }
 
 function saveSheet(){
+  ensureSettings();
+  if(sheetMode==='exerciseRest'){
+    const e=data.exercises.find(x=>x.id===currentExercise);
+    const duration=Number(document.getElementById('exerciseRestDuration')?.value);
+    if(e&&duration>=30&&duration<=600){e.restDuration=duration;persist();closeSheet();toast('Rest duration updated')}
+    return;
+  }
   if(sheetMode==='renamePerson'){
     const name=document.getElementById('sheetInput').value.trim();
     if(!name){toast('Enter a name');return}
@@ -2036,9 +2516,10 @@ function saveSheet(){
     if(e){e.assignedPersonId=pid;persist();closeSheet();renderHome();if(currentFolder)openFolder(currentFolder);openExercise(currentExercise);toast(pid?'Workout assignment updated':'Workout is shared')}
   }else if(sheetMode==='log' || sheetMode==='editSession'){
     let newPR=null;
+    const modeBeforeSave=sheetMode;
     const exercise=data.exercises.find(e=>e.id===currentExercise);
     if(exercise?.assignedPersonId && exercise.assignedPersonId!==currentPerson){toast('Only the assigned person can add or edit sets');return}
-    const rows=[...document.querySelectorAll('#setEditor .set-editor-row')];
+    const rows=[...document.querySelectorAll('#setEditor .set-editor-row, #setEditor .classic-set-row')];
     const sets=rows.map((row,i)=>{
       const weight=row.querySelector('.set-weight').value.trim();
       const reps=row.querySelector('.set-reps').value.trim();
@@ -2046,35 +2527,28 @@ function saveSheet(){
     }).filter(x=>x[1] && x[2]);
     if(!sets.length){document.querySelector('#setEditor .set-weight')?.focus();return}
     data.logs[currentExercise]??={};
-    if(sheetMode==='editSession'){
+    let addedSetCount=0;
+    let hasEditedSetChanges=false;
+    if(modeBeforeSave==='editSession'){
       const owner=window._editingSessionOwner||currentPerson;
-      const old=data.logs[currentExercise][owner]?.[window._editingSessionIndex];
+      const ownerSessions=data.logs[currentExercise][owner]||[];
+      const sessionIndex=window._editingSessionIndex;
+      const old=ownerSessions[sessionIndex];
       if(!old){toast('Session no longer exists');return}
-      const previousSets=old.sets||[];
-      sets.forEach((set,index)=>{
-        const previous=previousSets[index];
-        if(previous?.[4]==='pr' && Number(previous[1])===Number(set[1]) && Number(previous[2])===Number(set[2]))set[4]='pr';
-      });
+      const oldSets=old.sets||[];
+      const candidateSets=sets.filter((set,i)=>!oldSets[i]||Number(oldSets[i][1])!==Number(set[1])||Number(oldSets[i][2])!==Number(set[2]));
+      hasEditedSetChanges=candidateSets.length>0||sets.length!==oldSets.length;
+      addedSetCount=Math.max(0,sets.length-oldSets.length);
       old.sets=sets;
       old.updatedAt=Date.now();
+      newPR=recalculateExercisePRs(currentExercise,owner,candidateSets);
     }else{
       const pid=currentPerson;
       data.logs[currentExercise][pid]??=[];
-      let best=getPersonExerciseBest(currentExercise,pid);
-      sets.forEach(set=>{
-        const candidate={weight:Number(set[1]),reps:Number(set[2])};
-        if(Number.isFinite(candidate.weight)&&Number.isFinite(candidate.reps)&&candidate.weight>0&&candidate.reps>0&&prCompare(candidate,best)>0){
-          set[4]='pr';best=candidate;newPR=candidate;
-        }
-      });
       const now=new Date();
       const date=now.toISOString().slice(0,10);
       const time=now.toTimeString().slice(0,5);
       const stamp=now.getTime();
-
-
-      // A new log on the same calendar day continues today's session.
-      // Do not create a second session card for the same exercise/person/date.
       const existing=data.logs[currentExercise][pid].find(session=>session.date===date);
       if(existing){
         const offset=existing.sets.length;
@@ -2086,15 +2560,24 @@ function saveSheet(){
       }else{
         data.logs[currentExercise][pid].unshift({date,time,sets,createdAt:stamp,updatedAt:stamp});
       }
+      addedSetCount=sets.length;
+      newPR=recalculateExercisePRs(currentExercise,pid,sets);
     }
+    const restExerciseId=currentExercise;
+    const restDuration=getExerciseRestDuration(exercise);
+    // The same-day session is reopened in edit mode. Trigger rest whenever
+    // this save actually adds sets, not only when a brand-new session is made.
+    const isManualEdit=!!window._editingSessionIsManual;
+    const shouldRest=data.settings.restTimerEnabled && (isManualEdit ? (getRestAfterEdit()&&hasEditedSetChanges) : addedSetCount>0);
     persist();
     closeSheet();
-    // Schedule the achievement independently of history rendering. A rendering
-    // exception must never prevent a valid PR celebration from appearing.
     if(newPR){
-      const achievement={...newPR, exerciseId:currentExercise};
+      if(shouldRest)pendingRestTimer={exerciseId:restExerciseId,duration:restDuration};
+      const achievement={...newPR, exerciseId:restExerciseId};
       setTimeout(()=>showPRAchievement(achievement),180);
-    }else if(sheetMode==='editSession'){
+    }else if(shouldRest){
+      setTimeout(()=>startRestTimer(restExerciseId,restDuration),120);
+    }else if(modeBeforeSave==='editSession'){
       toast('Session updated');
     }else{
       toast('Session saved');
@@ -2150,6 +2633,7 @@ function exerciseMenu(){
   const assigned=e.assignedPersonId||'';
   const personName=assigned?(data.people.find(p=>p.id===assigned)?.name||'Assigned'):'Shared';
   openActionSheet(e.name,[
+    {label:'Rest duration',icon:'◷',run:()=>openExerciseRestSheet(e.id)},
     {label:assigned?`Assigned to ${personName}`:'Assign to person',icon:'●',run:()=>openExerciseAssignmentSheet(e.id)},
     ...(assigned?[{label:'Make shared',icon:'↗',run:()=>setExerciseAssignment(e.id,'')}]:[]),
     {label:'Rename exercise',icon:'✎',run:()=>openRenameExerciseSheet(e.id)},
@@ -2254,7 +2738,9 @@ function normalizeImportedData(incoming){
   exercises.forEach(e=>{ if(!logs[e.id] || typeof logs[e.id]!=='object' || Array.isArray(logs[e.id])) logs[e.id]={}; });
 
 
-  return {folders,people,exercises,logs};
+  const settings=(incoming.settings && typeof incoming.settings==='object' && !Array.isArray(incoming.settings))
+    ? {...incoming.settings} : {...(data.settings||{})};
+  return {folders,people,exercises,logs,settings};
 }
 
 
@@ -2281,6 +2767,7 @@ async function importData(file){
 
 
     data=clean;
+    ensureSettings();
     persist();
     currentFolder=null;
     currentExercise=null;
@@ -2294,8 +2781,50 @@ async function importData(file){
 }
 
 
-function resetDemo(){if(confirm('Restore example data?')){data=JSON.parse(JSON.stringify(demo));persist();goHome();toast('Example data restored')}}
-function clearAll(){if(confirm('Delete the entire notebook?')){data={folders:[],people:[],exercises:[],logs:{}};persist();goHome();toast('Notebook cleared')}}
+let pendingPurgeAction=null;
+function openPurgeConfirmation(action){
+  if(action!=='restore'&&action!=='clear')return;
+  pendingPurgeAction=action;
+  const restore=action==='restore';
+  document.getElementById('purgeKicker').textContent=restore?'REPLACE NOTEBOOK':'PERMANENT DELETION';
+  document.getElementById('purgeTitle').textContent=restore?'Restore example data?':'Clear your notebook?';
+  document.getElementById('purgeDescription').textContent=restore?'Your current notebook will be replaced with Curl’s example notebook.':'This will permanently empty your Curl notebook on this device and any connected sync destination.';
+  document.getElementById('purgeNoticeText').textContent=restore?'All current folders, exercises, people and workout logs will be replaced by example data.':'All folders, exercises, people and workout logs will be deleted. This action cannot be undone.';
+  const button=document.getElementById('purgeConfirmButton');
+  button.textContent=restore?'Restore examples':'Clear notebook';
+  button.classList.toggle('danger',!restore);
+  const input=document.getElementById('purgeCodeInput');input.value='';
+  button.disabled=true;
+  const sheet=document.getElementById('purgeSheet');sheet.classList.add('show');sheet.setAttribute('aria-hidden','false');
+  document.body.style.overflow='hidden';
+  // Keep the confirmation sheet keyboard-free until the user taps the code field.
+}
+function updatePurgeConfirmation(input){
+  const clean=String(input.value||'').toUpperCase().replace(/[^A-Z]/g,'').slice(0,5);
+  if(input.value!==clean)input.value=clean;
+  document.getElementById('purgeConfirmButton').disabled=clean!=='PURGE';
+}
+function closePurgeConfirmation(){
+  const sheet=document.getElementById('purgeSheet');sheet.classList.remove('show');sheet.setAttribute('aria-hidden','true');
+  document.getElementById('purgeCodeInput').value='';document.getElementById('purgeConfirmButton').disabled=true;
+  pendingPurgeAction=null;document.body.style.overflow='';
+}
+function confirmPurgeAction(){
+  if(document.getElementById('purgeCodeInput').value!=='PURGE'||!pendingPurgeAction)return;
+  const action=pendingPurgeAction;
+  closePurgeConfirmation();
+  if(action==='restore'){
+    data=JSON.parse(JSON.stringify(demo));
+    ensureSettings();
+    currentFolder=null;currentExercise=null;currentPerson=data.people[0]?.id||null;
+    persist();goHome();toast('Example data restored');
+  }else{
+    data={folders:[],people:[],exercises:[],logs:{}};
+    ensureSettings();
+    currentFolder=null;currentExercise=null;currentPerson=null;
+    persist();goHome();toast('Notebook cleared');
+  }
+}
 function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1500)}
 renderHome();
 </script>
