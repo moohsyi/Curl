@@ -1535,7 +1535,35 @@ function startRestTimer(exerciseId,duration){
   clearInterval(restTimerInterval);
   restTimerTotal=Math.max(30,Math.min(600,Number(duration)||getExerciseRestDuration(e)));
   restTimerEndsAt=Date.now()+restTimerTotal*1000;
-  const box=document.getElementById('restTimer');box.hidden=false;initRestTimerDragging();
+  const box=document.getElementById('restTimer');
+  box.hidden=false;
+  // Keep the floating timer above app content and recover if a stale saved
+  // position leaves it outside the visible viewport on this device.
+  box.style.position='fixed';
+  box.style.zIndex='2147482000';
+  initRestTimerDragging();
+  requestAnimationFrame(()=>{
+    if(box.hidden)return;
+    const rect=box.getBoundingClientRect();
+    const outside=!rect.width||!rect.height||rect.right<=0||rect.left>=window.innerWidth||rect.bottom<=0||rect.top>=window.innerHeight;
+    if(outside){
+      if(box.classList.contains('is-minimized')){
+        box.style.width='190px';box.style.left='16px';box.style.right='auto';
+        box.style.top='100px';box.style.bottom='auto';
+        requestAnimationFrame(()=>{
+          if(box.hidden)return;
+          const r=box.getBoundingClientRect();
+          const pos=clampRestTimerPosition(r.left,r.top,r.width,r.height);
+          box.style.left=pos.left+'px';box.style.top=pos.top+'px';
+          saveRestTimerPosition(pos.left,pos.top,true);
+        });
+      }else{
+        box.style.left='16px';box.style.right='16px';box.style.width='';
+        box.style.top='';box.style.bottom='calc(16px + env(safe-area-inset-bottom))';
+        saveRestTimerPosition(16,Math.max(8,window.innerHeight-100),false);
+      }
+    }
+  });
   document.getElementById('restTimerExercise').textContent=e.name;
   const tick=()=>{
     const left=Math.max(0,(restTimerEndsAt-Date.now())/1000);
