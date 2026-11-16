@@ -1,4 +1,4 @@
-const CACHE = 'curl-v2';
+const CACHE = 'curl-v3';
 
 const CORE = [
   './',
@@ -34,30 +34,20 @@ self.addEventListener('activate', e => {
 
 self.addEventListener('fetch', e => {
   const r = e.request;
-
   if (r.method !== 'GET') return;
 
   const u = new URL(r.url);
-  const isApp = u.origin === location.origin;
-
-  // Let Firebase and other external requests go directly to the network.
-  if (!isApp) return;
+  if (u.origin !== location.origin) return;
 
   e.respondWith(
     fetch(r)
       .then(response => {
         const copy = response.clone();
-
-        caches.open(CACHE).then(cache => {
-          cache.put(r, copy);
-        });
-
+        caches.open(CACHE).then(cache => cache.put(r, copy));
         return response;
       })
       .catch(() =>
-        caches.match(r).then(
-          cached => cached || caches.match('./index.html')
-        )
+        caches.match(r).then(cached => cached || caches.match('./index.html'))
       )
   );
 });
