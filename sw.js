@@ -1,11 +1,16 @@
-const CACHE = 'curl-v3';
+
+const CACHE = 'curl-v4';
 
 const CORE = [
   './',
   './index.html',
   './manifest.json',
   './icon-192.png',
-  './icon-512.png'
+  './icon-256.png',
+  './icon-384.png',
+  './icon-512.png',
+  './icon-192-maskable.png',
+  './icon-512-maskable.png'
 ];
 
 self.addEventListener('install', e => {
