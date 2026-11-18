@@ -1,5 +1,5 @@
 
-const CACHE = 'curl-v4';
+const CACHE = 'curl-v5';
 
 const CORE = [
   './',
