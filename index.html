@@ -2528,7 +2528,7 @@ function openLogSheet(editSessionIndex=null,ownerPid=currentPerson,manualEdit=fa
   window._editingSessionOwner=ownerPid;
   // Any existing session opened for editing, including the automatic same-day
   // reopen from the main Log session button, must obey the Rest after editing setting.
-  window._editingSessionIsManual=!!manualEdit || editSessionIndex!==null;
+  window._editingSessionIsManual=!!manualEdit;
   document.getElementById('addLogSetButton')?.addEventListener('click',addLogSet);
   document.getElementById('setEditor')?.addEventListener('focusin',event=>{if(event.target.matches('input'))event.target.select()});
   document.getElementById('setEditor')?.addEventListener('input',event=>{if(event.target.matches('.set-stepper input.remembered-value'))event.target.classList.remove('remembered-value')});
@@ -2846,10 +2846,9 @@ function saveSheet(){
     }
     const restExerciseId=currentExercise;
     const restDuration=getExerciseRestDuration(exercise);
-    // The same-day session is reopened in edit mode. Trigger rest whenever
-    // this save actually adds sets, not only when a brand-new session is made.
-    const isManualEdit=!!window._editingSessionIsManual;
-    const shouldRest=data.settings.restTimerEnabled && (isManualEdit ? (getRestAfterEdit()&&hasEditedSetChanges) : addedSetCount>0);
+    // All existing-session saves obey the device-specific Rest after editing toggle.
+    // New sessions still start rest when the main rest timer is enabled.
+    const shouldRest=data.settings.restTimerEnabled && (modeBeforeSave==='editSession' ? getRestAfterEdit() : addedSetCount>0);
     persist();
     closeSheet();
     // Always show the save confirmation first. The rest timer waits until
